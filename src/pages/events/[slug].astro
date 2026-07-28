@@ -1,0 +1,223 @@
+---
+// 活動詳情頁（動態路由）。對照 .source/21~24-event-*.md 4 篇子頁，
+// frontmatter 結構化欄位（日期/地點/報名/聯絡）+ Markdown body（議程/講師/FAQ/退費規定等）render。
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import StatusBadge from '../../components/StatusBadge.astro';
+
+export async function getStaticPaths() {
+  const events = await getCollection('events');
+  return events.map((event) => ({
+    params: { slug: event.id },
+    props: { event },
+  }));
+}
+
+const { event } = Astro.props;
+const { Content } = await render(event);
+const { title, subtitle, dateLabel, location, status, summary, registrationLink, contactName, contactPhone, contactEmail, image } =
+  event.data;
+
+const base = import.meta.env.BASE_URL.endsWith('/')
+  ? import.meta.env.BASE_URL
+  : `${import.meta.env.BASE_URL}/`;
+
+// image 欄位：已自託管者存相對路徑（見 public/img/），少數下載失敗仍保留外連網址原樣。
+const imageSrc = image ? (/^https?:\/\//.test(image) ? image : `${base}${image}`) : undefined;
+---
+
+<BaseLayout title={`${title}｜活動報名專區｜臺灣遠距藥事照護協會`} description={summary}>
+  <section class="event-hero">
+    <div class="container">
+      <a class="back-link" href={`${base}events/`}>← 返回活動報名專區</a>
+      <div class="event-hero-top">
+        <StatusBadge status={status} />
+      </div>
+      <h1>{title}</h1>
+      {subtitle && <p class="subtitle">{subtitle}</p>}
+      <p class="summary">{summary}</p>
+
+      <dl class="info-card">
+        <div>
+          <dt>📅 日期</dt>
+          <dd>{dateLabel}</dd>
+        </div>
+        {
+          location && (
+            <div>
+              <dt>📍 地點</dt>
+              <dd>{location}</dd>
+            </div>
+          )
+        }
+        <div>
+          <dt>📝 報名方式</dt>
+          <dd>
+            {registrationLink ? (
+              <a class="btn-register" href={registrationLink} target="_blank" rel="noopener noreferrer">
+                前往報名
+              </a>
+            ) : (
+              <span>原站無獨立線上報名連結，報名請洽下方聯繫窗口</span>
+            )}
+          </dd>
+        </div>
+        {
+          (contactName || contactPhone || contactEmail) && (
+            <div>
+              <dt>☎️ 聯絡窗口</dt>
+              <dd>
+                {contactName && <span>{contactName}　</span>}
+                {contactPhone && <span>{contactPhone}　</span>}
+                {contactEmail && (
+                  <a href={`mailto:${contactEmail}`}>{contactEmail}</a>
+                )}
+              </dd>
+            </div>
+          )
+        }
+      </dl>
+
+      {image && <img class="hero-image" src={imageSrc} alt={title} loading="lazy" width="800" height="450" />}
+    </div>
+  </section>
+
+  <section class="event-body">
+    <div class="container prose">
+      <Content />
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .event-hero {
+    background: var(--color-brand-soft);
+    padding-block: clamp(2rem, 6vw, 3rem);
+  }
+
+  .back-link {
+    display: inline-block;
+    margin-bottom: 1rem;
+    font-size: var(--text-sm);
+    color: var(--color-primary);
+  }
+
+  .event-hero-top {
+    margin-bottom: 0.5rem;
+  }
+
+  .event-hero h1 {
+    color: var(--color-primary-dark);
+    margin: 0 0 0.5rem;
+  }
+
+  .subtitle {
+    color: var(--color-ink-soft);
+    font-size: var(--text-lg);
+    margin: 0 0 0.75rem;
+  }
+
+  .summary {
+    color: var(--color-text);
+    max-width: 48rem;
+    margin: 0 0 1.5rem;
+  }
+
+  .info-card {
+    display: grid;
+    gap: 1rem;
+    background: var(--color-white);
+    border: 1px solid var(--color-line);
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    box-shadow: var(--shadow-card);
+    max-width: 40rem;
+    margin: 0 0 1.5rem;
+  }
+
+  .info-card dt {
+    font-weight: 700;
+    color: var(--color-primary-dark);
+    font-size: var(--text-sm);
+    margin: 0 0 0.25rem;
+  }
+
+  .info-card dd {
+    margin: 0;
+    color: var(--color-ink-soft);
+  }
+
+  .btn-register {
+    display: inline-block;
+    padding: 0.625rem 1.5rem;
+    border-radius: 999px;
+    background: var(--color-accent);
+    color: var(--color-white);
+    text-decoration: none;
+    font-weight: 700;
+    font-size: var(--text-sm);
+  }
+
+  .btn-register:hover {
+    background: var(--color-accent-dark);
+    color: var(--color-white);
+  }
+
+  .hero-image {
+    width: 100%;
+    max-width: 40rem;
+    border-radius: 0.75rem;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+  }
+
+  .event-body {
+    padding-block: clamp(2rem, 6vw, 3.5rem);
+  }
+
+  .prose {
+    max-width: 48rem;
+  }
+
+  .prose :global(h2) {
+    color: var(--color-primary);
+    margin-top: 2rem;
+  }
+
+  .prose :global(h3) {
+    color: var(--color-primary-dark);
+    margin-top: 1.5rem;
+  }
+
+  .prose :global(table) {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--text-sm);
+    margin-block: 1rem;
+    display: block;
+    overflow-x: auto;
+  }
+
+  .prose :global(th),
+  .prose :global(td) {
+    border: 1px solid var(--color-line);
+    padding: 0.5rem 0.75rem;
+    text-align: left;
+  }
+
+  .prose :global(th) {
+    background: var(--color-brand-soft);
+    color: var(--color-primary-dark);
+  }
+
+  .prose :global(blockquote) {
+    border-inline-start: 0.25rem solid var(--color-brand);
+    margin-inline-start: 0;
+    padding-inline-start: 1rem;
+    color: var(--color-ink-soft);
+  }
+
+  .prose :global(img) {
+    border-radius: 0.5rem;
+  }
+</style>

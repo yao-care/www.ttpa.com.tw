@@ -1,0 +1,237 @@
+---
+// /courses/（線上課程推廣）列表頁。
+// 頁面本身逐字取自 .source/30-courses-index.md；子頁清單改為自動列出 courses 內容集合
+// （31/32 兩篇），非另外新增文案。
+// 2026-07-28 圖片自託管改動：intro 區塊的圖片網址 curl/wget 回應 403（同 columns 頁，Google
+// 舊版協作平台圖片代理），改用 headless 瀏覽器開原站頁面攔截 image/* response 取得圖片本體，
+// 已改為站內自託管（public/img/），詳見 .source/_images-notes.md。下方 Google 雲端硬碟
+// 影片連結（預覽／開啟／下載）是連結目的地，非圖片，本輪不動。
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import StatusBadge from '../../components/StatusBadge.astro';
+
+const base = import.meta.env.BASE_URL.endsWith('/')
+  ? import.meta.env.BASE_URL
+  : `${import.meta.env.BASE_URL}/`;
+
+const courses = (await getCollection('courses')).sort((a, b) => {
+  const da = a.data.date ? a.data.date.getTime() : 0;
+  const db = b.data.date ? b.data.date.getTime() : 0;
+  return db - da;
+});
+---
+
+<BaseLayout
+  title="線上課程推廣 | 臺灣遠距藥事照護協會"
+  description="臺灣遠距藥事照護協會線上課程推廣：善知識直播專訪與線上培訓課程資訊。"
+>
+  <section class="hero">
+    <div class="container">
+      <h1>線上課程推廣</h1>
+    </div>
+  </section>
+
+  <section class="intro">
+    <div class="container intro-inner">
+      <img
+        src={`${base}img/course-intro-photo.jpg`}
+        alt="線上課程推廣"
+        loading="lazy"
+        width="640"
+        height="360"
+      />
+
+      <div class="intro-text">
+        <p>預告 2026年1月25日</p>
+        <p>善知識 直播</p>
+        <p>我們即將在9/6（五）</p>
+        <p>開拍 【 善知識專訪 理事長 劉孟基藥師 】</p>
+        <p>題目：如果擺脫止痛藥的束縛</p>
+        <p>2019/9/6</p>
+        <p>止痛藥可以常吃嗎?</p>
+      </div>
+
+      <div class="video-card">
+        <h2>2026/01/21 - 劉孟基 理事長 專訪 part1</h2>
+        <p>創立臺灣遠距藥事照護協會的初衷</p>
+        <p class="video-filename">檔名：1-1孟基Q1完整.mp4</p>
+        <div class="video-actions">
+          <a class="btn btn-outline" href="https://drive.google.com/file/d/1JW2L2AyFHqW62sjHQr0nELKmCNOk7_7-/preview">預覽影片</a>
+          <a class="btn btn-outline" href="https://drive.google.com/open?id=1JW2L2AyFHqW62sjHQr0nELKmCNOk7_7-">開啟連結</a>
+          <a class="btn btn-outline" href="https://drive.google.com/uc?id=1JW2L2AyFHqW62sjHQr0nELKmCNOk7_7-&export=download">下載影片</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="list">
+    <div class="container">
+      <h2>課程清單</h2>
+      <div class="list-grid">
+        {
+          courses.map((course) => (
+            <a class="course-card" href={`${base}courses/${course.id}/`}>
+              <div class="course-card-head">
+                <h3>{course.data.title}</h3>
+                {course.data.status && <StatusBadge status={course.data.status} />}
+              </div>
+              <p class="course-date">{course.data.dateLabel}</p>
+              {course.data.summary && <p class="course-summary">{course.data.summary}</p>}
+              <span class="cta">查看課程 →</span>
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .hero {
+    background: var(--color-brand-soft);
+    padding-block: clamp(2.5rem, 6vw, 4rem);
+    text-align: center;
+  }
+
+  .hero h1 {
+    color: var(--color-primary);
+    margin: 0;
+  }
+
+  section:not(.hero) {
+    padding-block: clamp(2rem, 5vw, 3.5rem);
+  }
+
+  .intro-inner {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .intro-inner img {
+    border-radius: 0.75rem;
+    width: 100%;
+    max-width: 40rem;
+    margin-inline: auto;
+  }
+
+  .intro-text p {
+    margin: 0 0 0.25rem;
+    color: var(--color-ink-soft);
+  }
+
+  .video-card {
+    background: var(--color-brand-soft);
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+  }
+
+  .video-card h2 {
+    margin: 0 0 0.5rem;
+    color: var(--color-primary);
+    font-size: var(--text-lg);
+  }
+
+  .video-card p {
+    margin: 0 0 0.5rem;
+    color: var(--color-ink-soft);
+  }
+
+  .video-filename {
+    font-size: var(--text-sm);
+  }
+
+  .video-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 1rem;
+  }
+
+  .btn-outline {
+    display: inline-block;
+    padding: 0.5rem 1.25rem;
+    border-radius: 999px;
+    border: 1px solid var(--color-primary);
+    color: var(--color-primary);
+    text-decoration: none;
+    font-size: var(--text-sm);
+  }
+
+  .btn-outline:hover {
+    background: var(--color-primary);
+    color: var(--color-white);
+  }
+
+  .list h2 {
+    color: var(--color-primary);
+    text-align: center;
+    margin-block: 0 1.5rem;
+  }
+
+  .list-grid {
+    display: grid;
+    gap: 1.25rem;
+    grid-template-columns: 1fr;
+  }
+
+  .course-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 1.5rem;
+    border-radius: 0.75rem;
+    background: var(--color-white);
+    border: 1px solid var(--color-line);
+    box-shadow: var(--shadow-card);
+    text-decoration: none;
+    color: var(--color-text);
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+  }
+
+  .course-card:hover {
+    box-shadow: var(--shadow-card-hover);
+    transform: translateY(-0.125rem);
+    color: var(--color-text);
+  }
+
+  .course-card-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+
+  .course-card h3 {
+    margin: 0;
+    color: var(--color-primary);
+    font-size: var(--text-lg);
+  }
+
+  .course-date {
+    margin: 0;
+    color: var(--color-ink-soft);
+    font-size: var(--text-sm);
+  }
+
+  .course-summary {
+    margin: 0;
+    color: var(--color-ink-soft);
+    font-size: var(--text-sm);
+    flex-grow: 1;
+  }
+
+  .course-card .cta {
+    margin-top: 0.25rem;
+    color: var(--color-accent);
+    font-size: var(--text-sm);
+    font-weight: 600;
+  }
+
+  @media (min-width: 640px) {
+    .list-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+</style>

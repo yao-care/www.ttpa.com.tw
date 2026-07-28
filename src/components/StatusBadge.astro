@@ -1,0 +1,37 @@
+---
+// 狀態徽章，沿用原站慣例（如 10-news.md:26「🚀 熱烈招募中」、10-news.md:56「✅ 活動已結束」、
+// 23-event-ai-platform.md:26「[已結束]」）。文字一律原樣傳入，不在此改寫；
+// 本元件只依文字內容判斷要套用「進行中」或「已結束」的視覺樣式。
+interface Props {
+  status?: string;
+}
+const { status } = Astro.props;
+const isEnded = status ? /已結束|已圓滿結束/.test(status) : false;
+---
+
+{
+  status && (
+    <span class={`badge ${isEnded ? 'badge-ended' : 'badge-active'}`}>{status}</span>
+  )
+}
+
+<style>
+  .badge {
+    display: inline-block;
+    padding: 0.125rem 0.75rem;
+    border-radius: 999px;
+    font-size: var(--text-xs);
+    line-height: 1.6;
+    white-space: nowrap;
+  }
+
+  .badge-active {
+    background: var(--color-brand-soft);
+    color: var(--color-primary);
+  }
+
+  .badge-ended {
+    background: var(--color-bg-light);
+    color: var(--color-ink-soft);
+  }
+</style>

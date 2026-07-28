@@ -1,0 +1,221 @@
+---
+// /courses/[slug]/ 課程詳情頁，內容取自 courses 內容集合（31/32-course-*.md 逐字轉錄）。
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import StatusBadge from '../../components/StatusBadge.astro';
+
+export async function getStaticPaths() {
+  const courses = await getCollection('courses');
+  return courses.map((course) => ({
+    params: { slug: course.id },
+    props: { course },
+  }));
+}
+
+const { course } = Astro.props;
+const { data } = course;
+const { Content } = await render(course);
+
+const base = import.meta.env.BASE_URL.endsWith('/')
+  ? import.meta.env.BASE_URL
+  : `${import.meta.env.BASE_URL}/`;
+
+// instructorPhoto：已自託管者存相對路徑（見 public/img/），少數下載失敗仍保留外連網址原樣。
+const instructorPhotoSrc = data.instructorPhoto
+  ? (/^https?:\/\//.test(data.instructorPhoto) ? data.instructorPhoto : `${base}${data.instructorPhoto}`)
+  : undefined;
+---
+
+<BaseLayout title={`${data.title} | 線上課程推廣 | 臺灣遠距藥事照護協會`} description={data.summary}>
+  <section class="hero">
+    <div class="container">
+      <a class="back-link" href={`${base}courses/`}>← 返回線上課程推廣</a>
+      {data.status && <StatusBadge status={data.status} />}
+      <h1>{data.title}</h1>
+      <p class="date">{data.dateLabel}</p>
+    </div>
+  </section>
+
+  <section class="detail">
+    <div class="container detail-inner">
+      <div class="detail-main">
+        <Content />
+      </div>
+
+      <aside class="detail-side">
+        <dl>
+          {data.format && (
+            <>
+              <dt>上課方式</dt>
+              <dd>{data.format}</dd>
+            </>
+          )}
+          {data.fee && (
+            <>
+              <dt>報名費用</dt>
+              <dd>{data.fee}</dd>
+            </>
+          )}
+          {data.instructorName && (
+            <>
+              <dt>講師</dt>
+              <dd>
+                {data.instructorName}
+                {data.instructorTitle && <span class="instructor-title"> ｜ {data.instructorTitle}</span>}
+              </dd>
+            </>
+          )}
+          {data.capacityLimit && (
+            <>
+              <dt>名額</dt>
+              <dd>{data.capacityLimit}</dd>
+            </>
+          )}
+        </dl>
+
+        {data.instructorPhoto && (
+          <img src={instructorPhotoSrc} alt={data.instructorName ?? '講師照片'} loading="lazy" width="240" height="320" />
+        )}
+
+        {data.registrationLink && (
+          <a class="btn btn-primary" href={data.registrationLink}>
+            立即報名
+          </a>
+        )}
+      </aside>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .hero {
+    background: var(--color-brand-soft);
+    padding-block: clamp(2rem, 5vw, 3.5rem);
+    text-align: center;
+  }
+
+  .back-link {
+    display: inline-block;
+    margin-bottom: 1rem;
+    font-size: var(--text-sm);
+    color: var(--color-primary);
+  }
+
+  .hero h1 {
+    color: var(--color-primary);
+    margin: 0.5rem 0 0.25rem;
+  }
+
+  .hero .date {
+    margin: 0;
+    color: var(--color-ink-soft);
+  }
+
+  .detail {
+    padding-block: clamp(2rem, 5vw, 3.5rem);
+  }
+
+  .detail-inner {
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 2rem;
+  }
+
+  .detail-main :global(h2) {
+    color: var(--color-primary);
+  }
+
+  .detail-main :global(table) {
+    width: 100%;
+    border-collapse: collapse;
+    margin-block: 1rem;
+  }
+
+  .detail-main :global(th),
+  .detail-main :global(td) {
+    border: 1px solid var(--color-line);
+    padding: 0.5rem 0.75rem;
+    text-align: left;
+    font-size: var(--text-sm);
+  }
+
+  .detail-main :global(img) {
+    border-radius: 0.75rem;
+    margin-block: 1rem;
+  }
+
+  .detail-side {
+    background: var(--color-white);
+    border: 1px solid var(--color-line);
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    align-self: flex-start;
+  }
+
+  .detail-side dl {
+    margin: 0 0 1rem;
+  }
+
+  .detail-side dt {
+    font-size: var(--text-xs);
+    color: var(--color-ink-muted);
+    margin-top: 0.75rem;
+  }
+
+  .detail-side dt:first-child {
+    margin-top: 0;
+  }
+
+  .detail-side dd {
+    margin: 0.125rem 0 0;
+    color: var(--color-text);
+    font-size: var(--text-sm);
+  }
+
+  .instructor-title {
+    color: var(--color-ink-soft);
+  }
+
+  .detail-side img {
+    width: 100%;
+    max-width: 12rem;
+    border-radius: 0.5rem;
+    margin: 1rem auto;
+    display: block;
+  }
+
+  .btn {
+    display: block;
+    text-align: center;
+    padding: 0.75rem 1.75rem;
+    border-radius: 999px;
+    font-size: var(--text-sm);
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .btn-primary {
+    background: var(--color-accent);
+    color: var(--color-white);
+  }
+
+  .btn-primary:hover {
+    background: var(--color-accent-dark);
+    color: var(--color-white);
+  }
+
+  @media (min-width: 1024px) {
+    .detail-inner {
+      flex-direction: row;
+      align-items: flex-start;
+    }
+
+    .detail-main {
+      flex: 1;
+    }
+
+    .detail-side {
+      flex: 0 0 20rem;
+    }
+  }
+</style>

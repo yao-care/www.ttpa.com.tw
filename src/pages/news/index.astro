@@ -1,0 +1,272 @@
+---
+// 最新消息（混合式）。依交辦說明的用戶拍板設計：
+//   自動列出 events／courses 集合中 featured:true 的項目，
+//   + announcements 集合的手動公告，一起依 date 合併排序（新到舊）。
+// featured 標記依據 .source/10-news.md 5 則消息逐條核對決定：
+//   news 1 → events/ai-workshop-taichung-tzuchi（featured:true）
+//   news 2 → courses/2026-06-20-second-brain（featured 由 courses 負責 agent 設定，本頁不強制）
+//   news 3 → events/ai-pharma-tech-matching（featured:true）
+//   news 4 → announcements/kaohsiung-4th-cohort-workshop.md（逐字公告，sourceVerbatim: true）
+//     2026-07-28 獨立驗收（.source/_final-audit.md P0-2／P2）指出此則消息（「打造醫療數位效率
+//     生產線 - 國軍左營總醫院雙日工作坊」）原本無任何對應項目而消失。其活動子頁本身在原站是
+//     死連結（見 _ia-plan.md § 5），故不比照其餘 3 則開設 events/ 獨立子頁；但消息本身仍需在
+//     /news/ 出現，改以 announcements 集合的一筆逐字公告呈現（不含連結，因無真實可連結目的地；
+//     完整活動全文已補在 /events/ 過往活動公告存檔區）。
+//   news 5 → events/yuanrung-hospital-seminar（featured:true）
+// 2026-07-28 同次修正：events 集合的 subtitle 欄位（如「初階班 | 台中慈濟醫院場」）先前未被本頁
+// 帶出，導致 news 1 卡片漏掉「初階班」副標——已補上 NewsItem.subtitle 欄位與渲染。
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import StatusBadge from '../../components/StatusBadge.astro';
+
+const base = import.meta.env.BASE_URL.endsWith('/')
+  ? import.meta.env.BASE_URL
+  : `${import.meta.env.BASE_URL}/`;
+
+// image 欄位：已自託管者存相對路徑（見 public/img/），少數下載失敗仍保留外連網址原樣。
+const imageSrc = (path?: string) =>
+  path ? (/^https?:\/\//.test(path) ? path : `${base}${path}`) : undefined;
+
+type NewsItem = {
+  key: string;
+  kind: '公告' | '活動' | '課程';
+  title: string;
+  subtitle?: string;
+  summary?: string;
+  dateLabel?: string;
+  status?: string;
+  href?: string;
+  image?: string;
+  sortDate: number;
+};
+
+const events = await getCollection('events', (entry) => entry.data.featured === true);
+const courses = await getCollection('courses', (entry) => entry.data.featured === true);
+const announcements = await getCollection('announcements');
+
+const items: NewsItem[] = [
+  ...events.map((e) => ({
+    key: `event-${e.id}`,
+    kind: '活動' as const,
+    title: e.data.title,
+    subtitle: e.data.subtitle,
+    summary: e.data.summary,
+    dateLabel: e.data.dateLabel,
+    status: e.data.status,
+    href: `${base}events/${e.id}/`,
+    image: imageSrc(e.data.image),
+    sortDate: e.data.date ? new Date(e.data.date).getTime() : 0,
+  })),
+  ...courses.map((c) => ({
+    key: `course-${c.id}`,
+    kind: '課程' as const,
+    title: c.data.title,
+    summary: c.data.summary,
+    dateLabel: c.data.dateLabel,
+    status: c.data.status,
+    href: `${base}courses/${c.id}/`,
+    image: imageSrc(c.data.image),
+    sortDate: c.data.date ? new Date(c.data.date).getTime() : 0,
+  })),
+  ...announcements.map((a) => ({
+    key: `announcement-${a.id}`,
+    kind: '公告' as const,
+    title: a.data.title,
+    summary: a.data.summary,
+    dateLabel: a.data.date ? new Date(a.data.date).toLocaleDateString('zh-Hant-TW') : undefined,
+    status: a.data.status,
+    href: a.data.link,
+    sortDate: a.data.date ? new Date(a.data.date).getTime() : 0,
+  })),
+];
+
+items.sort((a, b) => b.sortDate - a.sortDate);
+---
+
+<BaseLayout
+  title="最新消息｜臺灣遠距藥事照護協會"
+  description="臺灣遠距藥事照護協會最新消息：精選現行活動、課程與協會公告。"
+>
+  <section class="page-hero">
+    <div class="container">
+      <h1>最新消息</h1>
+      {/* 「Latest News & Events」取自 .source/10-news.md:16 原站區塊標題；後半「精選現行活動、
+          課程與協會公告，依日期由新到舊排列」為介面導言（UI chrome），非逐字協會文案——
+          2026-07-28 獨立驗收（.source/_final-audit.md P5）已確認記錄：僅描述本頁排序/篩選邏輯，
+          未主張任何具體事實，不屬內容忠實度範圍。 */}
+      <p class="lede">Latest News &amp; Events —— 精選現行活動、課程與協會公告，依日期由新到舊排列。</p>
+    </div>
+  </section>
+
+  <section class="news-list">
+    <div class="container">
+      {
+        items.length === 0 ? (
+          <p class="empty">目前尚無最新消息。</p>
+        ) : (
+          <div class="news-grid">
+            {items.map((item) =>
+              item.href ? (
+                <a class="news-card" href={item.href} target={item.kind === '公告' && /^https?:\/\//.test(item.href) ? '_blank' : undefined} rel={item.kind === '公告' && /^https?:\/\//.test(item.href) ? 'noopener noreferrer' : undefined}>
+                  {item.image && <img src={item.image} alt={item.title} loading="lazy" width="320" height="200" />}
+                  <div class="news-card-body">
+                    <div class="news-card-top">
+                      <span class={`kind kind-${item.kind}`}>【{item.kind}】</span>
+                      <StatusBadge status={item.status} />
+                    </div>
+                    <h3>{item.title}</h3>
+                    {item.subtitle && <p class="news-subtitle">{item.subtitle}</p>}
+                    {item.dateLabel && <p class="news-date">{item.dateLabel}</p>}
+                    {item.summary && <p class="news-summary">{item.summary}</p>}
+                    <span class="cta">閱讀更多 →</span>
+                  </div>
+                </a>
+              ) : (
+                <div class="news-card news-card-static">
+                  <div class="news-card-body">
+                    <div class="news-card-top">
+                      <span class={`kind kind-${item.kind}`}>【{item.kind}】</span>
+                      <StatusBadge status={item.status} />
+                    </div>
+                    <h3>{item.title}</h3>
+                    {item.subtitle && <p class="news-subtitle">{item.subtitle}</p>}
+                    {item.dateLabel && <p class="news-date">{item.dateLabel}</p>}
+                    {item.summary && <p class="news-summary">{item.summary}</p>}
+                  </div>
+                </div>
+              )
+            )}
+          </div>
+        )
+      }
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .page-hero {
+    background: var(--color-brand-soft);
+    padding-block: clamp(2rem, 6vw, 3.5rem);
+  }
+
+  .page-hero h1 {
+    color: var(--color-primary);
+    margin: 0 0 0.5rem;
+  }
+
+  .lede {
+    color: var(--color-ink-soft);
+    margin: 0;
+    max-width: 42rem;
+  }
+
+  .news-list {
+    padding-block: clamp(2rem, 6vw, 3rem);
+  }
+
+  .empty {
+    color: var(--color-ink-soft);
+    text-align: center;
+    padding-block: 2rem;
+  }
+
+  .news-grid {
+    display: grid;
+    gap: 1.5rem;
+    grid-template-columns: 1fr;
+  }
+
+  @media (min-width: 768px) {
+    .news-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .news-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .news-card {
+    display: flex;
+    flex-direction: column;
+    border-radius: 0.75rem;
+    overflow: hidden;
+    background: var(--color-white);
+    border: 1px solid var(--color-line);
+    box-shadow: var(--shadow-card);
+    text-decoration: none;
+    color: var(--color-text);
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+  }
+
+  a.news-card:hover {
+    box-shadow: var(--shadow-card-hover);
+    transform: translateY(-0.125rem);
+    color: var(--color-text);
+  }
+
+  .news-card img {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+  }
+
+  .news-card-body {
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    flex-grow: 1;
+  }
+
+  .news-card-top {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .kind {
+    display: inline-block;
+    font-size: var(--text-xs);
+    font-weight: 700;
+    color: var(--color-primary);
+  }
+
+  .news-card h3 {
+    margin: 0;
+    color: var(--color-primary);
+    font-size: var(--text-lg);
+  }
+
+  .news-subtitle {
+    margin: 0;
+    color: var(--color-ink-soft);
+    font-size: var(--text-sm);
+  }
+
+  .news-date {
+    margin: 0;
+    color: var(--color-ink-muted);
+    font-size: var(--text-xs);
+  }
+
+  .news-summary {
+    margin: 0;
+    color: var(--color-ink-soft);
+    font-size: var(--text-sm);
+    flex-grow: 1;
+  }
+
+  .cta {
+    margin-top: 0.25rem;
+    color: var(--color-accent);
+    font-size: var(--text-sm);
+    font-weight: 600;
+  }
+
+  .news-card-static {
+    cursor: default;
+  }
+</style>

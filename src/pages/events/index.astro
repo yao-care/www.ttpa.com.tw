@@ -1,0 +1,445 @@
+---
+// 活動報名專區列表頁。內容對照 .source/20-events-index.md，逐字轉錄。
+// 上半部：4 場現行活動（對應 src/content/events 4 篇集合項目，卡片列出）。
+// 下半部：只存在於索引頁、沒有獨立子頁的 7 則舊公告，依用戶拍板（不開獨立網址），
+// 以內文區塊照抄呈現於本頁下方（見 .source/20-events-index.md:75-134 與 177-461）。
+// 2026-07-28 獨立驗收（.source/_final-audit.md P0-2／P1）指出：
+//   (a) 115.03.21&22 高雄場（第四梯次，20-events-index.md:75-134）先前整場漏抓，已補回；
+//   (b) 原 6 則舊公告的報名連結全數被砍、第 5 則(112.08.19)講師簡介被壓縮成「姓名/職稱」——
+//       已比照原文逐字補回，不得摘要。
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import StatusBadge from '../../components/StatusBadge.astro';
+
+const base = import.meta.env.BASE_URL.endsWith('/')
+  ? import.meta.env.BASE_URL
+  : `${import.meta.env.BASE_URL}/`;
+
+// events 集合的 image 欄位：已下載自託管者存相對路徑（如 "img/xxx.jpg"，見
+// public/img/ 與 2026-07-28 圖片自託管改動），仍是外連網址者（少數下載失敗保留）維持原樣。
+const imageSrc = (path?: string) =>
+  path ? (/^https?:\/\//.test(path) ? path : `${base}${path}`) : undefined;
+
+const allEvents = await getCollection('events');
+// 依原站導覽列順序排列（.source/20-events-index.md 導覽列列出順序）
+const order = [
+  'ai-pharma-tech-matching',
+  'ai-workshop-taichung-tzuchi',
+  'yuanrung-hospital-seminar',
+  'asia-university-hospital',
+];
+const events = order
+  .map((slug) => allEvents.find((e) => e.id === slug))
+  .filter((e): e is NonNullable<typeof e> => Boolean(e));
+---
+
+<BaseLayout
+  title="活動報名專區｜臺灣遠距藥事照護協會"
+  description="教育訓練報名專區：臺灣遠距藥事照護協會 AI 高效工作坊、研討會與科技媒合平台等現行活動報名資訊。"
+>
+  <section class="page-hero">
+    <div class="container">
+      <h1>教育訓練報名專區</h1>
+      {/* 本句為介面導言（UI chrome），非逐字取自 .source 的協會文案——2026-07-28 獨立驗收
+          （.source/_final-audit.md P5）已確認記錄：這是刻意允許的頁面說明句，僅描述本頁功能，
+          未主張任何具體事實，不屬內容忠實度範圍。 */}
+      <p class="lede">以下為目前開放報名或近期舉辦之活動資訊。</p>
+    </div>
+  </section>
+
+  <section class="events-list">
+    <div class="container">
+      <div class="events-grid">
+        {
+          events.map((event) => (
+            <a class="event-card" href={`${base}events/${event.id}/`}>
+              {event.data.image && (
+                <img src={imageSrc(event.data.image)} alt={event.data.title} loading="lazy" width="320" height="200" />
+              )}
+              <div class="event-card-body">
+                <div class="event-card-top">
+                  {event.data.category && <span class="event-category">{event.data.category}</span>}
+                  <StatusBadge status={event.data.status} />
+                </div>
+                <h3>{event.data.title}</h3>
+                {event.data.subtitle && <p class="event-subtitle">{event.data.subtitle}</p>}
+                <p class="event-summary">{event.data.summary}</p>
+                <dl class="event-meta">
+                  <div>
+                    <dt>日期</dt>
+                    <dd>{event.data.dateLabel}</dd>
+                  </div>
+                  {event.data.location && (
+                    <div>
+                      <dt>地點</dt>
+                      <dd>{event.data.location}</dd>
+                    </div>
+                  )}
+                </dl>
+                <span class="cta">查看詳情 →</span>
+              </div>
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="archive">
+    <div class="container">
+      <h2>過往活動公告存檔</h2>
+      <p class="section-lede">
+        以下 7 則為原站「活動報名專區」索引頁內文中的舊活動公告，原站從未為其開設獨立子頁，新站沿用原站作法，僅在此以文字區塊照抄呈現，不另建網址（對照
+        <code>.source/20-events-index.md:75-134</code>、<code>.source/20-events-index.md:177-461</code>）。
+      </p>
+
+      <article class="archive-item">
+        <h3>115.03.21 &amp; 22 &lt;AI高效工作坊&gt;：高雄場｜打造醫療數位效率生產線(初階課程) (第四梯次 人數已額滿!!) (活動結束)</h3>
+        <p>
+          🚀 打造醫療數位效率生產線，兩天實作直接上手！
+          專為 醫事人員 設計的雙日實作型課程，從零開始，協助你建立屬於自己的醫療數位工作流程，讓 AI 不再只是口號，而是能真正走進醫療現場、幫你省時間、提效率的實用工作夥伴。
+        </p>
+        <p><strong>💎 四大實戰主題</strong>：Notion－打造醫療人的第二大腦／Gemini－快速產出專業醫療簡報／NotebookLM－臨床知識整理 × 重點快速萃取／ChatGPT－臨床、行政與報告撰寫全面加速</p>
+        <p><strong>📅 課程資訊</strong>：日期：2026/03/21（六）– 03/22（日）｜時間：09:30–17:00｜地點：高雄 國軍左營總醫院（高雄市左營區軍校路553號）</p>
+        <p><strong>🎯 課程特色</strong>：醫療背景師資 × 情境式教學／分組實作＋成果展示，學完立即能用／助教全程陪伴，新手也能安心上手／提供午餐、教材、結訓證書</p>
+        <p><strong>🎯 報名對象</strong>：對醫療與 AI 應用有興趣之 醫事人員、學生／非醫事人員亦歡迎一同報名進修</p>
+        <p><strong>📚 持續教育／證書</strong>：台灣臨床藥學會 12 學分／護理師持續教育積分 12 學分／遠距藥事訓練證書 16 小時</p>
+        <p><strong>💰 報名費用</strong>（原價 6600 元／兩日）：早鳥優惠（02/28 23:59 前）6000 元/人｜協辦單位人員 5500 元/人｜TTPA 會員 5500 元/人｜大學醫事相關學生 75 折 4950 元/人｜團體報名（三人以上）每人再折 500 元｜複訓生 1980 元/人</p>
+        <p>📌 名額限制 40 人｜附免費中餐｜報名截止：2026/03/13（五）23:59</p>
+        <p>📲 手刀報名：<a href="https://reurl.cc/mkXnGW" target="_blank" rel="noopener noreferrer">https://reurl.cc/mkXnGW</a></p>
+        <p>👤 聯絡人：秘書處 邱昶智 藥師　📞 0911-095-529　📧 <a href="mailto:ttpa2014@gmail.com">ttpa2014@gmail.com</a></p>
+        <p>👉 讓 AI 成為你醫療工作中真正能用、好用的神隊友。</p>
+        <p>
+          報名入口：<a href="https://docs.google.com/forms/u/1/d/e/1FAIpQLSeM5Or9mVxqRQBgiYRfHadRbCvIBNv4w9pOBfhecKI4fB577Q/viewform" target="_blank" rel="noopener noreferrer">點擊我開啟表單</a>
+        </p>
+      </article>
+
+      <article class="archive-item">
+        <h3>114.10.18 &amp; 25 &lt;AI高效工作坊&gt;：醫藥護專業人員的實務應用(初階課程) (活動結束)</h3>
+        <p>
+          🌟 AI高效工作坊：醫藥護專業人員的實務應用（初階實體課程）🌟
+          人工智慧（AI）正加速改變醫療場域！為協助第一線醫藥護人員掌握實用AI工具，臺灣遠距藥事照護協會（TTPA）推出【AI高效工作坊｜醫藥護專業人員的實務應用（初階）】台北場，透過帶狀設計、模組化教學，由醫療背景講師帶領學員實作操作，從理解原理到實際應用，一步步實踐AI技能！
+        </p>
+        <p><strong>🗓 活動資訊</strong>：日期時間：2025年10月18日（六）、10月25日（六） 每日09:30-17:00｜地點：新北市藥師公會（241新北市三重區重新路五段646號8樓之三）｜報名人數：限40人｜報名截止：114/10/10</p>
+        <p>適合參與此次課程之對象包含：藥師、醫師、護理師、醫藥相關行政人員、醫藥行銷／業務人員、醫藥／護理／公衛等相關科系大專院校學生</p>
+        <p><strong>課程特色</strong>：專為醫藥人員設計：所有講師皆具醫療背景，課程案例實用，與臨床、教學與行政應用緊密結合／AI實作導向教學：每堂課皆安排分組練習與成果展示，配備訓練有素的助教隨時協助／完整兩日模組化設計：四大主題涵蓋 Notion AI、NotebookLM、簡報生成與AI數位助理，循序漸進，紮實學習／含餐講座、成果認證：課程費用含午餐與結訓證明，優秀學員將獲頒獎勵與推薦</p>
+        <p>🔜【中階課程】預計11月初於員榮醫院開辦，主題將聚焦 Power BI 與視覺化分析｜📍【初階課程】台北場為2025年度最後一場初階課程，敬請把握！</p>
+        <p>
+          報名入口：<a href="https://docs.google.com/forms/d/1VY2tjc_xam6hjcJzlCwlFC-GdN7GkZ7s3J6cP8ZcsRE/edit" target="_blank" rel="noopener noreferrer">點擊我開啟表單</a>
+        </p>
+      </article>
+
+      <article class="archive-item">
+        <h3>114.07.05~06 &lt;AI高效工作坊&gt;：醫藥護專業人員的實務應用(初階課程) (活動結束)</h3>
+        <p>
+          🌟 AI高效工作坊：醫藥護專業人員的實務應用（初階實體課程） 🌟
+          🎯 課程目標：由TTPA臺灣遠距藥事照護協會攜手員榮醫療體系與CNUP藥學領袖暨人才培訓社，開創專為醫藥護專業相關人員設計的AI技能實務應用課程。透過分級課程培訓，學員將熟悉最新AI工具並應用於專業領域，實現醫療數位化轉型。
+        </p>
+        <p><strong>🗓 活動資訊</strong>：日期時間：114年07月05日（週六）-06日（週日）每日09:30-17:00｜地點：社團法人臺中市大臺中藥師公會（407台中市西屯區台灣大道四段839號13樓）｜報名人數：限40人｜報名截止：114年6月26日</p>
+        <p>適合參與此次課程之對象包含：藥師、醫師、護理師、醫藥相關行政人員、醫藥行銷／業務人員、醫藥／護理／公衛等相關科系大專院校學生</p>
+        <p><strong>📖 課程主題與內容</strong></p>
+        <p>🔹 Day 1 (7/05)：09:30-12:30 醫療人的第二大腦：Notion AI 實戰高效術-講師：劉孟基 博士/藥師；13:30-17:00 Notebook LM筆記工具的應用-講師：沃克資訊 / 茶米老師</p>
+        <p>🔹 Day 2 (7/06)：09:30-12:30 AI生成簡報在醫藥護應用-講師：翁紹恩 準博士 / 歪樓藥師；13:30-17:00 🤖 白袍也能玩AI— 打造你的數位助理工作室-講師：毛志民 準博士/藥師</p>
+        <p><strong>⚙ 課程結構與形式</strong>：每堂課程內容——📖 課程介紹（1.5小時）／💡 分組實作（1小時）／🏆 團隊成果展示與Q&amp;A（0.5小時）</p>
+        <p><strong>💳 報名費用與優惠</strong>：原價 6600元/兩日課程｜早鳥優惠（114/3/10前）6000元/人｜協作單位人員優惠 6000元/人（需提供單位及員編）｜大學醫事相關學生 4950元/人（75折，需提供學生證電子檔至 ttpa2014@gmail.com）｜溫故知新方案 1980元/人（參與過同階課程之學員）｜三人團體優惠：符合以上優惠的每人再折500元（課後退款）</p>
+        <p><strong>🎓 學分認證</strong>：台灣臨床藥學會 16學分(申請中)／遠距藥事訓練證書 16小時(申請中)／護理師持續教育學分 16小時(申請中)</p>
+        <p><strong>💡 注意事項</strong>：📝 請確認報名表單資料完整，輸入錯誤導致無法認證者需自行負責。／🌱 響應環保，課程資料以電子檔提供。／📲 請加入課程LINE群組，以便獲取最新課程訊息。／🚫 嚴禁翻拍或錄影，維護智慧財產權。／🚗 免費中餐及停車優惠。</p>
+        <p>聯絡方式：📞 聯絡人：邱昶智 秘書長　📧 Email：ttpa2014@gmail.com　📱 聯絡電話：0911095529</p>
+        <p>
+          報名連結：<a href="https://reurl.cc/M3z6Q3" target="_blank" rel="noopener noreferrer">請按我一下</a>
+        </p>
+      </article>
+
+      <article class="archive-item">
+        <h3>113.12.14 &lt;AI 前哨站&gt;：從基礎認知到藥事應用的全方位實戰 (活動結束)</h3>
+        <p>
+          🚀 <strong>AI 前哨站</strong>：從基礎認知到藥事應用的全方位實戰！🎯
+          各位對AI感興趣的醫藥夥伴們，機會來了！🌟 無論您是對AI技術充滿好奇，還是想將它應用到實際工作中，這場免費的重量級課程都不容錯過！🎉
+        </p>
+        <p><strong>活動時間</strong>：113/12/14 (星期六) 08:00 AM - 17:30 PM｜<strong>活動地點</strong>：彰化縣員林市員榮醫療體系員生院區 後棟三樓會議室</p>
+        <p>🎓 課程內容超豐富！：AI 在藥事領域的超強應用／GPT 模型與生成式 AI 工具介紹／醫療資訊與法規解析／DIY 藥局管理軟體，打造您的專屬智慧藥局！✨</p>
+        <p>💡 重點來了！為什麼你絕對不能錯過？：實戰應用：所有內容不只是理論，還有實際操作與應用範例！／名師雲集：頂尖講師陣容，帶您深入淺出了解AI的無限潛力。／免費參加：對！您沒聽錯，這麼精彩的課程全程免費，還附免費早中餐哦！🍱／學分認證：參加還能拿到台灣臨床藥學會和遠距藥事訓練證書的學分，讓學習更加實用！🎓</p>
+        <p>⚜️立刻報名，名額有限⚜️：報名費用：免費！🎉｜報名方式：掃描海報QR碼即可報名。｜報名截止日：113/12/01</p>
+        <p>聯絡方式：📞 聯絡人：邱昶智 秘書長　📧 Email：ttpa2014@gmail.com　📱 聯絡電話：0911095529</p>
+        <p>
+          報名連結：<a href="https://reurl.cc/LlgKgy" target="_blank" rel="noopener noreferrer">請按我一下</a>
+        </p>
+      </article>
+
+      <article class="archive-item">
+        <h3>113.03.10 協辦 台灣健康教育推廣協會「初級 健康管理師」訓練課程(活動結束)</h3>
+        <p>
+          親愛的夥伴們！TTPA邀請您參加與 台灣健康教育推廣協會共同舉辦的「健康管理師」專業證照訓練課程。
+          ⭕因應通訊診療辦法三讀通過，遠距醫療及健康管理作業將於今年下半年上線執行，結合科學化分析和整合健康諮詢服務的「健康管理師」，將會是未來醫療保健市場主流。
+        </p>
+        <p>
+          ⭕本次課程結合醫療、護理、藥學、復健及人工智慧（AI）科專家，為期兩天訓練。完成訓練並通過考試與場域實習，由本協會頒發高級健康管理師證照乙式，並具備本協會健康管理業務派案資格。
+        </p>
+        <p>
+          ⭕我們邀請您成為我們專業健康管理師團隊的一員，透過家庭訪問提供專業服務。我們提供三級課程：初級、中級、高級，迎合各專業背景人士。本次課程訂於4/6-4/7於台北開課，每班30至100名學員。
+        </p>
+        <p>期待您的參與，提升自己另一份健康管理專業。歡迎來電隨時聯繫我們。</p>
+        <p>
+          報名連結：<a href="https://mailchi.mp/c7e105e1bb76/eg6k41jz3m" target="_blank" rel="noopener noreferrer">請按我一下</a>
+        </p>
+      </article>
+
+      <article class="archive-item">
+        <h3>112.08.19「醫起Technology - AI科技與大數據資料庫藥事應用 」(活動結束)</h3>
+        <p>
+          🔔科技醫療跨領域課程分享‼️: 「醫起Technology -AI科技與大數據資料庫藥事應用 」
+          當各個行業都在應用AI的時代，身處醫療界的您準備好接受這跨領域的知識了嗎?如果想藉由科技的力量提高醫療品質，卻又不知從何下手，那千萬不要錯過以下課程唷!⬇️
+        </p>
+        <p>
+          TTPA臺灣遠距藥事照護協會將於8/19主辦跨醫療及智慧科技的課程開始報名啦! 此次活動邀請了六位實戰經驗豐富的講師，從臨床上資料庫的文獻統計工具、Chat
+          GPT在醫療上的應用、遠距藥事照護、智慧藥局的建置，再到資料庫的維護與整理，讓大家更瞭解智慧科技為醫療帶來的實際影響與未來的無限可能，有興趣的醫療同仁們千萬不要錯過囉!
+        </p>
+        <p>
+          <strong>【課程資訊】</strong>時間：112/08/19(星期六),08:00-17:00｜地點：彰化縣員林市員榮醫療社團法人員榮醫院行政大樓一樓(510彰化縣員林市光明街75號)｜報名方式:
+          1.點選下方報名連結。2.掃描QR code報名。3.報名期限至8/16。｜費用：一般報名1500元／7/25前早鳥八折1200元／TTPA會員五折750元｜學分認證(申請中)：台灣臨床藥學會(8學分)／護理師協會學分(8學分)／長照人員學分(8學分)／遠距藥事訓練證書(8小時)
+        </p>
+        <p>
+          <strong>【課程方式】</strong>實體課程:報名限制人數50人，有提供中餐。視訊同步課程：上課前三日E-mail及學員line群組公告視訊連結網址，課程觀看時間超過80%才給學分，未事先報名恕不給學分，上課當天需於指定時間至GOOGLE表單簽到及簽退(未簽到或簽退者視同未到)。
+        </p>
+        <p>
+          實體場報名連結：<a href="https://reurl.cc/nDmNl2" target="_blank" rel="noopener noreferrer">https://reurl.cc/nDmNl2</a>　／　線上同步場報名連結：<a href="https://reurl.cc/eDMzQb" target="_blank" rel="noopener noreferrer">https://reurl.cc/eDMzQb</a>
+        </p>
+        <p>
+          <strong>【講師簡介】</strong>
+        </p>
+        <p>1. 楊宗龍副院長/醫師: 擁有醫療及科技雙重傑出能力的楊宗龍醫師，目前任職社團法人員榮醫院科技副院長，無私推廣將跨醫療與科技領域的才能運用在臺灣醫療發展，這些未來的醫藥網絡架構運用在藥事領域，將增加病患的用藥品質安全，更能促進臺灣的醫藥產業接軌國際。</p>
+        <p>2. 郭振宗主任/博士: 臺北榮總資訊室主任,自高雄科技大學工程科技研究所博士班，在北榮任職期間導入開源的主流容器管理平臺K8s，結合版本控制系統Git打造自動化部署流程，除了展開敏捷式開發和微服務教育訓練外，也打通資料通透性加速AI研究和落地，並陸續做出通用功能的微服務，在該領域有極為深度且豐富的實務經驗。</p>
+        <p>3.李莉君理事長/講師:擔任臺灣遠距藥事照護協會、中華民國智慧數位內容發展與應用協會理事長，此外也任職弘光科技大學講師，於資訊科技領域具有豐富且資深的教育經驗，並致力於推動醫療領域的資訊與照護培訓發展。</p>
+        <p>4. 劉孟基主任/博士: 現任員榮醫療社團法人員榮醫院藥劑科主任，國立高雄第一科技大學資訊管理系博士以及臺灣遠距藥事照護協會榮譽理事長，協助員榮醫院建構國內首創「遠距藥事照護服務」，並取得多項SNQ國家品質標章認證。</p>
+        <p>5. 林佩姿主任/藥師:現任仁愛醫療財團法人大里仁愛醫院藥劑科主任，曾擔任嘉義長庚藥劑科技術組長，特殊專長為實證醫學與統合分析，將分享大家如何借助科技資訊的即時性以及大數據整理的能力，來增進藥師的專業能力，並且改善臨床的治療效益。</p>
+        <p>6. 黃鏡樺組長/藥師: 現任中山醫學大學署設醫院藥劑科組長, 目前就讀中山醫學大學醫學研究所博士班 ，其專業領域跨越藥師、醫品師及品管圈輔導員，憑藉著跨領域專業，協助中山醫學大學署設醫院建立智慧科技藥事環境，並榮獲多項國家新創獎與專利。</p>
+        <p>
+          繳費方式：1. 可透過報名系統的「綠界EC pay」進行繳費。2. 匯款帳戶：台新銀行(812)後甲分行(0355) / 帳號：2035-01-0000581-1 /
+          戶名：臺灣遠距藥事照護協會（親自至銀行辦理請行員在備註欄登打姓名，並於報名資料提供存簿帳號後5碼；使用ATM轉帳交易成功後拍照或保留明細聯備查，並於報名資料提供存簿帳號後5碼）。3.匯款繳費將於12日內對帳後，以e-mail通知並郵寄收據(實體課程回於現場補發)。4.報名後請於一周內繳清費用，如期限內無法完成繳費請致電說明保留或取消。
+        </p>
+        <p><strong>注意事項</strong>：1.表單填寫時請務必確認資料完整性，輸入錯誤導致無法或學分認證請自行負責。2.主辦單位保有最終修改、變更、解釋、取消之權利，若有異動將公告於網站，恕不另行通知。3.為響應環保本會將以電子檔提供授課內容，如需紙本講義可於報名時勾選「需紙本講義」。4.報名者請加入課程Line群組，以方便聯絡及獲取最新訊息。5.參與線上課程人員請務必確認地址完整性，方便教材與證書的寄送。6.如因故於8/14前取消報名者，可申請全額退費，8/14後取消者僅退還其繳費</p>
+        <p>協辦單位：<a href="https://www.medicaltravel.org.tw/Hospital-Content.aspx?l=1&id=12" target="_blank" rel="noopener noreferrer">員榮醫療社團法人員榮醫院</a></p>
+      </article>
+
+      <article class="archive-item">
+        <h3>「科技照護專業人才訓練」(活動結束)</h3>
+        <p>
+          時間：112年8月19日(星期六) 08：00 至17：30｜地點：彰化縣員林市中正路201號(員榮醫院)｜主辦單位：臺灣遠距藥事照護協會｜協辦單位：員榮醫療社團法人員榮醫院
+        </p>
+        <p>
+          <strong>一、課程緣起</strong>：藥可治病，亦可致命。正確地使用藥品可讓民眾疾病獲得改善，不當地使用，將導致各項副作用、交互作用影響民眾的健康與生活品質。近年來，業界倡導「藥食同源」，疾病的治療除了使用藥品外，應搭配良好的飲食及生活習慣，讓身體可以自癒，逐漸脫離藥品對於生活的控制。觀察國人用藥比例逐年升高，如何合理地使用藥品搭配良好的生活習慣，讓民眾健康獲得改善，是藥事從業人員的共同目標。然而，現行藥事人員從業人數無法有效因應高漲的健康照護需求，讓民眾在自我藥療的過程，無法得到適當專業人員的協助，往往無法達成健康的目標。因此，本課程擬應用國內逐漸成熟的遠距照護技術，提供學員在法律、技術以及照護實務上的專業訓練，讓學員可協助藥師對患者藥事照護服務，藉以提升人們照護權利及品質。
+        </p>
+        <p>
+          <strong>二、訓練對象</strong>：年滿15歲以上具就業保險、勞工保險或農民健康保險被保險人身分之在職勞工，且符合下列資格之一：1. 具本國籍。2.
+          與中華民國境內設有戶籍之國民結婚，且獲准居留在臺灣地區工作之外國人、大陸地區人民。3. 訓練並通過考試合格，由本協會頒發訓練合格證書。
+        </p>
+        <p>
+          <strong>三、就業管道</strong>：需要提供遠距藥事照護服務的醫療院所、連鎖藥局、長照機構、健身中心等健康相關機構之從事藥事行政管理、專案企劃與管理、資料分析、門市管理與行銷規劃、人力資源、資材總務或社區經營等工作。
+        </p>
+        <p>
+          <strong>四、報名方式費用</strong>：1. 本方案課程報名方式係採線上報名機制，遴選方式係以本方案報名網線上報名時間順序依序審核學員參訓資格，以維公開公平原則。2.
+          本課程每階段受訓時數共8小時，每階段費用為新台幣1,500元（含午餐）。
+        </p>
+        <p>
+          <strong>五、課程結構</strong>：我們的課程內容包括：遠距藥事照護資訊系統、藥事行銷與溝通、健康機構經營與實務、企劃實務與績效管理、專案設計與管理、健康功能與評估、健康與營養、慢性疾病保健、健康功能與評估、健康照護品質管理等，強調理論與實務相結合，以培養學員遠距藥事產業實務之跨專業整合專業能力之人才。
+        </p>
+        <p>
+          時間：108年10月26日(星期六) 08：00 至17：30。匯款後以e-mail回寄匯款資訊至ttpa2014@gmail.com。
+        </p>
+        <p>
+          報名連結：<a href="https://ppt.cc/f9B2Ax" target="_blank" rel="noopener noreferrer">https://ppt.cc/f9B2Ax</a>
+        </p>
+        <p>
+          <strong>注意事項</strong>：1. 請攜帶健保IC卡報到，若因事未能出席請回信取消，以免影響報名資格。2.
+          為顧及學員之權益，如於活動前預知無法參加，最晚請於08/16(五)中午12點前來信告知更換參與人員姓名(恕不退費)，如報名者為會員，替換參與者為非會員，則需補繳報名費差額。
+        </p>
+        <p>
+          <strong>匯款帳號</strong>：(1) 銀行電匯　收款銀行：台新國際商業銀行後甲分行(銀行代碼：812)　戶名：臺灣遠距藥事照護協會　收款帳號：2035-01-0000581-1／(2)
+          ATM轉帳　銀行代碼:812，收款帳號：2035-01-0000581-1
+        </p>
+        <p class="archive-note">
+          註：原站此則「時間：108年10月26日」一段日期明顯早於本則活動主體時間(112/113年)，為原站原文如此，逐字保留、不代為更正（見
+          <code>.source/20-events-index.md</code> 末段附註）。
+        </p>
+      </article>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .page-hero {
+    background: var(--color-brand-soft);
+    padding-block: clamp(2rem, 6vw, 3.5rem);
+  }
+
+  .page-hero h1 {
+    color: var(--color-primary);
+    margin: 0 0 0.5rem;
+  }
+
+  .lede {
+    color: var(--color-ink-soft);
+    margin: 0;
+    max-width: 42rem;
+  }
+
+  .events-list {
+    padding-block: clamp(2rem, 6vw, 3rem);
+  }
+
+  .events-grid {
+    display: grid;
+    gap: 1.5rem;
+    grid-template-columns: 1fr;
+  }
+
+  @media (min-width: 768px) {
+    .events-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  .event-card {
+    display: flex;
+    flex-direction: column;
+    border-radius: 0.75rem;
+    overflow: hidden;
+    background: var(--color-white);
+    border: 1px solid var(--color-line);
+    box-shadow: var(--shadow-card);
+    text-decoration: none;
+    color: var(--color-text);
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+  }
+
+  .event-card:hover {
+    box-shadow: var(--shadow-card-hover);
+    transform: translateY(-0.125rem);
+    color: var(--color-text);
+  }
+
+  .event-card img {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+  }
+
+  .event-card-body {
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    flex-grow: 1;
+  }
+
+  .event-card-top {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    align-items: center;
+  }
+
+  .event-category {
+    display: inline-block;
+    padding: 0.125rem 0.75rem;
+    border-radius: 999px;
+    background: var(--color-brand-tint);
+    color: var(--color-primary-dark);
+    font-size: var(--text-xs);
+  }
+
+  .event-card h3 {
+    margin: 0;
+    color: var(--color-primary);
+    font-size: var(--text-lg);
+  }
+
+  .event-subtitle {
+    margin: 0;
+    color: var(--color-ink-soft);
+    font-size: var(--text-sm);
+  }
+
+  .event-summary {
+    margin: 0;
+    color: var(--color-ink-soft);
+    font-size: var(--text-sm);
+    flex-grow: 1;
+  }
+
+  .event-meta {
+    display: grid;
+    gap: 0.25rem;
+    margin: 0;
+    font-size: var(--text-sm);
+  }
+
+  .event-meta dt {
+    font-weight: 700;
+    color: var(--color-primary-dark);
+    display: inline;
+  }
+
+  .event-meta dd {
+    margin: 0;
+    display: inline;
+    color: var(--color-ink-soft);
+  }
+
+  .event-meta dt::after {
+    content: '：';
+  }
+
+  .cta {
+    margin-top: 0.25rem;
+    color: var(--color-accent);
+    font-size: var(--text-sm);
+    font-weight: 600;
+  }
+
+  .archive {
+    background: var(--color-bg-light);
+    padding-block: clamp(2rem, 6vw, 3.5rem);
+  }
+
+  .archive h2 {
+    color: var(--color-primary);
+    margin-block: 0 0.5rem;
+  }
+
+  .section-lede {
+    color: var(--color-ink-soft);
+    font-size: var(--text-sm);
+    max-width: 48rem;
+    margin: 0 0 1.5rem;
+  }
+
+  .archive-item {
+    background: var(--color-white);
+    border: 1px solid var(--color-line);
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .archive-item h3 {
+    color: var(--color-primary-dark);
+    font-size: var(--text-base);
+    margin-block: 0 0.75rem;
+  }
+
+  .archive-item p {
+    color: var(--color-ink-soft);
+    font-size: var(--text-sm);
+    margin: 0 0 0.75rem;
+  }
+
+  .archive-item p:last-child {
+    margin-bottom: 0;
+  }
+
+  .archive-note {
+    font-size: var(--text-xs);
+    color: var(--color-ink-muted);
+  }
+</style>

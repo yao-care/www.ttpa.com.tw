@@ -1,0 +1,59 @@
+---
+// 共用導流卡片：首頁與後續列表頁（events/courses/news 等）共用的基本卡片外殼。
+interface Props {
+  href: string;
+  title: string;
+  description?: string;
+  cta?: string;
+}
+const { href, title, description, cta } = Astro.props;
+---
+
+<a class="card" href={href}>
+  <h3>{title}</h3>
+  {description && <p>{description}</p>}
+  {cta && <span class="cta">{cta} →</span>}
+</a>
+
+<style>
+  .card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    height: 100%;
+    padding: 1.5rem;
+    border-radius: 0.75rem;
+    background: var(--color-white);
+    border: 1px solid var(--color-line);
+    box-shadow: var(--shadow-card);
+    text-decoration: none;
+    color: var(--color-text);
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+  }
+
+  .card:hover {
+    box-shadow: var(--shadow-card-hover);
+    transform: translateY(-0.125rem);
+    color: var(--color-text);
+  }
+
+  .card h3 {
+    margin: 0;
+    color: var(--color-primary);
+    font-size: var(--text-lg);
+  }
+
+  .card p {
+    margin: 0;
+    color: var(--color-ink-soft);
+    font-size: var(--text-sm);
+    flex-grow: 1;
+  }
+
+  .card .cta {
+    margin-top: 0.25rem;
+    color: var(--color-accent);
+    font-size: var(--text-sm);
+    font-weight: 600;
+  }
+</style>

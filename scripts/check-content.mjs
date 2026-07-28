@@ -97,6 +97,8 @@ function proseMask(raw) {
   });
 }
 
+const verbatimSkipped = [];
+
 function firstProseSentence(masked) {
   for (const line of masked) {
     const t = line.trim().replace(/^#+\s*/, "").replace(/^[-*>]\s*/, "");
@@ -107,7 +109,16 @@ function firstProseSentence(masked) {
 
 function scanFile(file) {
   if (!existsSync(file)) return { errors: [], warns: [] };
-  const masked = proseMask(readFileSync(file, "utf8"));
+  const src = readFileSync(file, "utf8");
+  // 逐字轉錄豁免：frontmatter 標 `sourceVerbatim: true` 的檔＝一字不改搬自協會原站
+  // （來源與獨立驗收紀錄在 .source/）。原文若有「不僅…更」這類句型是協會自己寫的，
+  // 不是 AI 腔，改寫它等於竄改客戶文案——故整檔跳過。此旗標只准用於逐字轉錄，
+  // 新寫的文案不得掛（掛了等於自廢守門，審查時會被抓）。
+  if (/^---[\s\S]*?^sourceVerbatim:\s*true\s*$[\s\S]*?^---/m.test(src)) {
+    verbatimSkipped.push(file);
+    return { errors: [], warns: [] };
+  }
+  const masked = proseMask(src);
   const whole = masked.join("\n");
   const errors = [], warns = [];
   const allowed = (s) => ALLOW.some((re) => re.test(s));
@@ -142,8 +153,13 @@ function targetFiles() {
   //   `:(glob)` pathspec magic 才會匹配 src/ 直屬檔（純 `src/**` 會漏一層）；
   //   `git diff --relative` 才會輸出相對 cwd 的 `src/…`（否則是 repo-root 相對，被 ^src/ 濾掉）。
   if (ALL) {
-    const out = run("git ls-files ':(glob)src/**/*.md' ':(glob)src/**/*.mdx'");
-    return out ? out.split("\n").filter(Boolean) : [];
+    // 已追蹤 ＋ 未追蹤（untracked）都要掃：只用 git ls-files 會漏掉尚未 commit 的內容檔，
+    // 全站普查卻掃不到新寫的檔＝普查失去意義（2026-07-28 ttpa 獨立驗收抓到）。
+    const sets = [
+      run("git ls-files ':(glob)src/**/*.md' ':(glob)src/**/*.mdx'"),
+      run("git ls-files --others --exclude-standard ':(glob)src/**/*.md' ':(glob)src/**/*.mdx'"),
+    ];
+    return [...new Set(sets.filter(Boolean).join("\n").split("\n"))].filter(Boolean);
   }
   const base = run("git merge-base origin/main HEAD");
   if (!base) { console.log("內容守門：抓不到 git base（origin/main），跳過變動掃描。"); return null; }
@@ -174,4 +190,6 @@ if (errors.length && !ALL) {
   console.error(`\n改法見記憶 content-no-ai-flavor：AI 出初稿、人味靠最後 20% 手動微調。`);
   process.exit(1);
 }
-console.log(`內容守門通過：掃 ${files.length} 檔，無 AI 味 ERROR${warns.length ? `（${warns.length} 則 WARN 見上）` : ""}。`);
+if (verbatimSkipped.length)
+  console.log(`內容守門：${verbatimSkipped.length} 檔標 sourceVerbatim（逐字轉錄原站，豁免掃描）：${verbatimSkipped.join("、")}`);
+console.log(`內容守門通過：掃 ${files.length - verbatimSkipped.length} 檔，無 AI 味 ERROR${warns.length ? `（${warns.length} 則 WARN 見上）` : ""}。`);

@@ -1,0 +1,127 @@
+---
+// 理事長的話。內容逐字取自 .source/02-president.md（理事長介紹區／文章內容／簽名檔），
+// 未增刪潤飾。頁尾「協會章程」連結兩站不一致等資料狀況，見 .source/_ia-plan.md § 5，
+// 本頁不代為修正，僅呈現原文本身的連結（返回首頁）已由共用 Header/Footer 涵蓋，不重複置入。
+// 照片已於 2026-07-28 由原站外連 Google Drawings 網址下載自託管至 public/img/。
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const base = import.meta.env.BASE_URL.endsWith('/')
+  ? import.meta.env.BASE_URL
+  : `${import.meta.env.BASE_URL}/`;
+
+const photo = `${base}img/chairman-portrait.png`;
+
+// 逐字取自 02-president.md:33-39，四段文章內容
+const paragraphs = [
+  '臺灣遠距藥事照護協會（簡稱：TTPA）於今（104）年1月31日由各界醫藥及資訊先進共同組成，致力於國內各項遠距藥事照護作業的推廣及遠距系統的建置，已獲得產官學界的重大支持並有初步成果。',
+  '孟基有幸承蒙各位先進愛戴，接任本會第二屆理事長，深感榮幸。日前我們已經在106年10月22日協同合作廠商完成「長照機構遠距藥事照護經驗分享研討會」藥師及護理師的持續教育專業職能訓練，並預計在107年正式啟動遠距藥事的職能認證作業。',
+  '另一方面，也將配合國內藥事照護產業政策，並建置優質遠距藥局認證以及卓越藥局典範觀摩作業，讓民眾未來用藥能找到符合自己的專業照護藥師及合適的藥事及長照機構，確保民眾的用藥品質。',
+  '最後在此敬祝各位先進，身心健康，順心如意。',
+];
+---
+
+<BaseLayout
+  title="理事長的話 | 臺灣遠距藥事照護協會 Taiwan Telepharmacy Association"
+  description="讓民眾未來用藥能找到符合自己的專業照護藥師及合適的藥事及長照機構，確保民眾的用藥品質。"
+>
+  <section class="page">
+    <div class="container">
+      <p class="eyebrow">Message from the Chairman</p>
+      <h1>理事長的話</h1>
+
+      <div class="profile">
+        <img
+          src={photo}
+          alt="劉孟基 理事長"
+          width="266"
+          height="357"
+          loading="lazy"
+        />
+        <div class="profile-text">
+          <h2>劉孟基 藥師</h2>
+          <p class="profile-role">臺灣遠距藥事照護協會 第二屆理事長</p>
+          <blockquote>
+            「讓民眾未來用藥能找到符合自己的專業照護藥師及合適的藥事及長照機構，確保民眾的用藥品質。」
+          </blockquote>
+        </div>
+      </div>
+
+      <div class="article">
+        {paragraphs.map((p) => <p>{p}</p>)}
+      </div>
+
+      <p class="signature">
+        發布日期：2017/10/25<br />
+        劉孟基<br />
+        理事長
+      </p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .page {
+    padding-block: clamp(2.5rem, 6vw, 4.5rem);
+  }
+
+  .eyebrow {
+    color: var(--color-ink-soft);
+    font-size: var(--text-sm);
+    margin: 0;
+  }
+
+  h1 {
+    color: var(--color-primary);
+    margin-block: 0.25rem 2rem;
+  }
+
+  .profile {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .profile img {
+    width: min(100%, 16rem);
+    margin-inline: auto;
+    border-radius: 0.75rem;
+  }
+
+  .profile-role {
+    color: var(--color-ink-soft);
+    font-size: var(--text-sm);
+    margin: 0 0 1rem;
+  }
+
+  blockquote {
+    margin: 0;
+    padding-inline-start: 1rem;
+    border-inline-start: 0.25rem solid var(--color-brand);
+    color: var(--color-primary-dark);
+    font-size: var(--text-lg);
+  }
+
+  .article p {
+    margin: 0 0 1.25rem;
+    color: var(--color-text);
+  }
+
+  .signature {
+    margin-top: 2rem;
+    color: var(--color-ink-soft);
+    font-size: var(--text-sm);
+  }
+
+  @media (min-width: 768px) {
+    .profile {
+      flex-direction: row;
+      align-items: flex-start;
+    }
+
+    .profile img {
+      flex: 0 0 16rem;
+      margin-inline: 0;
+    }
+  }
+</style>

@@ -1,0 +1,109 @@
+---
+// 全站共用頁尾，文字逐字取自 .source/01-home.md:108-129（頁尾 Footer 區塊）。
+// 原站「快速連結」三項中，「加入會員」「最新消息」href 原為 `#`（見 01-home.md:125-126，
+// 草稿未接完的連結）；「協會章程」href 原站已是一個真實外部網址（01-home.md:124，
+// https://sites.google.com/view/ttpas13/首頁/協會章程），非 `#`。
+// 新站三項皆已接上對應真實頁面（協會章程/加入會員/最新消息），
+// 這是接通既有標籤的既定路由，非新增文案。
+// 2026-07-28 獨立驗收（.source/_final-audit.md P4）指出前一版註解誤稱三項原始 href 皆為
+// `#`，已依 01-home.md 原文修正此註解（不影響實際頁面行為，三項本就正確導向真實內部頁面）。
+const base = import.meta.env.BASE_URL.endsWith('/')
+  ? import.meta.env.BASE_URL
+  : `${import.meta.env.BASE_URL}/`;
+---
+
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <div class="footer-brand">
+      <img src={`${base}logo.png`} alt="臺灣遠距藥事照護協會 TTPA" width="56" height="33" />
+      <p class="footer-desc">
+        臺灣遠距藥事照護協會致力於提升醫療專業價值，透過科技賦能，實現無圍牆的醫療照護服務。
+      </p>
+    </div>
+
+    <div class="footer-col">
+      <h2>聯絡我們</h2>
+      <ul class="plain">
+        <li>秘書處 邱昶智 秘書長</li>
+        <li><a href="tel:0911095529">0911-095-529</a></li>
+        <li><a href="mailto:ttpa2014@gmail.com">ttpa2014@gmail.com</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <h2>快速連結</h2>
+      <ul class="plain">
+        <li><a href={`${base}charter/`}>協會章程</a></li>
+        <li><a href={`${base}membership/`}>加入會員</a></li>
+        <li><a href={`${base}news/`}>最新消息</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <p class="copyright">© 2026 臺灣遠距藥事照護協會 (Taiwan Telepharmacy Association). All rights reserved.</p>
+</footer>
+
+<style>
+  .site-footer {
+    background: var(--color-brand-soft);
+    margin-top: clamp(2rem, 6vw, 4rem);
+    padding-block: clamp(2rem, 6vw, 3rem);
+  }
+
+  .footer-inner {
+    display: grid;
+    gap: 2rem;
+    grid-template-columns: 1fr;
+  }
+
+  .footer-brand img {
+    width: 3.5rem;
+    height: auto;
+    margin-bottom: 0.75rem;
+  }
+
+  .footer-desc {
+    color: var(--color-ink-soft);
+    font-size: var(--text-sm);
+    max-width: 32rem;
+  }
+
+  .footer-col h2 {
+    font-size: var(--text-base);
+    color: var(--color-primary);
+    margin-block: 0 0.75rem;
+  }
+
+  ul.plain {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    font-size: var(--text-sm);
+    color: var(--color-ink-soft);
+  }
+
+  ul.plain a {
+    color: var(--color-ink-soft);
+  }
+
+  ul.plain a:hover {
+    color: var(--color-primary);
+  }
+
+  .copyright {
+    margin: clamp(1.5rem, 4vw, 2rem) auto 0;
+    max-width: 72rem;
+    padding-inline: clamp(1rem, 4vw, 2rem);
+    font-size: var(--text-xs);
+    color: var(--color-ink-muted);
+  }
+
+  @media (min-width: 768px) {
+    .footer-inner {
+      grid-template-columns: 2fr 1fr 1fr;
+    }
+  }
+</style>
