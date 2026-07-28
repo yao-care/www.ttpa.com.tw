@@ -1,0 +1,42 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const base = import.meta.env.BASE_URL.endsWith('/')
+  ? import.meta.env.BASE_URL
+  : `${import.meta.env.BASE_URL}/`;
+---
+
+<BaseLayout
+  title="臺灣遠距藥事照護協會 Taiwan Telepharmacy Association"
+  description="臺灣遠距藥事照護協會官方網站。"
+>
+  <main class="container">
+    <img src={`${base}logo.png`} alt="臺灣遠距藥事照護協會 Taiwan Telepharmacy Association" width="471" height="277" />
+    <h1>臺灣遠距藥事照護協會</h1>
+    <p class="lede">Taiwan Telepharmacy Association</p>
+    <p>網站建置中，內容陸續上線。</p>
+  </main>
+</BaseLayout>
+
+<style>
+  main {
+    padding-block: clamp(2rem, 8vw, 5rem);
+    text-align: center;
+  }
+
+  img {
+    width: min(100%, 29rem);
+    margin-inline: auto;
+  }
+
+  h1 {
+    color: var(--color-primary);
+    margin-block: 1rem 0.25rem;
+  }
+
+  .lede {
+    color: var(--color-ink-soft);
+    font-size: var(--text-lg);
+    margin-block: 0 2rem;
+  }
+</style>

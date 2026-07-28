@@ -1,0 +1,5 @@
+# robots.txt — 開放一般與 AI 爬蟲；Sitemap 行供 Google 等自動發現
+User-agent: *
+Allow: /
+
+Sitemap: https://yao-care.github.io/www.ttpa.com.tw/sitemap-index.xml
