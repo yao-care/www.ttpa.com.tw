@@ -25,9 +25,8 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
+      # 不指定 version：與 package.json 的 packageManager 併存會被 action v6 判為衝突而 fail
       - uses: pnpm/action-setup@v6
-        with:
-          version: 10
 
       - uses: actions/setup-node@v6
         with:
