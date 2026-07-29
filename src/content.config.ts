@@ -29,6 +29,7 @@ const events = defineCollection({
     category: z.string().optional(), // 分類標籤，僅 10-news.md 出現過（10-news.md:22,32,42,52,62）
     summary: z.string(), // 摘要文字，供列表卡片與 /news/ 混合列表用
     registrationLink: z.string().url().optional(), // 報名連結，如 21-event-ai-highschool.md:14
+    registrationNote: z.string().optional(), // 無 registrationLink 時的說明文字（如僅限院內同仁報名之官方說法，見 A7）
     contactName: z.string().optional(),
     contactPhone: z.string().optional(),
     contactEmail: z.string().optional(),

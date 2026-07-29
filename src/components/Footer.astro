@@ -1,12 +1,14 @@
 ---
-// 全站共用頁尾，文字逐字取自 .source/01-home.md:108-129（頁尾 Footer 區塊）。
+// 全站共用頁尾，文字主體逐字取自 .source/01-home.md:108-129（頁尾 Footer 區塊）。
 // 原站「快速連結」三項中，「加入會員」「最新消息」href 原為 `#`（見 01-home.md:125-126，
-// 草稿未接完的連結）；「協會章程」href 原站已是一個真實外部網址（01-home.md:124，
-// https://sites.google.com/view/ttpas13/首頁/協會章程），非 `#`。
-// 新站三項皆已接上對應真實頁面（協會章程/加入會員/最新消息），
+// 草稿未接完的連結）；「組織章程」href 原站已是一個真實外部網址（01-home.md:124，
+// 指向舊 Google Sites 之章程子頁），非 `#`。
+// 新站三項皆已接上對應真實頁面（組織章程/加入會員/最新消息），
 // 這是接通既有標籤的既定路由，非新增文案。
 // 2026-07-28 獨立驗收（.source/_final-audit.md P4）指出前一版註解誤稱三項原始 href 皆為
 // `#`，已依 01-home.md 原文修正此註解（不影響實際頁面行為，三項本就正確導向真實內部頁面）。
+// 2026-07-29 依協會正式回覆（.source/_questions-for-ttpa.md A9）將章程頁顯示文字統一改為
+// 協會定案的正式名稱「組織章程」（網址 /charter/ 不變）；並依 A1 回覆補上秘書處地址。
 const base = import.meta.env.BASE_URL.endsWith('/')
   ? import.meta.env.BASE_URL
   : `${import.meta.env.BASE_URL}/`;
@@ -27,13 +29,14 @@ const base = import.meta.env.BASE_URL.endsWith('/')
         <li>秘書處 邱昶智 秘書長</li>
         <li><a href="tel:0911095529">0911-095-529</a></li>
         <li><a href="mailto:ttpa2014@gmail.com">ttpa2014@gmail.com</a></li>
+        <li>臺中市東區東義街6巷6號1樓</li>
       </ul>
     </div>
 
     <div class="footer-col">
       <h2>快速連結</h2>
       <ul class="plain">
-        <li><a href={`${base}charter/`}>協會章程</a></li>
+        <li><a href={`${base}charter/`}>組織章程</a></li>
         <li><a href={`${base}membership/`}>加入會員</a></li>
         <li><a href={`${base}news/`}>最新消息</a></li>
       </ul>

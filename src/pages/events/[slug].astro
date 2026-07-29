@@ -1,6 +1,9 @@
 ---
 // 活動詳情頁（動態路由）。對照 .source/21~24-event-*.md 4 篇子頁，
 // frontmatter 結構化欄位（日期/地點/報名/聯絡）+ Markdown body（議程/講師/FAQ/退費規定等）render。
+// 無 registrationLink 時顯示 registrationNote（無此欄位則用通用 fallback 文字）；
+// 2026-07-29 依協會回覆 A7 為 asia-university-hospital.md 補上專屬 registrationNote，
+// 避免把單一活動的特定理由（僅限院內同仁）寫死在共用元件裡。
 import { getCollection, render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import StatusBadge from '../../components/StatusBadge.astro';
@@ -15,8 +18,20 @@ export async function getStaticPaths() {
 
 const { event } = Astro.props;
 const { Content } = await render(event);
-const { title, subtitle, dateLabel, location, status, summary, registrationLink, contactName, contactPhone, contactEmail, image } =
-  event.data;
+const {
+  title,
+  subtitle,
+  dateLabel,
+  location,
+  status,
+  summary,
+  registrationLink,
+  registrationNote,
+  contactName,
+  contactPhone,
+  contactEmail,
+  image,
+} = event.data;
 
 const base = import.meta.env.BASE_URL.endsWith('/')
   ? import.meta.env.BASE_URL
@@ -58,7 +73,7 @@ const imageSrc = image ? (/^https?:\/\//.test(image) ? image : `${base}${image}`
                 前往報名
               </a>
             ) : (
-              <span>原站無獨立線上報名連結，報名請洽下方聯繫窗口</span>
+              <span>{registrationNote ?? '報名請洽下方聯繫窗口'}</span>
             )}
           </dd>
         </div>

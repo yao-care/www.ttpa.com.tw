@@ -5,6 +5,9 @@
 //   活動報名專區／線上課程推廣／首頁 用下拉（<details>）收納子頁，全站零 JS。
 // 路由對照：逐條取自 .source/_ia-plan.md § 1 路由對照表，一頁不漏、不擅自加頁。
 // ⚠ 有 base 子路徑：每一條連結都經 base 組合，不硬編 /xxx。
+// 2026-07-29 依協會正式回覆移除「主題專欄」（.source/_questions-for-ttpa.md A10：內容過於
+// 老舊，協會要求先移除，未來再行更新），對應頁面 src/pages/columns/index.astro 已一併刪除；
+// 另將章程頁的導覽標籤改為協會定案的正式名稱「組織章程」（A9，網址 /charter/ 不變）。
 const base = import.meta.env.BASE_URL.endsWith('/')
   ? import.meta.env.BASE_URL
   : `${import.meta.env.BASE_URL}/`;
@@ -25,7 +28,7 @@ const nav: NavItem[] = [
     href: base,
     children: [
       { label: '理事長的話', href: `${base}chairman/` },
-      { label: '協會章程', href: `${base}charter/` },
+      { label: '組織章程', href: `${base}charter/` },
       { label: '聯絡我們', href: `${base}contact/` },
       { label: '組織架構與夥伴招募', href: `${base}join-us/` },
     ],
@@ -51,7 +54,6 @@ const nav: NavItem[] = [
     ],
   },
   { label: '協同推廣', href: `${base}co-promotion/` },
-  { label: '主題專欄', href: `${base}columns/` },
   { label: '官方連結', href: `${base}links/` },
   { label: '免責聲明', href: `${base}disclaimer/` },
 ];
