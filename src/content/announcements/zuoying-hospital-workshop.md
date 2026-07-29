@@ -3,7 +3,7 @@
 # 豁免內容守門（見 src/content.config.ts 檔頭說明、src/content/announcements/README.txt）。
 #
 # 2026-07-28 獨立驗收（.source/_final-audit.md P0-2／P2）指出：本則消息在 .source/10-news.md
-# 對應的活動子頁網址（https://sites.google.com/view/ttpas13/活動報名專區/115年3月ai高校系列初階課程）
+# 對應的活動子頁網址（https://sites.google.com/view/ttpas13/活動報名專區/115年3月ai高效系列初階課程）
 # 於原站本身即為死連結（.source/_ia-plan.md § 5 已記錄），故不比照其餘 3 則 featured 活動另開
 # src/content/events/ 獨立子頁與網址；本檔僅承載 /news/ 卡片所需的逐字消息文字，不提供 link。
 # 活動完整全文（含日期地點費用報名連結聯絡方式）已逐字補在 /events/ 過往活動公告存檔區塊

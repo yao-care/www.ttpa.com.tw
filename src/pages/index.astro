@@ -15,16 +15,16 @@ const chairmanUrl = `${base}chairman/`;
 // 理事長方針三小節，逐字取自 01-home.md:50-60
 const visionPoints = [
   {
-    title: '培育優質遠距醫療人才',
+    title: '培育優質遠距藥事人才',
     body: '不僅是單一專業領域，更強調跨領域溝通與經營管理。協會將提供專業訓練，培養能與合作夥伴達成雙贏局面的全方位醫療人才。',
   },
   {
     title: '創新「照護門診」',
-    body: '從居家到社區，透過定期訪視與科技輔助，進行「門前健診」。解決民眾健康上的疑難雜症，將傳統服務進化為專業諮詢。',
+    body: '從居家到社區，透過定期訪視與科技輔助，進行「線上用藥照護」。解決民眾健康上的疑難雜症，將傳統服務進化為專業諮詢。',
   },
   {
     title: '立足台灣，放眼國際',
-    body: '首要工作是強化醫事人員專業知能，開發第二、三專長。不僅服務台灣民眾，更目標將合格的「遠距醫療」服務模式輸出國際。',
+    body: '首要工作是強化醫事人員專業知能，開發第二、三專長。不僅服務台灣民眾，更目標將合格的「遠距藥事」服務模式輸出國際。',
   },
 ];
 
@@ -32,7 +32,7 @@ const visionPoints = [
 const services = [
   {
     title: '專業訓練與認證',
-    body: '提供跨領域遠距醫療訓練課程，強化溝通、管理與科技應用能力，認證正式合格的「遠距醫療人員」。',
+    body: '提供跨領域遠距藥事訓練課程，強化溝通、管理與科技應用能力，認證正式合格的「遠距藥事人員」。',
   },
   {
     title: '長照與機構整合照護',
@@ -44,7 +44,7 @@ const services = [
   },
   {
     title: '數位系統整合',
-    body: '開發「慢性處方管理系統」及客製化行動服務，連結醫事人員與社區/機構，實現送藥到府與加值諮詢的一條龍服務。',
+    body: '開發「慢性病用藥管理及健康諮詢系統」及客製化行動服務，連結醫事人員與社區/機構，實現送藥到府與加值諮詢的一條龍服務。',
   },
 ];
 
@@ -59,7 +59,7 @@ const gallery = [
   },
   {
     src: `${base}img/gallery-ai-course.jpg`,
-    alt: 'AI高校系列課程',
+    alt: 'AI高效系列課程',
     caption: 'AI 高效系列課程',
   },
   {
@@ -131,7 +131,7 @@ const homeSubpages = [
 
 <BaseLayout
   title="臺灣遠距藥事照護協會 Taiwan Telepharmacy Association"
-  description="臺灣遠距藥事照護協會官方網站：結合科技與專業，打造優質遠距醫療團隊，提供從居家到機構的全方位照護服務。"
+  description="臺灣遠距藥事照護協會官方網站：結合科技與專業，打造優質遠距藥事團隊，提供從居家到機構的全方位照護服務。"
 >
   <section class="hero">
     <div class="container hero-inner">
@@ -141,7 +141,7 @@ const homeSubpages = [
         無遠弗屆，守護健康
       </h1>
       <p class="hero-lede">
-        結合科技與專業，打造優質遠距醫療團隊，提供從居家到機構的全方位照護服務。
+        結合科技與專業，打造優質遠距藥事團隊，提供從居家到機構的全方位照護服務。
       </p>
       <div class="hero-actions">
         <a class="btn btn-primary" href={chairmanUrl}>了解願景</a>
@@ -162,9 +162,9 @@ const homeSubpages = [
       />
       <div class="vision-content">
         <p class="vision-tag">劉孟基<br />TTPA 理事長</p>
-        <h2>理事長方針：打造遠距醫療競爭力</h2>
+        <h2>理事長方針：打造遠距藥事競爭力</h2>
         <blockquote>
-          「我們期待將『遠距醫療』的服務擴展到其他國家，讓台灣的醫療專業可以無遠弗屆。」
+          「我們期待將『遠距藥事』的服務擴展到其他國家，讓台灣的醫療專業可以無遠弗屆。」
         </blockquote>
         {
           visionPoints.map((point) => (
