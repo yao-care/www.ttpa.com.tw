@@ -1,5 +1,7 @@
 # www.ttpa.com.tw — 臺灣遠距藥事照護協會官網
 
+> 📋 **接手先讀 [`HANDOVER.md`](./HANDOVER.md)**：未完成事項（轉自訂網域／GA4／GSC／Slack／seo-ops 納管）、各項卡在誰身上、以及這站特有的地雷。
+
 ## 技術棧
 
 - Astro 7（靜態輸出）+ @astrojs/sitemap，pnpm 10 / Node 22
