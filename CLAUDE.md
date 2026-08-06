@@ -7,7 +7,8 @@
 - Astro 7（靜態輸出）+ @astrojs/sitemap，pnpm 10 / Node 22
 - 部署：GitHub Actions → GitHub Pages（yao-care/www.ttpa.com.tw）
 - 正式網址：<https://www.ttpa.com.tw/>（自訂網域，掛在根路徑、無 `base`）
-- 分析：GA4 `G-FREG5F9T0G`，埋在 `src/layouts/BaseLayout.astro`（僅 `import.meta.env.PROD` 時輸出）
+- 分析：GA4 `G-FREG5F9T0G`（property `548816103`），埋在 `src/layouts/BaseLayout.astro`（僅 `import.meta.env.PROD` 時輸出）
+- 搜尋：GSC 網域資源 `sc-domain:ttpa.com.tw`，sitemap 已提交（重送見 `scripts/gsc-submit-sitemap.mjs`）
 
 ⚠ 站內連結、圖片、資源一律用 `import.meta.env.BASE_URL` 組（現為 `/`），**不要硬編 `/xxx`**——2026-08-06 從 project pages（`base=/www.ttpa.com.tw`）轉自訂網域時就是靠這條才沒有全站斷鏈。集合 md 內文的相對圖片路徑由 `astro.config.mjs` 的 `remarkContentImageBase` 補前綴，單一真實來源是該檔的 `BASE` 常數。
 

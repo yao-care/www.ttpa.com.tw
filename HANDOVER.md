@@ -24,23 +24,30 @@
 頻道 `遠距藥事照護-ttpa`（ID `C0BNATKCV6Z`）已建，`SLACK_BOT_TOKEN`／`SLACK_CHANNEL_ID` 兩個 repo secrets 已設。查法：`gh secret list -R yao-care/www.ttpa.com.tw`。
 ⚠ **尚未實地觸發過一次失敗**驗證訊息真的送得到頻道——bot token 缺 scope，`site-preflight` 的頻道檢查跑不動（`missing_scope`）。下次 CI 真的 fail 時留意有沒有收到。
 
-## 待辦 1：GA4 開服務帳號權限（⛔ 等用戶在後台操作）
+## ✅ 已結案：GA4（2026-08-06）
 
-埋碼已完成：`G-FREG5F9T0G` 在 `src/layouts/BaseLayout.astro`，18 頁全覆蓋、上線實測 gtag 已輸出。用 `set:html` 而非 `define:vars`（後者會把腳本包進 IIFE，`gtag` 就不是全域函式，日後加自訂事件會炸）。僅 `import.meta.env.PROD` 輸出，`pnpm dev` 不送；但 `pnpm preview` 是 PROD 建置，預覽的 localhost 造訪會進 GA4。
+埋碼：`G-FREG5F9T0G` 在 `src/layouts/BaseLayout.astro`，18 頁全覆蓋、上線實測 gtag 已輸出。用 `set:html` 而非 `define:vars`（後者會把腳本包進 IIFE，`gtag` 就不是全域函式，日後加自訂事件會炸）。僅 `import.meta.env.PROD` 輸出，`pnpm dev` 不送；但 `pnpm preview` 是 PROD 建置，預覽的 localhost 造訪會進 GA4。
 
-還缺（只能用戶做）：GA4 → 管理 → 資源存取管理 → 把 `ga4-insights@yaocare.iam.gserviceaccount.com` 加為**檢視者**以上，並提供該資源的**數字 property ID**（seo-ops 的 `sites/*.json` 要填 `google.ga4PropertyId`）。
+服務帳號權限已由協會開通。**數字 property ID＝`548816103`**（顯示名 `ttpa.com.tw`，帳戶 `ttpa.com.tw`）。
+⚠ 該串流的「網站網址」設為 `https://ttpa.com.tw`（apex），與正式網址 `https://www.ttpa.com.tw` 不一致——apex 會 301 到 www 所以不影響收數，但要對齊的話在 GA4 串流設定改。
+查法：`node /root/seo-ops/bin/site-preflight.mjs --domain www.ttpa.com.tw --repo /root/www.ttpa.com.tw --channel "遠距藥事照護-ttpa"`（第 3 段）。
 
-## 待辦 2：GSC 網域資源（⛔ 等用戶在後台操作）
+## ✅ 已結案：GSC（2026-08-06）
 
-apex TXT `google-site-verification=0A0iSDBY4Bqbhk_vf4YsonOzOAGtF-RhxwTH6EA0p8Y` 已在 DNS。用戶要做：GSC → 新增資源 → **網域**（不是「網址前置字元」）→ `ttpa.com.tw` → 驗證 → 設定 → 使用者和權限 → 加 `ga4-insights@yaocare.iam.gserviceaccount.com` 為**擁有者**（「完整」權限不足以提交 sitemap）。
-
-之後這邊提交 sitemap：`pnpm add -D google-auth-library`（尚未安裝）→
+網域資源 `sc-domain:ttpa.com.tw` 已建（apex TXT `google-site-verification=0A0i…p8Y` 驗證），服務帳號權限 **`siteFullUser`**。
+sitemap 已提交：`https://www.ttpa.com.tw/sitemap-index.xml`，讀回 `isPending=false`、`isSitemapsIndex=true`、warnings 0 / errors 0。
+指令（已裝 `google-auth-library` devDependency）：
 `GSC_SA_KEY=~/.config/ttpa/ga4-sa.json GSC_SITE='sc-domain:ttpa.com.tw' SITE_URL='https://www.ttpa.com.tw' node scripts/gsc-submit-sitemap.mjs`
 
-## 待辦 3：納入 seo-ops 三主層（⛔ 依賴待辦 1–2）
+📌 **修正一則舊記載**：`scripts/gsc-submit-sitemap.mjs` 註解與本檔舊版都寫「需 GSC 資源**擁有者**」，2026-08-06 實測 **`siteFullUser` 即可提交成功（HTTP 204）**，不必擁有者。
 
-前提是 `node /root/seo-ops/bin/site-preflight.mjs --domain www.ttpa.com.tw --repo /root/www.ttpa.com.tw --channel "遠距藥事照護-ttpa"` 跑到 exit 0。**2026-08-06 實跑：GA4／GSC 兩項仍 ✗（服務帳號還沒被授權），另有金鑰共用一項 ✗。**
-全綠後照 `/root/seo-ops/MAINTENANCE.md`（單一真實來源）做：`playbooks/ttpa.md`（reflect/brain scope 互斥、不得空 scope）、`sites/ttpa.json`（gates 必含 `pnpm build`，設完真的 `eval` 跑一次）、掛 `/etc/cron.d/seo-ops`、跑 `node /root/seo-ops/bin/scope-review.mjs` 覆核，並同步更新 seo-ops README／MAINTENANCE 交接清單（主機紅線）。
+⚠ GSC sitemap 清單裡另有一筆**舊 Google Sites 時代的殘留**：`https://www.ttpa.com.tw/首頁`，2025-12-09 提交、帶 1 個 error。屬協會資源上的既有資料，未經指示未刪除。
+
+## 待辦 1：納入 seo-ops 三主層
+
+`node /root/seo-ops/bin/site-preflight.mjs --domain www.ttpa.com.tw --repo /root/www.ttpa.com.tw --channel "遠距藥事照護-ttpa"` **2026-08-06 實跑：5 項過 4 項**，唯一 ✗ 是下面那段的金鑰共用（MAINTENANCE.md 要求 exit 0 才納管）。
+納管時可直接沿用 preflight 末行帶出的 config：`ga4PropertyId=548816103`、`gscSiteUrl=sc-domain:ttpa.com.tw`、`saKeyFile=/root/.config/ttpa/ga4-sa.json`、`tokenFile=/root/.config/ttpa/slack-bot-token`、`repo=/root/www.ttpa.com.tw`。
+照 `/root/seo-ops/MAINTENANCE.md`（單一真實來源）做：`playbooks/ttpa.md`（reflect/brain scope 互斥、不得空 scope）、`sites/ttpa.json`（gates 必含 `pnpm build`，設完真的 `eval` 跑一次）、掛 `/etc/cron.d/seo-ops`、跑 `node /root/seo-ops/bin/scope-review.mjs` 覆核，並同步更新 seo-ops README／MAINTENANCE 交接清單（主機紅線）。
 
 ### 附帶：服務帳號金鑰共用（資安衛生，不緊急、不擋上線）
 
