@@ -1,11 +1,11 @@
 # 交接：www.ttpa.com.tw（臺灣遠距藥事照護協會官網）
 
-最後更新：2026-08-01　建站 session：2026-07-28 ~ 08-01
+最後更新：2026-08-06　建站 session：2026-07-28 ~ 08-01　網域／數據 session：2026-08-06
 先讀 `CLAUDE.md`（技術棧、設計／內容守門、內容轉錄規矩、協會正式用語對照），本檔只記「還沒完成的事」。
 
 ## 現況（已完成，不必重做）
 
-- 站已上線：<https://yao-care.github.io/www.ttpa.com.tw/>（GitHub Pages project pages，`base=/www.ttpa.com.tw`）
+- 站已上線於自訂網域：<https://www.ttpa.com.tw/>（2026-08-06 由 project pages 轉入，無 `base`）
 - **18 個路由**全部實測 200、sitemap 18 筆、CI 五 job（build 含雙守門 → deploy → verify → indexnow → notify-failure）全綠
 - 內容 100% 來自協會舊 Google Sites（19 頁擷取 → 建站 → 三輪獨立驗收 → 依協會正式回覆 A1–A11 更新）
 - 圖片 29 → 23 張全部自託管於 `public/img/`（移除主題專欄後刪掉 6 張），**站內零外連圖片**
@@ -13,42 +13,38 @@
 
 ⚠ **`.source/` 不在 git 內**（`.gitignore`），只存在這台主機：裡面是 19 頁原站擷取檔、三份驗收報告、資訊架構提案 `_ia-plan.md`、協會問答清冊 `_questions-for-ttpa.md`。**動內容前先讀 `_questions-for-ttpa.md`**，它記錄了每一項的協會正式答覆與處理方式。這批檔遺失＝失去內容溯源能力，別刪。
 
-## 待辦 1：轉自訂網域 www.ttpa.com.tw（⛔ 等客戶確定，用戶已明講）
+## ✅ 已結案：轉自訂網域（2026-08-06）
 
-DNS 記錄已於 2026-07-30 交付用戶（www CNAME → `yao-care.github.io.`；apex A 185.199.108–111.153；選配 AAAA 2606:50c0:8000–8003::153）。**用戶回報 DNS 已設**之後，這邊要做：
+協會已在 GoDaddy 設妥 www CNAME → `yao-care.github.io.`、apex A ×4 / AAAA ×4、apex 驗證 TXT。這邊已完成 commit `f90ce3b`：`public/CNAME`、Pages API `PUT cname`、`https_enforced=true`、`astro.config.mjs` 移除 `base`（`BASE=''`）、robots.txt Sitemap 行、workflow `SITE_URL`。
+實測（獨立於 CI）：18 URL 全 200、20 張圖片全 200、憑證 Let's Encrypt `CN=www.ttpa.com.tw`、apex 與舊 github.io 網址皆 301 到新網域且**保留路徑**、IndexNow 回 202。
+現況查法：`gh api repos/yao-care/www.ttpa.com.tw/pages --jq '{cname,html_url,https_enforced}'`。
 
-1. `printf 'www.ttpa.com.tw' > public/CNAME`
-2. `gh api -X PUT repos/yao-care/www.ttpa.com.tw/pages -f cname=www.ttpa.com.tw`（**必做**——artifact 裡的 CNAME 不會自動生效，是 deploy-pages 的已知坑）
-3. `astro.config.mjs`：`site` 改 `https://www.ttpa.com.tw`、**移除 `base`**；`BASE` 常數與 remark plugin（`remarkContentImageBase`）要跟著改成根路徑（該 plugin 負責把集合 md 內文的相對圖片路徑補上 base，改錯會全站破圖）
-4. `public/robots.txt` 的 `Sitemap:` 行、`.github/workflows/deploy.yml` 的 `SITE_URL` 一起換成新網域
-5. `pnpm build` → push → `gh run watch` → 實測 18 個網址在新網域回 200、HTTPS 憑證已簽發（`curl -sI https://www.ttpa.com.tw/` 不報憑證錯）
-6. 舊 Pages 網址會 301 到新網域，**GSC／IndexNow 收錄要重來**，轉完記得重送 IndexNow 並在 GSC 重新提交 sitemap
+## ✅ 已結案：Slack 告警（2026-08-06）
 
-## 待辦 2：GA4（⛔ 等用戶給評量 ID）
+頻道 `遠距藥事照護-ttpa`（ID `C0BNATKCV6Z`）已建，`SLACK_BOT_TOKEN`／`SLACK_CHANNEL_ID` 兩個 repo secrets 已設。查法：`gh secret list -R yao-care/www.ttpa.com.tw`。
+⚠ **尚未實地觸發過一次失敗**驗證訊息真的送得到頻道——bot token 缺 scope，`site-preflight` 的頻道檢查跑不動（`missing_scope`）。下次 CI 真的 fail 時留意有沒有收到。
 
-- 用戶要建 GA4 資源＋網站串流，把 `G-XXXXXXXXXX` 給你 → 埋進 `src/layouts/BaseLayout.astro`（全站共用，一次覆蓋 18 頁）
-- 設計守門的「禁外部 CDN」規則只擋 fonts.googleapis/gstatic、cdnjs、unpkg、jsdelivr，**googletagmanager 不在黑名單**，埋 gtag 不會被擋（實測過規則內容，未實測埋碼）
-- 用戶要在 GA4「管理 → 資源存取管理」把 `ga4-insights@yaocare.iam.gserviceaccount.com` 加為**檢視者**以上
+## 待辦 1：GA4 開服務帳號權限（⛔ 等用戶在後台操作）
 
-## 待辦 3：GSC（⛔ 依賴待辦 1）
+埋碼已完成：`G-FREG5F9T0G` 在 `src/layouts/BaseLayout.astro`，18 頁全覆蓋、上線實測 gtag 已輸出。用 `set:html` 而非 `define:vars`（後者會把腳本包進 IIFE，`gtag` 就不是全域函式，日後加自訂事件會炸）。僅 `import.meta.env.PROD` 輸出，`pnpm dev` 不送；但 `pnpm preview` 是 PROD 建置，預覽的 localhost 造訪會進 GA4。
 
-- **現在掛在 `yao-care.github.io` 子路徑，只能用「網址前置字元資源」**（HTML 檔或 GA4 代碼驗證）；轉自訂網域後才能建 `sc-domain:ttpa.com.tw` 網域資源（DNS TXT 驗證，TXT 值由 GSC 產生、我方無法代生）
-- 用戶要把上述服務帳號加為**擁有者**
-- 之後手動提交一次 sitemap：`GSC_SA_KEY=~/.config/ttpa/ga4-sa.json GSC_SITE='sc-domain:ttpa.com.tw' SITE_URL='https://www.ttpa.com.tw' node scripts/gsc-submit-sitemap.mjs`（需 `pnpm add -D google-auth-library`）
+還缺（只能用戶做）：GA4 → 管理 → 資源存取管理 → 把 `ga4-insights@yaocare.iam.gserviceaccount.com` 加為**檢視者**以上，並提供該資源的**數字 property ID**（seo-ops 的 `sites/*.json` 要填 `google.ga4PropertyId`）。
 
-## 待辦 4：Slack 頻道（⛔ 等用戶建頻道）
+## 待辦 2：GSC 網域資源（⛔ 等用戶在後台操作）
 
-- 頻道名（用戶指定）：`遠距藥事照護-ttpa`；2026-07-28 搜過工作區**尚不存在**
-- 用戶建好並邀 `claude-helper` 進去後，把頻道 ID 給你 → 設 repo secrets：
-  `gh secret set SLACK_BOT_TOKEN -R yao-care/www.ttpa.com.tw --body "$(cat ~/.config/ttpa/slack-bot-token)"`、
-  `gh secret set SLACK_CHANNEL_ID -R yao-care/www.ttpa.com.tw --body "<C 開頭頻道 ID>"`
-- 沒設 secrets 時 `notify-failure` job 會靜默略過＝**CI 失敗目前沒有人會被通知**
+apex TXT `google-site-verification=0A0iSDBY4Bqbhk_vf4YsonOzOAGtF-RhxwTH6EA0p8Y` 已在 DNS。用戶要做：GSC → 新增資源 → **網域**（不是「網址前置字元」）→ `ttpa.com.tw` → 驗證 → 設定 → 使用者和權限 → 加 `ga4-insights@yaocare.iam.gserviceaccount.com` 為**擁有者**（「完整」權限不足以提交 sitemap）。
 
-## 待辦 5：納入 seo-ops 三主層（⛔ 依賴待辦 2–4）
+之後這邊提交 sitemap：`pnpm add -D google-auth-library`（尚未安裝）→
+`GSC_SA_KEY=~/.config/ttpa/ga4-sa.json GSC_SITE='sc-domain:ttpa.com.tw' SITE_URL='https://www.ttpa.com.tw' node scripts/gsc-submit-sitemap.mjs`
 
-前提是 `node /root/seo-ops/bin/site-preflight.mjs --domain www.ttpa.com.tw --repo /root/www.ttpa.com.tw --channel "遠距藥事照護-ttpa"` 跑到 exit 0。
-**2026-07-29 實跑結果：5 項過 3 項**（repo ✓／SA 金鑰 ✓／Slack token ✓；GA4 ✗ 找不到含 ttpa 的資源、GSC ✗ 看不到資源）。
+## 待辦 3：納入 seo-ops 三主層（⛔ 依賴待辦 1–2）
+
+前提是 `node /root/seo-ops/bin/site-preflight.mjs --domain www.ttpa.com.tw --repo /root/www.ttpa.com.tw --channel "遠距藥事照護-ttpa"` 跑到 exit 0。**2026-08-06 實跑：GA4／GSC 兩項仍 ✗（服務帳號還沒被授權），另有金鑰共用一項 ✗。**
 全綠後照 `/root/seo-ops/MAINTENANCE.md`（單一真實來源）做：`playbooks/ttpa.md`（reflect/brain scope 互斥、不得空 scope）、`sites/ttpa.json`（gates 必含 `pnpm build`，設完真的 `eval` 跑一次）、掛 `/etc/cron.d/seo-ops`、跑 `node /root/seo-ops/bin/scope-review.mjs` 覆核，並同步更新 seo-ops README／MAINTENANCE 交接清單（主機紅線）。
+
+### 附帶：服務帳號金鑰共用（資安衛生，不緊急、不擋上線）
+
+`~/.config/ttpa/ga4-sa.json` 與另外 10 個站是**同一把**金鑰（preflight 每次都會報）。要拆的話是在協會自己的 Google 帳號下建 GCP 專案＋SA、下載新金鑰覆蓋該檔，再用 `node /root/seo-ops/bin/identity-audit.mjs --sa ~/.config/ttpa/ga4-sa.json --expect-only ttpa.com.tw` 驗到 exit 0。**這不是 SEO 手段、與站間評價無關**（主機 CLAUDE.md 紅線），純粹是縮小爆炸半徑。
 
 ## 協會端仍未結案的內容問題
 

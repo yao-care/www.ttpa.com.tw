@@ -6,9 +6,10 @@
 
 - Astro 7（靜態輸出）+ @astrojs/sitemap，pnpm 10 / Node 22
 - 部署：GitHub Actions → GitHub Pages（yao-care/www.ttpa.com.tw）
-- 正式網址：<https://yao-care.github.io/www.ttpa.com.tw/>（project pages，`base = /www.ttpa.com.tw`）
+- 正式網址：<https://www.ttpa.com.tw/>（自訂網域，掛在根路徑、無 `base`）
+- 分析：GA4 `G-FREG5F9T0G`，埋在 `src/layouts/BaseLayout.astro`（僅 `import.meta.env.PROD` 時輸出）
 
-⚠ 有 `base` 子路徑：站內連結、圖片、資源一律用 `import.meta.env.BASE_URL` 組，**不要硬編 `/xxx`**——這是 project pages 最常見的斷鏈坑。
+⚠ 站內連結、圖片、資源一律用 `import.meta.env.BASE_URL` 組（現為 `/`），**不要硬編 `/xxx`**——2026-08-06 從 project pages（`base=/www.ttpa.com.tw`）轉自訂網域時就是靠這條才沒有全站斷鏈。集合 md 內文的相對圖片路徑由 `astro.config.mjs` 的 `remarkContentImageBase` 補前綴，單一真實來源是該檔的 `BASE` 常數。
 
 ## 設計規範（`pnpm check:design` 守門，違規 CI 直接擋）
 
@@ -72,6 +73,6 @@ pnpm check:content:all
 | indexnow | 送 Bing/Yandex/Seznam/Naver 即時收錄（Google 不吃 IndexNow，靠 robots.txt 的 Sitemap 行 + GSC） |
 | notify-failure | 任一 job fail → 發 Slack 到協會頻道要求修改；修正 push 後自動重跑＝重審 |
 
-IndexNow 金鑰：`public/21e918f956fa6a94cf6db88099c40463.txt`（非機密，直接寫在 workflow env）。因為是 project pages，金鑰檔在 base 子路徑下，`scripts/indexnow-submit.mjs` 的 `keyLocation` 已改為相對解析。
+IndexNow 金鑰：`public/21e918f956fa6a94cf6db88099c40463.txt`（非機密，直接寫在 workflow env）。`scripts/indexnow-submit.mjs` 的 `keyLocation` 用相對解析（原為 project pages 子路徑而改，根網域下同樣正確，不必改回）。
 
-Slack 告警需 repo secrets：`SLACK_BOT_TOKEN`、`SLACK_CHANNEL_ID`（缺則靜默略過）。
+Slack 告警需 repo secrets：`SLACK_BOT_TOKEN`、`SLACK_CHANNEL_ID`（缺則靜默略過）。2026-08-06 已設定，頻道 `遠距藥事照護-ttpa`。secrets 現況查法：`gh secret list -R yao-care/www.ttpa.com.tw`。
