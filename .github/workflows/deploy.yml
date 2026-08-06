@@ -1,5 +1,5 @@
 # GitHub Pages 部署（團隊共用手刻模式，源自 dreamer868 版；不用 withastro/action）
-# 建站時把 https://yao-care.github.io/www.ttpa.com.tw 換成正式網址（含 https://，project pages 含 /repo 子路徑）。
+# 建站時把 SITE_URL 換成正式網址（含 https://，project pages 才含 /repo 子路徑）。
 name: Deploy to GitHub Pages
 
 on:
@@ -17,7 +17,7 @@ concurrency:
   cancel-in-progress: false
 
 env:
-  SITE_URL: https://yao-care.github.io/www.ttpa.com.tw
+  SITE_URL: https://www.ttpa.com.tw
 
 jobs:
   build:

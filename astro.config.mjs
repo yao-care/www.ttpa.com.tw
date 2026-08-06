@@ -1,9 +1,10 @@
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 
-// 模式 B（GitHub project pages）：正式網址 https://yao-care.github.io/www.ttpa.com.tw/
-// ⚠ 有 base 時站內連結一律用 import.meta.env.BASE_URL 組，別硬編 /xxx（project pages 最常見斷鏈坑）。
-const BASE = '/www.ttpa.com.tw';
+// 模式 A（自訂網域）：正式網址 https://www.ttpa.com.tw/
+// 2026-08-06 由 project pages（base=/www.ttpa.com.tw）轉自訂網域，base 移除＝站台掛在根路徑。
+// 站內連結仍一律用 import.meta.env.BASE_URL 組（此時為 '/'），別硬編——之後若再換掛載點才不會斷。
+const BASE = '';
 
 // content collection 的 Markdown 正文（.md body）沒有 import.meta.env.BASE_URL 可用，
 // 圖片自託管後（見 public/img/，2026-07-28 由外連 Google/Unsplash 圖片下載改的那輪）
@@ -29,8 +30,7 @@ function remarkContentImageBase() {
 }
 
 export default defineConfig({
-  site: 'https://yao-care.github.io',
-  base: BASE,
+  site: 'https://www.ttpa.com.tw',
   output: 'static',
   build: { format: 'directory' },
   // build.format='directory' 下每個頁面網址都以 / 結尾；filter 濾掉 sitemap 會多塞的

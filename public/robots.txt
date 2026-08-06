@@ -2,4 +2,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://yao-care.github.io/www.ttpa.com.tw/sitemap-index.xml
+Sitemap: https://www.ttpa.com.tw/sitemap-index.xml

@@ -10,10 +10,15 @@ interface Props {
 }
 const { title, description } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site);
-// 模式 B 有 base 子路徑：站內連結一律經此組合，勿硬編 /xxx
+// 站內連結一律經此組合，勿硬編 /xxx（自訂網域下 BASE_URL 為 '/'，改掛載點時才不會全站斷鏈）
 const base = import.meta.env.BASE_URL.endsWith('/')
   ? import.meta.env.BASE_URL
   : `${import.meta.env.BASE_URL}/`;
+
+// GA4 評量 ID（協會 2026-08-06 提供）。只在正式建置輸出，避免 pnpm dev 的本機流量汙染報表。
+// ⚠ pnpm preview 也是 PROD 建置，預覽時的 localhost 造訪一樣會進 GA4。
+const GA4_ID = 'G-FREG5F9T0G';
+const enableGA4 = import.meta.env.PROD;
 ---
 
 <!doctype html>
@@ -28,6 +33,21 @@ const base = import.meta.env.BASE_URL.endsWith('/')
     <meta property="og:title" content={title} />
     {description && <meta property="og:description" content={description} />}
     <meta property="og:url" content={canonical} />
+    {
+      enableGA4 && (
+        <>
+          <script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${GA4_ID}`} />
+          {/* 用 set:html 而非 define:vars——後者會把腳本包進 IIFE，gtag 就不是全域函式，日後加自訂事件會炸 */}
+          <script
+            is:inline
+            set:html={`window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', '${GA4_ID}');`}
+          />
+        </>
+      )
+    }
   </head>
   <body>
     <Header />
