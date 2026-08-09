@@ -1,4 +1,7 @@
 ---
+# 溯源註記（YAML 註解＝不輸出到公開頁面；2026-08-09 由正文 blockquote 移入，原本會被讀者看到）：
+# 本頁內容逐字轉錄自 .source/22-event-yuanrung.md（原站「115年度員榮醫院醫療資訊與臨床應用研討會」子頁），未增刪潤飾。
+# ⚠ 本文中「*如按下報名鍵無反應…」那條 blockquote 是原站真有的提示文字，不是內部註記，不可移除。
 sourceVerbatim: true
 title: "115 年度員榮醫院醫療資訊與臨床應用研討會"
 subtitle: "醫療資訊研討會"
@@ -16,8 +19,6 @@ image: "img/event-yuanrung-seminar.jpg"
 featured: true
 sourceSlug: "22-event-yuanrung"
 ---
-
-> 本頁內容逐字轉錄自 `.source/22-event-yuanrung.md`（原站「115年度員榮醫院醫療資訊與臨床應用研討會」子頁），未增刪潤飾。
 
 **標籤**：限定名額免費報名｜實體課程｜限額 70 名
 

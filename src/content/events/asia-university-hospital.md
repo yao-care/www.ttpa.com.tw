@@ -1,4 +1,11 @@
 ---
+# 溯源註記（YAML 註解＝不輸出到公開頁面；2026-08-09 由正文 blockquote 移入，原本會被讀者看到，
+# 且外洩了 _questions-for-ttpa.md 這個內部檔名）：
+# 本頁內容逐字轉錄自 .source/24-event-asia-univ.md（原站「亞洲大學附醫專班」子頁），未增刪潤飾。
+# 協會已於 2026-07-29 正式回覆確認（.source/_questions-for-ttpa.md A7）：本專班僅提供院內同仁報名，
+# 故不提供線上報名連結，以避免院外人士誤報名；活動已結束。
+# 狀態徽章「✅ 已結束」為新站依日期比對之判斷（本頁活動日期 115年2月7日已早於今日），
+# 沿用 10-news.md 對已結束活動的徽章慣例，非原站此子頁本身文字。
 sourceVerbatim: true
 title: "亞洲大學附醫專班"
 subtitle: "亞洲大學附屬醫院專班"
@@ -14,8 +21,6 @@ image: "img/event-asia-university.png"
 featured: false
 sourceSlug: "24-event-asia-univ"
 ---
-
-> 本頁內容逐字轉錄自 `.source/24-event-asia-univ.md`（原站「亞洲大學附醫專班」子頁），未增刪潤飾。協會已於 2026-07-29 正式回覆確認（`.source/_questions-for-ttpa.md` A7）：**本專班僅提供院內同仁報名，故不提供線上報名連結，以避免院外人士誤報名**；活動已結束。狀態徽章「✅ 已結束」為新站依日期比對之判斷（本頁活動日期 115年2月7日已早於今日），沿用 `10-news.md` 對已結束活動的徽章慣例，非原站此子頁本身文字。
 
 ## 賦能醫療專業　掌握 AI 簡報製作的實務應用
 

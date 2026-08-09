@@ -1,4 +1,8 @@
 ---
+# 溯源註記（YAML 註解＝不輸出到公開頁面；2026-08-09 由正文 blockquote 移入，原本會被讀者看到）：
+# 本頁內容逐字轉錄自 .source/23-event-ai-platform.md（原站「AI 醫藥科技媒合平台」子頁），未增刪潤飾。
+# 本頁描述一系列連續兩階段活動（首部曲 06/06、二部曲 08/22），內容含已結束場次與報名中場次，
+# 皆逐字保留原站描述（含「已結束」等狀態字樣）。
 sourceVerbatim: true
 title: "AI 醫藥科技媒合平台"
 subtitle: "全日活動 09:00 - 17:00"
@@ -13,8 +17,6 @@ image: "img/event-ai-pharma-tech.jpg"
 featured: true
 sourceSlug: "23-event-ai-platform"
 ---
-
-> 本頁內容逐字轉錄自 `.source/23-event-ai-platform.md`（原站「AI 醫藥科技媒合平台」子頁），未增刪潤飾。本頁描述一系列連續兩階段活動（首部曲 06/06、二部曲 08/22），內容含已結束場次與報名中場次，皆逐字保留原站描述（含「已結束」等狀態字樣）。
 
 ## AI 智慧社區藥局經營　交流會 暨 實務研討會
 

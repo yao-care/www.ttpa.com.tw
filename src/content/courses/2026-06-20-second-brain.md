@@ -23,10 +23,6 @@ featured: true
 sourceSlug: 32-course-0620
 ---
 
-> 狀態徽章「✅ 已結束」為新站依日期比對之判斷（本頁活動日期 2026/06/20 已早於今日），沿用
-> `10-news.md` 對已結束活動的徽章慣例，非原站此子頁本身文字（`.source/32-course-0620.md` 完全
-> 沒有 status 欄位）。以下本文其餘內容皆逐字轉錄自 `.source/32-course-0620.md`，未增刪潤飾。
-
 TTPA 線上培訓系列
 
 ## Notion × AI 高效知識管理術
