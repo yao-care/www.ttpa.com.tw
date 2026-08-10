@@ -4,6 +4,7 @@
 import { getCollection, render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import StatusBadge from '../../components/StatusBadge.astro';
+import TzuchiWorkshopPage from '../../components/TzuchiWorkshopPage.astro';
 
 export async function getStaticPaths() {
   const events = await getCollection('events');
@@ -36,8 +37,13 @@ const base = import.meta.env.BASE_URL.endsWith('/')
 
 const imageSrc = image ? (/^https?:\/\//.test(image) ? image : `${base}${image}`) : undefined;
 const isAiPlatform = event.id === 'ai-pharma-tech-matching';
+const isTzuchiWorkshop = event.id === 'ai-workshop-taichung-tzuchi';
 ---
 
+{
+  isTzuchiWorkshop ? (
+    <TzuchiWorkshopPage event={event} />
+  ) : (
 <BaseLayout title={`${title}｜活動報名專區｜臺灣遠距藥事照護協會`} description={summary}>
   <header class="event-hero">
     {imageSrc && <img class="event-hero-image" src={imageSrc} alt="" width="1600" height="900" />}
@@ -205,6 +211,8 @@ const isAiPlatform = event.id === 'ai-pharma-tech-matching';
     </div>
   </section>
 </BaseLayout>
+  )
+}
 
 <style>
   .event-hero {
