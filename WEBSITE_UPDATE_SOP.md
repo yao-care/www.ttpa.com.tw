@@ -146,7 +146,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File scripts/site.ps1 Preview
 ## 8. 異常處理
 
 - 如果 GitHub 或 npm 要求登入：只在官方登入頁完成，不要把 token 貼進對話。
-- 如果工作樹不是乾淨狀態：不要強制覆蓋，先請 Codex說明現有變更。
+- 如果工作樹不是乾淨狀態：不要強制覆蓋，先請 Codex 說明現有變更。
 - 如果建置失敗：不得發布，先修復後重新執行 `Check`。
 - 如果正式網站內容錯誤：立即告訴 Codex「停止後續發布並回復上一版」，使用 revert PR 處理。
 - 不要直接在 GitHub 網頁編輯 `main`，也不要手動修改 GitHub Pages 產物。

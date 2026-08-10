@@ -1,6 +1,5 @@
 ---
-// /membership/（加入會員）。內容逐字取自 .source/11-membership.md（會員權益／會費級距表／
-// 入會流程／匯款資訊／秘書處聯絡方式），未增刪潤飾。匯款帳號照登，係用戶已拍板事項
+// /membership/（加入會員）。內容以 .source/11-membership.md 為基礎，並經過官網文案可讀性校訂。匯款帳號照登，係用戶已拍板事項
 // （原站本來就公開列出，見 .source/_ia-plan.md § 4 第 4 項決定）。
 // 入會表單一律用按鈕連結，不嵌入 iframe（用戶拍板）。
 import BaseLayout from '../../layouts/BaseLayout.astro';
@@ -9,7 +8,7 @@ const membershipFormUrl = 'https://forms.gle/PjWC93Uz5ZafzcVD8';
 
 const benefits = [
   {
-    title: '免費/優惠參加研討會',
+    title: '免費／優惠參加研討會',
     body: '享有協會主辦之實體與線上醫療資訊研討會的專屬報名折扣或免費名額。',
   },
   {
@@ -29,7 +28,7 @@ const benefits = [
 const tiers = [
   {
     category: '個人會員',
-    qualification: '滿20歲之醫事、社工、資訊、行政人員等',
+    qualification: '年滿 20 歲之醫事、社工、資訊或行政人員等',
     initialFee: 'NT$ 1,000',
     annualFee: 'NT$ 2,000',
   },
@@ -56,7 +55,7 @@ const steps = [
 
 <BaseLayout
   title="加入會員 | 臺灣遠距藥事照護協會"
-  description="臺灣遠距藥事協會會員專區：加入 TTPA 的專屬權益、會員類別與收費標準、入會申請流程與匯款資訊。"
+  description="臺灣遠距藥事照護協會會員專區：加入 TTPA 的專屬權益、會員類別與收費標準、入會申請流程與匯款資訊。"
 >
   <section class="hero">
     <div class="container">
@@ -89,8 +88,8 @@ const steps = [
             <tr>
               <th>會員類別</th>
               <th>資格條件</th>
-              <th>入會費 (首次)</th>
-              <th>常年會費 (每年)</th>
+              <th>入會費（首次）</th>
+              <th>常年會費（每年）</th>
             </tr>
           </thead>
           <tbody>
@@ -131,14 +130,14 @@ const steps = [
         <h2>匯款資訊</h2>
         <dl>
           <dt>銀行名稱</dt>
-          <dd>台新國際商業銀行 後甲分行 (銀行代碼：812)</dd>
+          <dd>台新國際商業銀行 後甲分行（銀行代碼：812）</dd>
           <dt>戶　名</dt>
           <dd>臺灣遠距藥事照護協會</dd>
           <dt>帳　號</dt>
           <dd>2035-01-0000581-1</dd>
         </dl>
         <p class="remit-note">
-          匯款後，請將 收據或匯款證明拍照 後，回傳至本會信箱：
+          匯款後，請將收據或匯款證明拍照，並寄至本會信箱：
           <a href="mailto:ttpa2014@gmail.com">ttpa2014@gmail.com</a>，以利後續對帳作業。
         </p>
       </div>
@@ -150,7 +149,7 @@ const steps = [
       <h2>需要協助嗎？</h2>
       <p>若有入會、繳費或會籍相關問題，歡迎聯繫秘書處。</p>
       <ul class="plain">
-        <li><a href="tel:0911095529">0911-095-529 (邱秘書長)</a></li>
+        <li><a href="tel:0911095529">0911-095-529（邱秘書長）</a></li>
         <li><a href="mailto:ttpa2014@gmail.com">ttpa2014@gmail.com</a></li>
       </ul>
     </div>
