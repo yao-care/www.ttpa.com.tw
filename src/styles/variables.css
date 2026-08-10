@@ -10,31 +10,37 @@
   /* ── 色彩（hex fallback；下方 @supports 區塊以 oklch 覆寫） ──
    * 取自協會 logo 藥丸圖標主色 #54a795（實測 logo 像素取樣）。
    * logo 原色亮度高（對白底 2.86:1），只用於色塊/圖形；文字與連結一律用加深後的 primary。 */
-  --color-brand: #54a795;        /* logo 原色：色塊、圖標、裝飾 */
-  --color-brand-tint: #c7e6de;   /* 淺色底：卡片、表格斑馬紋 */
-  --color-brand-soft: #e3f5f0;   /* 極淺色底：整段區塊背景 */
-  --color-primary: #1d6c5d;      /* 品牌主色（文字/連結，對白底 6.26:1） */
-  --color-primary-dark: #0a5447; /* 主色 hover/深底（對白底 8.85:1） */
-  --color-accent: #b2511e;       /* 強調色：CTA、重點（對白底 5.14:1） */
-  --color-accent-dark: #97400d;  /* 強調色 hover（對白底 6.87:1） */
+  --color-brand: #275fa8;        /* 全站醫療科技藍：色塊、圖標、裝飾 */
+  --color-brand-tint: #cddff7;   /* 淺色底：卡片、表格斑馬紋 */
+  --color-brand-soft: #edf4ff;   /* 極淺色底：整段區塊背景 */
+  --color-primary: #275fa8;      /* 全站主色（文字、連結、導覽） */
+  --color-primary-dark: #15385f; /* 深藍：標題、hover、深色區塊 */
+  --color-accent: #1d6c5d;       /* 協會識別綠：CTA 與關鍵操作 */
+  --color-accent-dark: #0a5447;  /* 協會綠 hover */
   --color-bg-light: #F4F4F4;     /* 淺灰底 */
   --color-text: #1F1F1F;         /* 主文字 */
   --color-white: #ffffff;
   --color-ink-soft: #555555;     /* 次要文字 */
   --color-ink-muted: #999999;    /* 註記/弱化文字 */
   --color-line: #dddddd;         /* 邊線/分隔 */
+  --color-workshop: #275fa8;     /* 慈濟工作坊：醫療科技藍 */
+  --color-workshop-dark: #15385f;
+  --color-workshop-soft: #edf4ff;
+  --color-workshop-tint: #cddff7;
 
   /* ── 透明度變體與陰影（元件內禁 rgba/hex，一律引用這些） ── */
-  --color-primary-a80: rgba(29, 108, 93, 0.8);
-  --color-primary-a60: rgba(29, 108, 93, 0.6);
+  --color-primary-a80: rgba(21, 56, 95, 0.86);
+  --color-primary-a60: rgba(39, 95, 168, 0.72);
   --color-white-a20: rgba(255, 255, 255, 0.2);
   --color-white-a10: rgba(255, 255, 255, 0.1);
+  --color-workshop-a10: rgba(39, 95, 168, 0.1);
+  --color-workshop-a20: rgba(39, 95, 168, 0.2);
   --scrim-50: rgba(0, 0, 0, 0.5);
   --scrim-30: rgba(0, 0, 0, 0.3);
   --scrim-20: rgba(0, 0, 0, 0.2);
   --scrim-0: rgba(0, 0, 0, 0);
-  --shadow-card: 0 2px 12px rgba(0, 0, 0, 0.08);
-  --shadow-card-hover: 0 8px 24px rgba(0, 0, 0, 0.12);
+  --shadow-card: 0 0.4rem 1.5rem rgba(21, 56, 95, 0.08);
+  --shadow-card-hover: 0 1rem 2.6rem rgba(21, 56, 95, 0.16);
   --shadow-float: 0 4px 12px rgba(0, 0, 0, 0.3);
   --shadow-text: 0 2px 12px rgba(0, 0, 0, 0.3);
 
@@ -54,29 +60,35 @@
 
 @supports (color: oklch(0.5 0.1 250)) {
   :root {
-    --color-brand: oklch(0.671 0.086 177.6);
-    --color-brand-tint: oklch(0.90 0.035 177.6);
-    --color-brand-soft: oklch(0.955 0.020 177.6);
-    --color-primary: oklch(0.48 0.078 177.6);
-    --color-primary-dark: oklch(0.40 0.070 177.6);
-    --color-accent: oklch(0.55 0.14 45);
-    --color-accent-dark: oklch(0.48 0.13 45);
+    --color-brand: oklch(0.51 0.12 253);
+    --color-brand-tint: oklch(0.88 0.045 250);
+    --color-brand-soft: oklch(0.965 0.02 250);
+    --color-primary: oklch(0.51 0.12 253);
+    --color-primary-dark: oklch(0.34 0.08 250);
+    --color-accent: oklch(0.48 0.078 177.6);
+    --color-accent-dark: oklch(0.40 0.070 177.6);
     --color-bg-light: oklch(0.967 0 0);
     --color-text: oklch(0.239 0 0);
     --color-white: oklch(1 0 0);
     --color-ink-soft: oklch(0.45 0 0);
     --color-ink-muted: oklch(0.683 0 0);
     --color-line: oklch(0.898 0 0);
-    --color-primary-a80: oklch(0.48 0.078 177.6 / 0.8);
-    --color-primary-a60: oklch(0.48 0.078 177.6 / 0.6);
+    --color-workshop: oklch(0.51 0.12 253);
+    --color-workshop-dark: oklch(0.34 0.08 250);
+    --color-workshop-soft: oklch(0.965 0.02 250);
+    --color-workshop-tint: oklch(0.88 0.045 250);
+    --color-primary-a80: oklch(0.34 0.08 250 / 0.86);
+    --color-primary-a60: oklch(0.51 0.12 253 / 0.72);
     --color-white-a20: oklch(1 0 0 / 0.2);
     --color-white-a10: oklch(1 0 0 / 0.1);
+    --color-workshop-a10: oklch(0.51 0.12 253 / 0.1);
+    --color-workshop-a20: oklch(0.51 0.12 253 / 0.2);
     --scrim-50: oklch(0 0 0 / 0.5);
     --scrim-30: oklch(0 0 0 / 0.3);
     --scrim-20: oklch(0 0 0 / 0.2);
     --scrim-0: oklch(0 0 0 / 0);
-    --shadow-card: 0 2px 12px oklch(0 0 0 / 0.08);
-    --shadow-card-hover: 0 8px 24px oklch(0 0 0 / 0.12);
+    --shadow-card: 0 0.4rem 1.5rem oklch(0.34 0.08 250 / 0.08);
+    --shadow-card-hover: 0 1rem 2.6rem oklch(0.34 0.08 250 / 0.16);
     --shadow-float: 0 4px 12px oklch(0 0 0 / 0.3);
     --shadow-text: 0 2px 12px oklch(0 0 0 / 0.3);
   }

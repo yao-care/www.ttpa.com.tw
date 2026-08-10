@@ -113,7 +113,8 @@ const nav: NavItem[] = [
     top: 0;
     z-index: 40;
     background: var(--color-white);
-    border-bottom: 1px solid var(--color-line);
+    border-bottom: 1px solid var(--color-brand-tint);
+    box-shadow: var(--shadow-card);
   }
 
   .header-inner {
@@ -121,26 +122,28 @@ const nav: NavItem[] = [
     align-items: center;
     justify-content: space-between;
     flex-wrap: wrap;
-    padding-block: 0.75rem;
+    min-height: 5rem;
+    padding-block: 0.65rem;
   }
 
   .logo-link {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: 0.7rem;
     text-decoration: none;
-    color: var(--color-primary);
+    color: var(--color-primary-dark);
   }
 
   .logo-link img {
-    width: 2.5rem;
+    width: 3rem;
     height: auto;
   }
 
   .site-title {
     font-size: var(--text-lg);
-    font-weight: 700;
-    color: var(--color-primary);
+    font-weight: 800;
+    color: var(--color-primary-dark);
+    letter-spacing: -0.02em;
   }
 
   /* 漢堡選單：純 CSS checkbox hack，零 JS */
@@ -159,19 +162,25 @@ const nav: NavItem[] = [
     padding: 0.5rem;
     cursor: pointer;
     justify-content: center;
+    border-radius: 0.75rem;
+    background: var(--color-brand-soft);
   }
 
   .nav-toggle-label .bar {
     display: block;
     height: 0.1875rem;
     border-radius: 999px;
-    background: var(--color-primary);
+    background: var(--color-primary-dark);
   }
 
   .site-nav {
     display: none;
     width: 100%;
     order: 3;
+    margin-top: 0.65rem;
+    padding: 0.5rem 0.75rem 0.75rem;
+    border-radius: 1rem;
+    background: var(--color-brand-soft);
   }
 
   .nav-toggle:checked ~ .site-nav {
@@ -185,27 +194,33 @@ const nav: NavItem[] = [
   }
 
   .site-nav > ul > li {
-    border-top: 1px solid var(--color-line);
+    border-top: 1px solid var(--color-brand-tint);
   }
 
   .site-nav a {
     display: block;
     padding: 0.75rem 0.25rem;
-    color: var(--color-text);
+    border-radius: 0.65rem;
+    color: var(--color-primary-dark);
     text-decoration: none;
     font-size: var(--text-sm);
+    font-weight: 700;
+    transition: color 0.2s ease, background 0.2s ease;
   }
 
   .site-nav a:hover {
     color: var(--color-primary);
+    background: var(--color-white);
   }
 
   .has-children summary {
     padding: 0.75rem 0.25rem;
     font-size: var(--text-sm);
-    color: var(--color-text);
+    color: var(--color-primary-dark);
+    font-weight: 700;
     cursor: pointer;
     list-style: none;
+    border-radius: 0.65rem;
   }
 
   .has-children summary::-webkit-details-marker {
@@ -216,6 +231,11 @@ const nav: NavItem[] = [
     content: '▾';
     margin-inline-start: 0.4rem;
     color: var(--color-ink-soft);
+  }
+
+  .has-children details[open] > summary {
+    color: var(--color-primary);
+    background: var(--color-white);
   }
 
   .submenu {
@@ -236,6 +256,10 @@ const nav: NavItem[] = [
       display: block;
       width: auto;
       order: 0;
+      margin-top: 0;
+      padding: 0;
+      border-radius: 0;
+      background: transparent;
     }
 
     .site-nav > ul {
@@ -255,6 +279,12 @@ const nav: NavItem[] = [
       white-space: nowrap;
     }
 
+    .site-nav > ul > li > a:hover,
+    .has-children summary:hover,
+    .has-children details[open] > summary {
+      background: var(--color-brand-soft);
+    }
+
     .has-children summary {
       padding: 0.5rem 0.75rem;
     }
@@ -265,10 +295,10 @@ const nav: NavItem[] = [
       top: 100%;
       min-width: 16rem;
       background: var(--color-white);
-      border: 1px solid var(--color-line);
-      border-radius: 0.5rem;
-      box-shadow: var(--shadow-card);
-      padding: 0.5rem;
+      border: 1px solid var(--color-brand-tint);
+      border-radius: 1rem;
+      box-shadow: var(--shadow-card-hover);
+      padding: 0.65rem;
       z-index: 50;
     }
 
@@ -278,7 +308,7 @@ const nav: NavItem[] = [
 
     .submenu a {
       padding: 0.5rem 0.75rem;
-      border-radius: 0.375rem;
+      border-radius: 0.65rem;
     }
 
     .submenu a:hover {

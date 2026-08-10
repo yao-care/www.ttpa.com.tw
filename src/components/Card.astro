@@ -17,23 +17,34 @@ const { href, title, description, cta } = Astro.props;
 
 <style>
   .card {
+    position: relative;
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
     height: 100%;
-    padding: 1.5rem;
-    border-radius: 0.75rem;
+    overflow: hidden;
+    padding: 1.75rem;
+    border-radius: 1.25rem;
     background: var(--color-white);
-    border: 1px solid var(--color-line);
+    border: 1px solid var(--color-brand-tint);
     box-shadow: var(--shadow-card);
     text-decoration: none;
     color: var(--color-text);
-    transition: box-shadow 0.2s ease, transform 0.2s ease;
+    transition: box-shadow 0.25s ease, transform 0.25s ease, border-color 0.25s ease;
+  }
+
+  .card::before {
+    position: absolute;
+    inset: 0 0 auto;
+    height: 0.3rem;
+    background: linear-gradient(90deg, var(--color-primary), var(--color-accent));
+    content: '';
   }
 
   .card:hover {
     box-shadow: var(--shadow-card-hover);
-    transform: translateY(-0.125rem);
+    transform: translateY(-0.3rem);
+    border-color: var(--color-primary);
     color: var(--color-text);
   }
 
@@ -52,8 +63,8 @@ const { href, title, description, cta } = Astro.props;
 
   .card .cta {
     margin-top: 0.25rem;
-    color: var(--color-accent);
+    color: var(--color-primary);
     font-size: var(--text-sm);
-    font-weight: 600;
+    font-weight: 800;
   }
 </style>
