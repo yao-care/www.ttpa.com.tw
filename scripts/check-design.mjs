@@ -27,15 +27,15 @@ function walk(dir) {
 }
 
 function scan(file) {
-  const rel = relative(".", file);
+  const rel = relative(".", file).replaceAll("\\", "/");
   if (extname(file) === ".css") {
-    const inStyles = rel.startsWith(join("src", "styles") + "/");
+    const inStyles = rel.startsWith("src/styles/");
     if (!inStyles || !STYLE_WHITELIST.has(basename(file)))
       violations.push(
         `${rel} css 檔不在白名單（統一 css：src/styles/{${[...STYLE_WHITELIST].join(",")}}；元件樣式用 scoped <style>）`
       );
   }
-  const isTokenFile = rel === TOKEN_FILE;
+  const isTokenFile = rel === TOKEN_FILE.replaceAll("\\", "/");
   const lines = readFileSync(file, "utf8").split("\n");
   lines.forEach((line, i) => {
     const loc = `${rel}:${i + 1}`;

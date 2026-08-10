@@ -2,3 +2,5 @@ node_modules/
 dist/
 .astro/
 .source/
+.pnpm-store/
+.astro-precheck-backup/
