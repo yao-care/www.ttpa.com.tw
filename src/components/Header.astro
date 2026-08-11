@@ -114,9 +114,26 @@ const nav: NavItem[] = [
   const dropdowns = Array.from(header?.querySelectorAll<HTMLDetailsElement>('.has-children > details') ?? []);
   const desktopLayout = window.matchMedia('(min-width: 1280px)');
   const precisePointer = window.matchMedia('(hover: hover) and (pointer: fine)');
+  const closeTimers = new WeakMap<HTMLDetailsElement, number>();
+
+  const cancelScheduledClose = (dropdown: HTMLDetailsElement) => {
+    const timer = closeTimers.get(dropdown);
+    if (timer !== undefined) window.clearTimeout(timer);
+    closeTimers.delete(dropdown);
+  };
+
+  const scheduleClose = (dropdown: HTMLDetailsElement) => {
+    cancelScheduledClose(dropdown);
+    const timer = window.setTimeout(() => {
+      dropdown.open = false;
+      closeTimers.delete(dropdown);
+    }, 220);
+    closeTimers.set(dropdown, timer);
+  };
 
   const closeDropdowns = (exception?: HTMLDetailsElement) => {
     dropdowns.forEach((dropdown) => {
+      cancelScheduledClose(dropdown);
       if (dropdown !== exception) dropdown.open = false;
     });
   };
@@ -143,13 +160,14 @@ const nav: NavItem[] = [
 
     item?.addEventListener('pointerenter', () => {
       if (desktopLayout.matches && precisePointer.matches) {
+        cancelScheduledClose(dropdown);
         closeDropdowns(dropdown);
         dropdown.open = true;
       }
     });
 
     item?.addEventListener('pointerleave', () => {
-      if (desktopLayout.matches && precisePointer.matches) dropdown.open = false;
+      if (desktopLayout.matches && precisePointer.matches) scheduleClose(dropdown);
     });
 
     summary?.addEventListener('click', (event) => {
@@ -267,7 +285,7 @@ const nav: NavItem[] = [
     display: block;
   }
 
-  .site-nav ul {
+  .site-nav > ul {
     list-style: none;
     margin: 0.5rem 0 0;
     padding: 0;
@@ -325,6 +343,7 @@ const nav: NavItem[] = [
   }
 
   .submenu {
+    margin: 0;
     padding-inline-start: 1rem;
   }
 
@@ -378,7 +397,7 @@ const nav: NavItem[] = [
     .has-children details[open] .submenu {
       position: absolute;
       inset-inline-start: 0;
-      top: 100%;
+      top: calc(100% - 0.1rem);
       min-width: 16rem;
       max-width: min(22rem, calc(100vw - 2rem));
       background: var(--color-white);
