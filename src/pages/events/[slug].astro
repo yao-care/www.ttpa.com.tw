@@ -39,6 +39,10 @@ const base = import.meta.env.BASE_URL.endsWith('/')
 const imageSrc = image ? (/^https?:\/\//.test(image) ? image : `${base}${image}`) : undefined;
 const isAiPlatform = event.id === 'ai-pharma-tech-matching';
 const isTzuchiWorkshop = event.id === 'ai-workshop-taichung-tzuchi';
+const eventBody = event.body ?? '';
+const bodyHasContactDetails = [contactPhone, contactEmail].some(
+  (value) => Boolean(value && eventBody.includes(value))
+);
 ---
 
 {
@@ -188,7 +192,7 @@ const isTzuchiWorkshop = event.id === 'ai-workshop-taichung-tzuchi';
               )
             }
             {
-              (contactName || contactPhone || contactEmail) && (
+              !bodyHasContactDetails && (contactName || contactPhone || contactEmail) && (
                 <div>
                   <dt>聯絡窗口</dt>
                   <dd>

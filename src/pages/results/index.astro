@@ -1,0 +1,651 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const base = import.meta.env.BASE_URL.endsWith('/')
+  ? import.meta.env.BASE_URL
+  : `${import.meta.env.BASE_URL}/`;
+
+const results = (await getCollection('results')).sort((a, b) => {
+  const aTime = a.data.date?.getTime() ?? 0;
+  const bTime = b.data.date?.getTime() ?? 0;
+  return bTime - aTime;
+});
+
+const ongoing = results.filter((item) => item.data.stage !== 'completed');
+const completed = results.filter((item) => item.data.stage === 'completed');
+
+const pillars = [
+  {
+    number: '01',
+    title: '專業教育賦能',
+    body: '把新工具、新知識轉化成醫療人員能實際操作、帶回工作現場的方法。',
+  },
+  {
+    number: '02',
+    title: '場域合作共創',
+    body: '依醫院、藥局與專業社群的真實需求，設計課程、研討會與客製專班。',
+  },
+  {
+    number: '03',
+    title: '醫藥科技媒合',
+    body: '串連第一線需求與技術團隊，從痛點盤點、方案對話逐步走向實務驗證。',
+  },
+];
+
+const impactFacts = [
+  { value: '全台多場', label: '走入醫院、公會與專業研習場域' },
+  { value: '100+', label: '累計完成上百位學員培訓' },
+  { value: '跨五類角色', label: '醫、藥、護、醫事與行政共同學習' },
+];
+
+const gallery = [
+  {
+    src: `${base}img/gallery-dahan-seminar.jpg`,
+    alt: '健康照護與遠距藥事研討會講者及協會代表合影',
+    caption: '國際與跨域交流',
+  },
+  {
+    src: `${base}img/gallery-ai-course.jpg`,
+    alt: 'AI 高效工作坊學員完訓合影',
+    caption: '醫療 AI 實作培訓',
+  },
+  {
+    src: `${base}img/gallery-training-certificate.jpg`,
+    alt: 'Notion 進階實戰工作坊學員持完訓證書合影',
+    caption: '數位工作流進階實作',
+  },
+  {
+    src: `${base}img/gallery-student-participation.jpg`,
+    alt: '協會代表與參與研討會的青年學子合影',
+    caption: '青年人才參與',
+  },
+];
+---
+
+<BaseLayout
+  title="活動成果｜臺灣遠距藥事照護協會"
+  description="從專業培訓、醫療場域合作到醫藥科技媒合，看見臺灣遠距藥事照護協會如何把專業轉化為可持續的行動。"
+>
+  <main>
+    <header class="results-hero">
+      <div class="hero-media" aria-hidden="true">
+        <img src={`${base}img/gallery-professional-exchange.jpg`} alt="" width="1600" height="900" />
+      </div>
+      <div class="hero-scrim" aria-hidden="true"></div>
+      <div class="container hero-inner">
+        <p class="eyebrow">TTPA IMPACT</p>
+        <h1>專業不是口號，<br />是一場場落地的行動</h1>
+        <p class="hero-lede">
+          從醫療教育、跨專業交流到科技媒合，我們把第一線需求帶進課程與合作，
+          也把可行的方法帶回照護現場。
+        </p>
+        <div class="hero-actions">
+          <a class="button button-primary" href="#featured-results">探索活動成果 <span aria-hidden="true">↓</span></a>
+          <a class="button button-ghost" href={`${base}contact/`}>洽談合作 <span aria-hidden="true">→</span></a>
+        </div>
+      </div>
+    </header>
+
+    <section class="proof-section" aria-label="協會培訓成果摘要">
+      <div class="container proof-grid">
+        {
+          impactFacts.map((fact) => (
+            <div>
+              <strong>{fact.value}</strong>
+              <span>{fact.label}</span>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="impact-intro" aria-labelledby="impact-title">
+      <div class="container intro-layout">
+        <div class="intro-heading">
+          <p class="eyebrow">WHAT WE CREATE</p>
+          <h2 id="impact-title">讓每一次活動，成為下一次合作的起點</h2>
+        </div>
+        <p class="intro-copy">
+          活動成果不只是照片紀錄。我們整理每場活動解決的問題、串連的夥伴與延伸價值，
+          讓醫療院所、專業社群與科技團隊能快速理解協會的實務能力。
+        </p>
+      </div>
+      <div class="container pillar-grid">
+        {
+          pillars.map((pillar) => (
+            <article class="pillar-card">
+              <span>{pillar.number}</span>
+              <h3>{pillar.title}</h3>
+              <p>{pillar.body}</p>
+            </article>
+          ))
+        }
+      </div>
+    </section>
+
+    {
+      ongoing.length > 0 && (
+        <section class="ongoing-section" aria-labelledby="ongoing-title">
+          <div class="container">
+            <div class="section-heading">
+              <div>
+                <p class="eyebrow">IN PROGRESS</p>
+                <h2 id="ongoing-title">正在發生的合作</h2>
+              </div>
+              <p>把已完成的交流延伸成下一階段的實作與驗證。</p>
+            </div>
+
+            <div class="ongoing-grid">
+              {ongoing.map((item) => (
+                <a class="ongoing-card" href={`${base}results/${item.id}/`}>
+                  <img src={`${base}${item.data.image}`} alt={item.data.imageAlt} width="960" height="640" />
+                  <div class="ongoing-content">
+                    <div class="card-meta">
+                      <span class={`stage stage-${item.data.stage}`}>{item.data.stageLabel}</span>
+                      <span>{item.data.dateLabel}</span>
+                    </div>
+                    <h3>{item.data.title}</h3>
+                    <p>{item.data.summary}</p>
+                    <span class="text-link">查看合作進程 <span aria-hidden="true">→</span></span>
+                  </div>
+                </a>
+              ))}
+            </div>
+          </div>
+        </section>
+      )
+    }
+
+    <section class="results-section" id="featured-results" aria-labelledby="results-title">
+      <div class="container">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">SELECTED OUTCOMES</p>
+            <h2 id="results-title">代表性活動成果</h2>
+          </div>
+          <p>以需求、行動與貢獻重新整理，不重複活動報名頁的議程資訊。</p>
+        </div>
+
+        <div class="result-grid">
+          {
+            completed.map((item) => (
+              <a class="result-card" href={`${base}results/${item.id}/`}>
+                <div class="result-image">
+                  <img src={`${base}${item.data.image}`} alt={item.data.imageAlt} loading="lazy" width="960" height="640" />
+                  <span class="result-category">{item.data.category}</span>
+                </div>
+                <div class="result-body">
+                  <div class="card-meta">
+                    <span>{item.data.stageLabel}</span>
+                    <span>{item.data.dateLabel}</span>
+                  </div>
+                  <h3>{item.data.title}</h3>
+                  <p>{item.data.summary}</p>
+                  <span class="text-link">閱讀成果故事 <span aria-hidden="true">→</span></span>
+                </div>
+              </a>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    <section class="gallery-section" aria-labelledby="gallery-title">
+      <div class="container">
+        <div class="section-heading section-heading-light">
+          <div>
+            <p class="eyebrow">FIELD NOTES</p>
+            <h2 id="gallery-title">從現場，看見連結發生</h2>
+          </div>
+          <p>每一張影像，都是專業交流、共同學習與人才培育的具體紀錄。</p>
+        </div>
+        <div class="gallery-grid">
+          {
+            gallery.map((item, index) => (
+              <figure class:list={{ 'gallery-wide': index === 0 }}>
+                <img src={item.src} alt={item.alt} loading="lazy" width="960" height="640" />
+                <figcaption>{item.caption}</figcaption>
+              </figure>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    <section class="collaboration-cta" aria-labelledby="collaboration-title">
+      <div class="container cta-inner">
+        <div>
+          <p class="eyebrow">BUILD WITH TTPA</p>
+          <h2 id="collaboration-title">有一個醫療現場的問題，想一起解決？</h2>
+          <p>歡迎醫療院所、藥局、學校、專業組織與科技團隊，和我們討論客製培訓、活動協作或技術媒合。</p>
+        </div>
+        <a class="button button-primary" href={`${base}contact/`}>提出合作構想 <span aria-hidden="true">→</span></a>
+      </div>
+    </section>
+  </main>
+</BaseLayout>
+
+<style>
+  .results-hero {
+    position: relative;
+    isolation: isolate;
+    display: flex;
+    min-height: min(49rem, 86vh);
+    align-items: end;
+    overflow: hidden;
+    background: var(--color-primary-dark);
+  }
+
+  .hero-media,
+  .hero-scrim,
+  .hero-media img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .hero-media {
+    z-index: -3;
+  }
+
+  .hero-media img {
+    object-fit: cover;
+    object-position: center 42%;
+  }
+
+  .hero-scrim {
+    z-index: -2;
+    background: linear-gradient(90deg, var(--color-primary-a80), var(--scrim-20));
+  }
+
+  .hero-inner {
+    width: 100%;
+    padding-block: clamp(4rem, 10vw, 8rem);
+  }
+
+  .eyebrow {
+    margin: 0 0 0.5rem;
+    color: var(--color-primary);
+    font-size: var(--text-xs);
+    font-weight: 800;
+    letter-spacing: 0.12em;
+  }
+
+  .results-hero .eyebrow {
+    color: var(--color-brand-tint);
+  }
+
+  .results-hero h1 {
+    max-width: 54rem;
+    margin: 0;
+    color: var(--color-white);
+    font-size: var(--text-3xl);
+    text-shadow: var(--shadow-text);
+  }
+
+  .hero-lede {
+    max-width: 48rem;
+    margin: 1.25rem 0 0;
+    color: var(--color-white);
+    font-size: var(--text-lg);
+  }
+
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 1.75rem;
+  }
+
+  .button {
+    display: inline-flex;
+    min-height: 3.5rem;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.4rem;
+    border: 1px solid transparent;
+    border-radius: 999rem;
+    font-weight: 800;
+    text-decoration: none;
+  }
+
+  .button-primary {
+    background: var(--color-accent);
+    color: var(--color-white);
+  }
+
+  .button-primary:hover {
+    background: var(--color-accent-dark);
+    color: var(--color-white);
+  }
+
+  .button-ghost {
+    border-color: var(--color-white-a20);
+    background: var(--color-white-a10);
+    color: var(--color-white);
+  }
+
+  .button-ghost:hover {
+    background: var(--color-white-a20);
+    color: var(--color-white);
+  }
+
+  .impact-intro,
+  .results-section,
+  .ongoing-section,
+  .gallery-section,
+  .collaboration-cta {
+    padding-block: clamp(3.5rem, 8vw, 6.5rem);
+  }
+
+  .proof-section {
+    background: var(--color-primary-dark);
+    color: var(--color-white);
+  }
+
+  .proof-grid {
+    display: grid;
+    padding-block: 1.25rem;
+  }
+
+  .proof-grid > div {
+    padding-block: 0.8rem;
+    border-bottom: 1px solid var(--color-white-a20);
+  }
+
+  .proof-grid > div:last-child {
+    border-bottom: 0;
+  }
+
+  .proof-grid strong,
+  .proof-grid span {
+    display: block;
+  }
+
+  .proof-grid strong {
+    color: var(--color-white);
+    font-size: var(--text-xl);
+  }
+
+  .proof-grid span {
+    margin-top: 0.2rem;
+    color: var(--color-brand-tint);
+    font-size: var(--text-xs);
+  }
+
+  .intro-layout,
+  .section-heading,
+  .cta-inner {
+    display: grid;
+    gap: 1.25rem;
+  }
+
+  .intro-heading h2,
+  .section-heading h2,
+  .cta-inner h2 {
+    margin: 0;
+  }
+
+  .intro-copy,
+  .section-heading > p,
+  .cta-inner p {
+    margin: 0;
+    color: var(--color-ink-soft);
+  }
+
+  .pillar-grid {
+    display: grid;
+    gap: 1rem;
+    margin-top: 2.5rem;
+  }
+
+  .pillar-card {
+    padding: 1.5rem;
+    border-top: 0.25rem solid var(--color-brand);
+    border-radius: 0 0 1.25rem 1.25rem;
+    background: var(--color-brand-soft);
+  }
+
+  .pillar-card > span {
+    color: var(--color-primary);
+    font-size: var(--text-xs);
+    font-weight: 800;
+  }
+
+  .pillar-card h3 {
+    margin: 1rem 0 0.4rem;
+    color: var(--color-primary-dark);
+  }
+
+  .pillar-card p {
+    margin: 0;
+    color: var(--color-ink-soft);
+  }
+
+  .ongoing-section,
+  .results-section {
+    background: var(--color-bg-light);
+  }
+
+  .results-section {
+    padding-top: 0;
+  }
+
+  .section-heading {
+    align-items: end;
+    margin-bottom: 2rem;
+  }
+
+  .ongoing-grid,
+  .result-grid {
+    display: grid;
+    gap: 1.25rem;
+  }
+
+  .ongoing-card,
+  .result-card {
+    overflow: hidden;
+    border: 1px solid var(--color-line);
+    border-radius: 1.5rem;
+    background: var(--color-white);
+    box-shadow: var(--shadow-card);
+    color: var(--color-text);
+    text-decoration: none;
+  }
+
+  .ongoing-card:hover,
+  .result-card:hover {
+    color: var(--color-text);
+  }
+
+  .ongoing-card img,
+  .result-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .ongoing-card > img {
+    aspect-ratio: 16 / 10;
+  }
+
+  .ongoing-content,
+  .result-body {
+    padding: clamp(1.25rem, 3vw, 2rem);
+  }
+
+  .card-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    color: var(--color-ink-muted);
+    font-size: var(--text-xs);
+    font-weight: 700;
+  }
+
+  .stage {
+    color: var(--color-primary);
+  }
+
+  .stage-ongoing,
+  .stage-upcoming {
+    color: var(--color-accent);
+  }
+
+  .ongoing-content h3,
+  .result-body h3 {
+    margin: 0.75rem 0 0.5rem;
+    color: var(--color-primary-dark);
+  }
+
+  .ongoing-content p,
+  .result-body p {
+    margin: 0;
+    color: var(--color-ink-soft);
+  }
+
+  .text-link {
+    display: inline-flex;
+    gap: 0.4rem;
+    margin-top: 1rem;
+    color: var(--color-accent);
+    font-weight: 800;
+  }
+
+  .result-image {
+    position: relative;
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+  }
+
+  .result-category {
+    position: absolute;
+    inset: auto auto 1rem 1rem;
+    padding: 0.3rem 0.8rem;
+    border-radius: 999rem;
+    background: var(--color-primary-a80);
+    color: var(--color-white);
+    font-size: var(--text-xs);
+    font-weight: 800;
+  }
+
+  .gallery-section {
+    background: var(--color-primary-dark);
+  }
+
+  .section-heading-light h2,
+  .section-heading-light > p {
+    color: var(--color-white);
+  }
+
+  .section-heading-light .eyebrow {
+    color: var(--color-brand-tint);
+  }
+
+  .gallery-grid {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .gallery-grid figure {
+    position: relative;
+    min-height: 18rem;
+    margin: 0;
+    overflow: hidden;
+    border-radius: 1.25rem;
+    background: var(--color-primary);
+  }
+
+  .gallery-grid img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .gallery-grid figcaption {
+    position: absolute;
+    inset: auto 0 0;
+    padding: 2.5rem 1rem 1rem;
+    background: linear-gradient(0deg, var(--color-primary-a80), var(--scrim-0));
+    color: var(--color-white);
+    font-weight: 800;
+  }
+
+  .collaboration-cta {
+    background: var(--color-brand-soft);
+  }
+
+  .cta-inner {
+    align-items: center;
+  }
+
+  @media (min-width: 768px) {
+    .proof-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .proof-grid > div {
+      padding: 0.5rem 1.5rem;
+      border-right: 1px solid var(--color-white-a20);
+      border-bottom: 0;
+    }
+
+    .proof-grid > div:first-child {
+      padding-inline-start: 0;
+    }
+
+    .proof-grid > div:last-child {
+      padding-inline-end: 0;
+      border-right: 0;
+    }
+
+    .intro-layout,
+    .section-heading,
+    .cta-inner {
+      grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+    }
+
+    .pillar-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .ongoing-card {
+      display: grid;
+      grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+    }
+
+    .ongoing-card > img {
+      aspect-ratio: auto;
+      min-height: 24rem;
+    }
+
+    .result-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .gallery-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .cta-inner .button {
+      justify-self: end;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .result-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .gallery-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .gallery-wide {
+      grid-column: span 2;
+    }
+  }
+</style>

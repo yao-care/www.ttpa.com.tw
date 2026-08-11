@@ -7,8 +7,8 @@
 // 這是接通既有標籤的既定路由，非新增文案。
 // 2026-07-28 獨立驗收（.source/_final-audit.md P4）指出前一版註解誤稱三項原始 href 皆為
 // `#`，已依 01-home.md 原文修正此註解（不影響實際頁面行為，三項本就正確導向真實內部頁面）。
-// 2026-07-29 依協會正式回覆（.source/_questions-for-ttpa.md A9）將章程頁顯示文字統一改為
-// 協會定案的正式名稱「組織章程」（網址 /charter/ 不變）；並依 A1 回覆補上秘書處地址。
+// 2026-08-11 依資訊層級檢視，完整聯絡資料集中於 /contact/ 單一維護；頁尾只保留
+// 服務入口，避免會員頁、聯絡頁與各活動頁在相鄰區塊重複電話、信箱及地址。
 const base = import.meta.env.BASE_URL.endsWith('/')
   ? import.meta.env.BASE_URL
   : `${import.meta.env.BASE_URL}/`;
@@ -23,14 +23,10 @@ const base = import.meta.env.BASE_URL.endsWith('/')
       </p>
     </div>
 
-    <div class="footer-col">
-      <h2>聯絡我們</h2>
-      <ul class="plain">
-        <li>秘書處 邱昶智 秘書長</li>
-        <li><a href="tel:0911095529">0911-095-529</a></li>
-        <li><a href="mailto:ttpa2014@gmail.com">ttpa2014@gmail.com</a></li>
-        <li>臺中市東區東義街 6 巷 6 號 1 樓</li>
-      </ul>
+    <div class="footer-col footer-service">
+      <h2>服務入口</h2>
+      <p>入會、活動或合作相關問題，請由聯絡頁取得最新窗口資訊。</p>
+      <a class="footer-contact" href={`${base}contact/`}>前往聯絡我們 <span aria-hidden="true">→</span></a>
     </div>
 
     <div class="footer-col">
@@ -39,6 +35,7 @@ const base = import.meta.env.BASE_URL.endsWith('/')
         <li><a href={`${base}charter/`}>組織章程</a></li>
         <li><a href={`${base}membership/`}>加入會員</a></li>
         <li><a href={`${base}news/`}>最新消息</a></li>
+        <li><a href={`${base}results/`}>活動成果</a></li>
       </ul>
     </div>
   </div>
@@ -94,6 +91,28 @@ const base = import.meta.env.BASE_URL.endsWith('/')
     font-size: var(--text-xs);
     color: var(--color-white);
     margin-block: 0 0.4rem;
+  }
+
+  .footer-service p {
+    max-width: 19rem;
+    margin: 0 0 0.35rem;
+    color: var(--color-brand-tint);
+    font-size: var(--text-xs);
+    line-height: 1.5;
+  }
+
+  .footer-contact {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    color: var(--color-white);
+    font-size: var(--text-xs);
+    font-weight: 700;
+    text-underline-offset: 0.2rem;
+  }
+
+  .footer-contact:hover {
+    color: var(--color-brand-tint);
   }
 
   ul.plain {

@@ -71,4 +71,32 @@ const announcements = defineCollection({
   }),
 });
 
-export const collections = { events, courses, announcements };
+const results = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/results' }),
+  schema: z.object({
+    title: z.string(),
+    eyebrow: z.string(),
+    dateLabel: z.string(),
+    date: z.coerce.date().optional(),
+    stage: z.enum(['completed', 'ongoing', 'upcoming']),
+    stageLabel: z.string(),
+    category: z.string(),
+    location: z.string().optional(),
+    summary: z.string(),
+    contribution: z.string(),
+    partners: z.array(z.string()).default([]),
+    audiences: z.array(z.string()).default([]),
+    highlights: z.array(z.string()).default([]),
+    image: z.string(),
+    imageAlt: z.string(),
+    gallery: z.array(z.object({
+      src: z.string(),
+      alt: z.string(),
+      caption: z.string(),
+    })).default([]),
+    sourceLink: z.string().optional(),
+    featured: z.boolean().default(false),
+  }),
+});
+
+export const collections = { events, courses, announcements, results };

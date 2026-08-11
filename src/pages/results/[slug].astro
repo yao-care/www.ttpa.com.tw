@@ -1,0 +1,525 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export async function getStaticPaths() {
+  const results = await getCollection('results');
+  return results.map((result) => ({
+    params: { slug: result.id },
+    props: { result },
+  }));
+}
+
+const { result } = Astro.props;
+const { Content } = await render(result);
+const {
+  title,
+  eyebrow,
+  dateLabel,
+  stage,
+  stageLabel,
+  category,
+  location,
+  summary,
+  contribution,
+  partners,
+  audiences,
+  highlights,
+  image,
+  imageAlt,
+  gallery,
+  sourceLink,
+} = result.data;
+
+const base = import.meta.env.BASE_URL.endsWith('/')
+  ? import.meta.env.BASE_URL
+  : `${import.meta.env.BASE_URL}/`;
+---
+
+<BaseLayout title={`${title}｜活動成果｜臺灣遠距藥事照護協會`} description={summary}>
+  <main>
+    <header class="result-hero">
+      <div class="hero-media" aria-hidden="true">
+        <img src={`${base}${image}`} alt="" width="1600" height="900" />
+      </div>
+      <div class="hero-scrim" aria-hidden="true"></div>
+      <div class="container hero-inner">
+        <a class="back-link" href={`${base}results/`}>← 返回活動成果</a>
+        <div class="hero-meta">
+          <span class={`stage stage-${stage}`}>{stageLabel}</span>
+          <span>{category}</span>
+        </div>
+        <p class="eyebrow">{eyebrow}</p>
+        <h1>{title}</h1>
+        <p class="hero-summary">{summary}</p>
+      </div>
+    </header>
+
+    <section class="facts-section" aria-label="成果摘要">
+      <div class="container facts-grid">
+        <div>
+          <span>時間</span>
+          <strong>{dateLabel}</strong>
+        </div>
+        {
+          location && (
+            <div>
+              <span>場域</span>
+              <strong>{location}</strong>
+            </div>
+          )
+        }
+        <div>
+          <span>協會貢獻</span>
+          <strong>{contribution}</strong>
+        </div>
+      </div>
+    </section>
+
+    <section class="story-section" aria-labelledby="story-title">
+      <div class="container story-layout">
+        <article class="story-main">
+          <p class="eyebrow">THE STORY</p>
+          <h2 id="story-title">從需求出發，把專業帶進現場</h2>
+          <div class="prose">
+            <Content />
+          </div>
+
+          {
+            highlights.length > 0 && (
+              <div class="highlight-block">
+                <h3>這場行動留下什麼</h3>
+                <ul>
+                  {highlights.map((highlight) => <li>{highlight}</li>)}
+                </ul>
+              </div>
+            )
+          }
+        </article>
+
+        <aside class="story-aside" aria-label="合作與參與對象">
+          {
+            partners.length > 0 && (
+              <section>
+                <span class="aside-label">合作夥伴</span>
+                <ul>
+                  {partners.map((partner) => <li>{partner}</li>)}
+                </ul>
+              </section>
+            )
+          }
+          {
+            audiences.length > 0 && (
+              <section>
+                <span class="aside-label">參與對象</span>
+                <div class="tag-list">
+                  {audiences.map((audience) => <span>{audience}</span>)}
+                </div>
+              </section>
+            )
+          }
+          {
+            sourceLink && (
+              <a class="source-link" href={`${base}${sourceLink}`}>
+                查看活動議程與原始資訊 <span aria-hidden="true">→</span>
+              </a>
+            )
+          }
+        </aside>
+      </div>
+    </section>
+
+    <section class="visual-section" aria-labelledby="visual-title">
+      <div class="container">
+        <div class="section-heading">
+          <p class="eyebrow">MOMENTS</p>
+          <h2 id="visual-title">活動紀錄</h2>
+          <p>用影像保存專業交流、共同學習與合作推進的過程。</p>
+        </div>
+
+        {
+          gallery.length > 0 ? (
+            <div class="visual-grid">
+              {gallery.map((item) => (
+                <figure>
+                  <img src={`${base}${item.src}`} alt={item.alt} loading="lazy" width="1200" height="800" />
+                  <figcaption>{item.caption}</figcaption>
+                </figure>
+              ))}
+            </div>
+          ) : (
+            <figure class="visual-feature">
+              <img src={`${base}${image}`} alt={imageAlt} loading="lazy" width="1200" height="800" />
+              <figcaption>{title}活動紀錄</figcaption>
+            </figure>
+          )
+        }
+      </div>
+    </section>
+
+    <section class="next-step" aria-labelledby="next-step-title">
+      <div class="container next-step-inner">
+        <div>
+          <p class="eyebrow">NEXT COLLABORATION</p>
+          <h2 id="next-step-title">把下一個需求，變成可執行的合作</h2>
+          <p>如果您的單位也在思考醫療培訓、數位轉型或醫藥科技應用，歡迎和協會討論。</p>
+        </div>
+        <a class="button" href={`${base}contact/`}>洽談合作 <span aria-hidden="true">→</span></a>
+      </div>
+    </section>
+  </main>
+</BaseLayout>
+
+<style>
+  .result-hero {
+    position: relative;
+    isolation: isolate;
+    display: flex;
+    min-height: min(44rem, 80vh);
+    align-items: end;
+    overflow: hidden;
+    background: var(--color-primary-dark);
+  }
+
+  .hero-media,
+  .hero-scrim,
+  .hero-media img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .hero-media {
+    z-index: -3;
+  }
+
+  .hero-media img {
+    object-fit: cover;
+  }
+
+  .hero-scrim {
+    z-index: -2;
+    background: linear-gradient(90deg, var(--color-primary-a80), var(--scrim-30));
+  }
+
+  .hero-inner {
+    width: 100%;
+    padding-block: clamp(3rem, 9vw, 7rem);
+  }
+
+  .back-link {
+    display: inline-flex;
+    margin-bottom: 1.5rem;
+    color: var(--color-white);
+    font-size: var(--text-sm);
+    text-decoration: none;
+  }
+
+  .back-link:hover {
+    color: var(--color-brand-tint);
+  }
+
+  .hero-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .hero-meta span {
+    padding: 0.25rem 0.75rem;
+    border: 1px solid var(--color-white-a20);
+    border-radius: 999rem;
+    background: var(--color-white-a10);
+    color: var(--color-white);
+    font-size: var(--text-xs);
+    font-weight: 800;
+  }
+
+  .hero-meta .stage-ongoing,
+  .hero-meta .stage-upcoming {
+    background: var(--color-accent);
+  }
+
+  .eyebrow {
+    margin: 0 0 0.5rem;
+    color: var(--color-primary);
+    font-size: var(--text-xs);
+    font-weight: 800;
+    letter-spacing: 0.1em;
+  }
+
+  .result-hero .eyebrow {
+    color: var(--color-brand-tint);
+  }
+
+  .result-hero h1 {
+    max-width: 58rem;
+    margin: 0;
+    color: var(--color-white);
+    font-size: var(--text-3xl);
+    text-shadow: var(--shadow-text);
+  }
+
+  .hero-summary {
+    max-width: 50rem;
+    margin: 1.25rem 0 0;
+    color: var(--color-white);
+    font-size: var(--text-lg);
+  }
+
+  .facts-section {
+    background: var(--color-primary-dark);
+    color: var(--color-white);
+  }
+
+  .facts-grid {
+    display: grid;
+    gap: 0;
+    padding-block: 1.5rem;
+  }
+
+  .facts-grid > div {
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--color-white-a20);
+  }
+
+  .facts-grid > div:last-child {
+    border-bottom: 0;
+  }
+
+  .facts-grid span,
+  .facts-grid strong {
+    display: block;
+  }
+
+  .facts-grid span {
+    color: var(--color-brand-tint);
+    font-size: var(--text-xs);
+    font-weight: 700;
+  }
+
+  .facts-grid strong {
+    margin-top: 0.25rem;
+    color: var(--color-white);
+    font-size: var(--text-sm);
+  }
+
+  .story-section,
+  .visual-section,
+  .next-step {
+    padding-block: clamp(3.5rem, 8vw, 6.5rem);
+  }
+
+  .story-layout,
+  .next-step-inner {
+    display: grid;
+    gap: 2rem;
+    align-items: start;
+  }
+
+  .story-main h2,
+  .section-heading h2,
+  .next-step h2 {
+    margin: 0;
+  }
+
+  .prose {
+    max-width: 52rem;
+    margin-top: 1.5rem;
+  }
+
+  .prose :global(p) {
+    color: var(--color-ink-soft);
+  }
+
+  .highlight-block {
+    margin-top: 2.5rem;
+    padding: 1.5rem;
+    border-radius: 1.25rem;
+    background: var(--color-brand-soft);
+  }
+
+  .highlight-block h3 {
+    margin: 0 0 0.75rem;
+    color: var(--color-primary-dark);
+  }
+
+  .highlight-block ul {
+    display: grid;
+    gap: 0.5rem;
+    margin: 0;
+    padding-inline-start: 1.5rem;
+  }
+
+  .story-aside {
+    overflow: hidden;
+    border: 1px solid var(--color-line);
+    border-radius: 1.25rem;
+    background: var(--color-white);
+    box-shadow: var(--shadow-card);
+  }
+
+  .story-aside section {
+    padding: 1.5rem;
+  }
+
+  .story-aside section + section {
+    border-top: 1px solid var(--color-line);
+  }
+
+  .aside-label {
+    display: block;
+    margin-bottom: 0.75rem;
+    color: var(--color-primary-dark);
+    font-size: var(--text-xs);
+    font-weight: 800;
+  }
+
+  .story-aside ul {
+    margin: 0;
+    padding-inline-start: 1.5rem;
+    color: var(--color-ink-soft);
+    font-size: var(--text-sm);
+  }
+
+  .tag-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .tag-list span {
+    padding: 0.25rem 0.75rem;
+    border-radius: 999rem;
+    background: var(--color-brand-soft);
+    color: var(--color-primary-dark);
+    font-size: var(--text-xs);
+    font-weight: 700;
+  }
+
+  .source-link {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1.25rem 1.5rem;
+    background: var(--color-primary-dark);
+    color: var(--color-white);
+    font-weight: 800;
+    text-decoration: none;
+  }
+
+  .source-link:hover {
+    color: var(--color-brand-tint);
+  }
+
+  .visual-section {
+    background: var(--color-bg-light);
+  }
+
+  .section-heading {
+    max-width: 48rem;
+    margin-bottom: 2rem;
+  }
+
+  .section-heading > p:last-child {
+    margin: 0.5rem 0 0;
+    color: var(--color-ink-soft);
+  }
+
+  .visual-grid {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .visual-grid figure,
+  .visual-feature {
+    margin: 0;
+    overflow: hidden;
+    border-radius: 1.25rem;
+    background: var(--color-white);
+    box-shadow: var(--shadow-card);
+  }
+
+  .visual-grid img,
+  .visual-feature img {
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    object-fit: cover;
+  }
+
+  .visual-grid figcaption,
+  .visual-feature figcaption {
+    padding: 1rem 1.25rem;
+    color: var(--color-ink-soft);
+    font-size: var(--text-sm);
+  }
+
+  .next-step {
+    background: var(--color-brand-soft);
+  }
+
+  .next-step p:not(.eyebrow) {
+    margin: 0.75rem 0 0;
+    color: var(--color-ink-soft);
+  }
+
+  .button {
+    display: inline-flex;
+    min-height: 3.5rem;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.4rem;
+    border-radius: 999rem;
+    background: var(--color-accent);
+    color: var(--color-white);
+    font-weight: 800;
+    text-decoration: none;
+  }
+
+  .button:hover {
+    background: var(--color-accent-dark);
+    color: var(--color-white);
+  }
+
+  @media (min-width: 768px) {
+    .facts-grid {
+      grid-template-columns: minmax(0, 0.7fr) minmax(0, 1fr) minmax(0, 2fr);
+    }
+
+    .facts-grid > div {
+      padding: 0.5rem 1.25rem;
+      border-right: 1px solid var(--color-white-a20);
+      border-bottom: 0;
+    }
+
+    .facts-grid > div:first-child {
+      padding-inline-start: 0;
+    }
+
+    .facts-grid > div:last-child {
+      border-right: 0;
+      padding-inline-end: 0;
+    }
+
+    .story-layout {
+      grid-template-columns: minmax(0, 1fr) minmax(18rem, 0.4fr);
+    }
+
+    .story-aside {
+      position: sticky;
+      top: 6.5rem;
+    }
+
+    .visual-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .next-step-inner {
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: center;
+    }
+  }
+</style>

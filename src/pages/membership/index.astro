@@ -5,6 +5,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 
 const membershipFormUrl = 'https://forms.gle/PjWC93Uz5ZafzcVD8';
+const base = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL : `${import.meta.env.BASE_URL}/`;
 
 const benefits = [
   {
@@ -146,12 +147,15 @@ const steps = [
 
   <section class="help">
     <div class="container help-inner">
-      <h2>需要協助嗎？</h2>
-      <p>若有入會、繳費或會籍相關問題，歡迎聯繫秘書處。</p>
-      <ul class="plain">
-        <li><a href="tel:0911095529">0911-095-529（邱秘書長）</a></li>
-        <li><a href="mailto:ttpa2014@gmail.com">ttpa2014@gmail.com</a></li>
-      </ul>
+      <div>
+        <p class="help-label">MEMBER SUPPORT</p>
+        <h2>入會申請需要協助？</h2>
+        <p>秘書處可協助處理入會、繳費與會籍相關問題。</p>
+      </div>
+      <div class="help-actions">
+        <a class="btn btn-primary" href={`${base}contact/`}>查看聯絡方式</a>
+        <a class="btn btn-secondary" href="tel:0911095529">直接致電秘書處</a>
+      </div>
     </div>
   </section>
 </BaseLayout>
@@ -267,6 +271,22 @@ const steps = [
     color: var(--color-white);
   }
 
+  .btn-secondary {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    border: 1px solid var(--color-brand-tint);
+    border-radius: 999px;
+    background: var(--color-white);
+    color: var(--color-primary-dark);
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  .btn-secondary:hover {
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+  }
+
   .remit-card {
     background: var(--color-white);
     border: 1px solid var(--color-line);
@@ -301,21 +321,39 @@ const steps = [
     color: var(--color-ink-soft);
   }
 
-  .help {
-    text-align: center;
+  section.help {
+    padding-block: clamp(1.25rem, 3vw, 2rem);
+    background: var(--color-brand-soft);
   }
 
-  .help p {
+  .help-inner {
+    display: grid;
+    gap: 1rem;
+    align-items: center;
+  }
+
+  .help-label {
+    margin: 0 0 0.15rem;
+    color: var(--color-primary);
+    font-size: var(--text-xs);
+    font-weight: 800;
+    letter-spacing: 0.06em;
+  }
+
+  .help h2 {
+    margin-bottom: 0.25rem;
+    font-size: var(--text-xl);
+  }
+
+  .help p:not(.help-label) {
+    margin: 0;
     color: var(--color-ink-soft);
   }
 
-  ul.plain {
-    list-style: none;
-    margin: 0.5rem 0 0;
-    padding: 0;
+  .help-actions {
     display: flex;
-    flex-direction: column;
-    gap: 0.25rem;
+    flex-wrap: wrap;
+    gap: 0.65rem;
   }
 
   @media (min-width: 768px) {
@@ -325,6 +363,10 @@ const steps = [
 
     .apply-inner {
       grid-template-columns: 1.4fr 1fr;
+    }
+
+    .help-inner {
+      grid-template-columns: minmax(0, 1fr) auto;
     }
   }
 </style>
