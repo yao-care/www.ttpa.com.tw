@@ -51,47 +51,49 @@ const base = import.meta.env.BASE_URL.endsWith('/')
     position: relative;
     overflow: hidden;
     background: var(--color-primary-dark);
-    margin-top: clamp(2rem, 6vw, 4rem);
-    padding-block: clamp(2rem, 6vw, 3rem);
+    margin-top: clamp(1rem, 3vw, 2rem);
+    padding-block: clamp(1.25rem, 3vw, 1.75rem);
     color: var(--color-white);
   }
 
   .site-footer::before {
     position: absolute;
-    width: 18rem;
-    height: 18rem;
+    width: 12rem;
+    height: 12rem;
     border-radius: 50%;
     background: var(--color-white-a10);
     content: '';
-    inset: -9rem -6rem auto auto;
+    inset: -7rem -5rem auto auto;
     pointer-events: none;
   }
 
   .footer-inner {
     display: grid;
-    gap: 2rem;
+    gap: 1.25rem;
     grid-template-columns: 1fr;
   }
 
   .footer-brand img {
-    width: 4.5rem;
+    width: 3.25rem;
     height: auto;
-    margin-bottom: 0.75rem;
-    padding: 0.65rem;
-    border-radius: 1rem;
+    margin-bottom: 0.5rem;
+    padding: 0.4rem;
+    border-radius: 0.7rem;
     background: var(--color-white);
   }
 
   .footer-desc {
     color: var(--color-brand-tint);
-    font-size: var(--text-sm);
-    max-width: 32rem;
+    font-size: var(--text-xs);
+    line-height: 1.55;
+    max-width: 28rem;
+    margin: 0;
   }
 
   .footer-col h2 {
-    font-size: var(--text-base);
+    font-size: var(--text-xs);
     color: var(--color-white);
-    margin-block: 0 0.75rem;
+    margin-block: 0 0.4rem;
   }
 
   ul.plain {
@@ -100,8 +102,9 @@ const base = import.meta.env.BASE_URL.endsWith('/')
     padding: 0;
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
-    font-size: var(--text-sm);
+    gap: 0.2rem;
+    font-size: var(--text-xs);
+    line-height: 1.5;
     color: var(--color-brand-tint);
   }
 
@@ -114,10 +117,10 @@ const base = import.meta.env.BASE_URL.endsWith('/')
   }
 
   .copyright {
-    margin: clamp(1.5rem, 4vw, 2rem) auto 0;
+    margin: 1rem auto 0;
     max-width: 72rem;
     padding-inline: clamp(1rem, 4vw, 2rem);
-    padding-top: 1.5rem;
+    padding-top: 0.75rem;
     border-top: 1px solid var(--color-white-a20);
     font-size: var(--text-xs);
     color: var(--color-brand-tint);
@@ -125,7 +128,18 @@ const base = import.meta.env.BASE_URL.endsWith('/')
 
   @media (min-width: 768px) {
     .footer-inner {
-      grid-template-columns: 2fr 1fr 1fr;
+      grid-template-columns: 2.2fr 1.3fr 1fr;
+    }
+
+    .footer-brand {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 0.8rem;
+      align-items: start;
+    }
+
+    .footer-brand img {
+      margin-bottom: 0;
     }
   }
 </style>

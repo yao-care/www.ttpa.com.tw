@@ -53,6 +53,9 @@
   --text-2xl: clamp(2rem, 1.5rem + 2vw, 2.75rem);   /* 32→44px 頁面主標 */
   --text-3xl: clamp(2.75rem, 2rem + 3.5vw, 4.5rem); /* 44→72px Hero/裝飾大字 */
 
+  /* ── 共用版面尺寸 ── */
+  --site-header-height: 4.5rem;
+
   /* ── 字型（系統堆疊，不載外部字型） ── */
   --font-sans: 'Noto Sans TC', 'PingFang TC', 'Microsoft JhengHei', system-ui, sans-serif;
   --font-serif: 'Noto Serif TC', 'PingFang TC', 'Microsoft JhengHei', serif;
