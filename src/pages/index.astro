@@ -47,14 +47,13 @@ const services = [
   },
 ];
 
-// 活動花絮，逐字取自 01-home.md:90-97（原站為跑馬燈，此處以靜態網格呈現同一輪內容）
-// 圖片已於 2026-07-28 由外連 Google/Unsplash 下載自託管至 public/img/（見該檔頭註解），
-// 避免協會日後在 Google 端刪改導致正式站破圖；此輪只動 src 路徑，未增刪圖片或文案。
+// 首頁只保留三張代表性成果作為導覽預告；完整故事與照片集中於 /results/，
+// 避免首頁與成果專區重複展示相同內容。圖片皆為 public/img/ 自託管資源。
 const gallery = [
   {
     src: `${base}img/gallery-dahan-seminar.jpg`,
-    alt: '大仁科技大學國際研討會',
-    caption: '114年 大仁科技大學國際研討會',
+    alt: '健康照護與遠距藥事研討會講者及協會代表合影',
+    caption: '健康照護與遠距藥事交流',
   },
   {
     src: `${base}img/gallery-ai-course.jpg`,
@@ -62,34 +61,9 @@ const gallery = [
     caption: 'AI 高效系列課程',
   },
   {
-    src: `${base}img/gallery-professional-exchange.jpg`,
-    alt: '專業交流',
-    caption: '醫事專業交流與培訓',
-  },
-  {
     src: `${base}img/gallery-training-certificate.jpg`,
-    alt: '專業遠距培訓證書',
-    caption: '專業遠距培訓證書',
-  },
-  {
-    src: `${base}img/gallery-student-participation.jpg`,
-    alt: '培養在學學生參與公眾活動',
-    caption: '培養在學學生參與公眾活動',
-  },
-  {
-    src: `${base}img/gallery-medtech.jpg`,
-    alt: '醫療科技應用',
-    caption: '醫療科技應用研討',
-  },
-  {
-    src: `${base}img/gallery-highlights-1.png`,
-    alt: '協會活動花絮',
-    caption: '協會活動花絮',
-  },
-  {
-    src: `${base}img/gallery-highlights-2.png`,
-    alt: '協會活動花絮',
-    caption: '協會活動花絮',
+    alt: 'Notion 醫藥專業人士進階應用實戰工作坊完訓合影',
+    caption: '數位工作流進階實作',
   },
 ];
 
@@ -197,7 +171,7 @@ const homeSubpages = [
   <section class="gallery">
     <div class="container">
       <h2>協會近期活動與成果</h2>
-      <p class="section-lede">持續推動醫療教育與國際交流</p>
+      <p class="section-lede">協會已在全台舉辦多場工作坊、完成上百位學員培訓，並持續推動場域合作與科技媒合。</p>
       <div class="gallery-grid">
         {
           gallery.map((item) => (
@@ -208,6 +182,7 @@ const homeSubpages = [
           ))
         }
       </div>
+      <a class="gallery-cta" href={`${base}results/`}>探索完整活動成果 <span aria-hidden="true">→</span></a>
     </div>
   </section>
 
@@ -429,6 +404,25 @@ const homeSubpages = [
     font-size: var(--text-xs);
     color: var(--color-ink-soft);
     text-align: center;
+  }
+
+  .gallery-cta {
+    display: flex;
+    width: fit-content;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 1.5rem auto 0;
+    padding: 0.7rem 1.2rem;
+    border-radius: 999rem;
+    background: var(--color-accent);
+    color: var(--color-white);
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .gallery-cta:hover {
+    background: var(--color-accent-dark);
+    color: var(--color-white);
   }
 
   /* Partners */
