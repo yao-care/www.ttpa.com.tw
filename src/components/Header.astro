@@ -2,7 +2,8 @@
 // 全站共用頂部導覽。
 // 決定（用戶已拍板，見交辦說明與 .source/_ia-plan.md § 3、決定項 9）：
 //   9 大項全部攤平放進 header，不比照原站「頂部只露 5 條」的 Google Sites 限制；
-//   活動報名專區／線上課程推廣／首頁 用下拉（<details>）收納子頁，全站零 JS。
+//   活動報名專區／線上課程推廣／首頁 用下拉（<details>）收納子頁；少量原生 JS
+//   負責互斥開啟、離開收合與鍵盤操作，避免下拉選單彼此重疊。
 // 路由對照：逐條取自 .source/_ia-plan.md § 1 路由對照表，一頁不漏、不擅自加頁。
 // ⚠ 有 base 子路徑：每一條連結都經 base 組合，不硬編 /xxx。
 // 2026-07-29 依協會正式回覆移除「主題專欄」（.source/_questions-for-ttpa.md A10：內容過於
@@ -66,14 +67,13 @@ const nav: NavItem[] = [
       <span class="site-title">臺灣遠距藥事照護協會</span>
     </a>
 
-    <input type="checkbox" id="nav-toggle" class="nav-toggle" />
-    <label for="nav-toggle" class="nav-toggle-label" aria-label="開啟主選單">
+    <button class="nav-toggle-label" type="button" aria-expanded="false" aria-controls="primary-navigation" aria-label="開啟主選單">
       <span class="bar"></span>
       <span class="bar"></span>
       <span class="bar"></span>
-    </label>
+    </button>
 
-    <nav class="site-nav" aria-label="主要導覽">
+    <nav id="primary-navigation" class="site-nav" aria-label="主要導覽">
       <ul>
         {
           nav.map((item) =>
@@ -107,6 +107,92 @@ const nav: NavItem[] = [
   </div>
 </header>
 
+<script>
+  const header = document.querySelector<HTMLElement>('.site-header');
+  const menuButton = header?.querySelector<HTMLButtonElement>('.nav-toggle-label');
+  const navigation = header?.querySelector<HTMLElement>('.site-nav');
+  const dropdowns = Array.from(header?.querySelectorAll<HTMLDetailsElement>('.has-children > details') ?? []);
+  const desktopLayout = window.matchMedia('(min-width: 1280px)');
+  const precisePointer = window.matchMedia('(hover: hover) and (pointer: fine)');
+
+  const closeDropdowns = (exception?: HTMLDetailsElement) => {
+    dropdowns.forEach((dropdown) => {
+      if (dropdown !== exception) dropdown.open = false;
+    });
+  };
+
+  const setMobileNavigation = (open: boolean) => {
+    if (!menuButton || !navigation) return;
+    navigation.classList.toggle('is-open', open);
+    menuButton.setAttribute('aria-expanded', String(open));
+    menuButton.setAttribute('aria-label', open ? '關閉主選單' : '開啟主選單');
+    if (!open) closeDropdowns();
+  };
+
+  menuButton?.addEventListener('click', () => {
+    setMobileNavigation(menuButton.getAttribute('aria-expanded') !== 'true');
+  });
+
+  dropdowns.forEach((dropdown) => {
+    const item = dropdown.closest<HTMLElement>('.has-children');
+    const summary = dropdown.querySelector<HTMLElement>('summary');
+
+    dropdown.addEventListener('toggle', () => {
+      if (dropdown.open) closeDropdowns(dropdown);
+    });
+
+    item?.addEventListener('pointerenter', () => {
+      if (desktopLayout.matches && precisePointer.matches) {
+        closeDropdowns(dropdown);
+        dropdown.open = true;
+      }
+    });
+
+    item?.addEventListener('pointerleave', () => {
+      if (desktopLayout.matches && precisePointer.matches) dropdown.open = false;
+    });
+
+    summary?.addEventListener('click', (event) => {
+      if (desktopLayout.matches && precisePointer.matches) {
+        event.preventDefault();
+        closeDropdowns(dropdown);
+        dropdown.open = true;
+      }
+    });
+
+    dropdown.addEventListener('focusout', () => {
+      requestAnimationFrame(() => {
+        if (!dropdown.contains(document.activeElement)) dropdown.open = false;
+      });
+    });
+  });
+
+  navigation?.querySelectorAll<HTMLAnchorElement>('a').forEach((link) => {
+    link.addEventListener('click', () => setMobileNavigation(false));
+  });
+
+  document.addEventListener('pointerdown', (event) => {
+    if (header && !header.contains(event.target as Node)) {
+      closeDropdowns();
+      setMobileNavigation(false);
+    }
+  });
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') {
+      closeDropdowns();
+      setMobileNavigation(false);
+      menuButton?.focus();
+    }
+  });
+
+  window.addEventListener('scroll', () => {
+    if (desktopLayout.matches) closeDropdowns();
+  }, { passive: true });
+
+  desktopLayout.addEventListener('change', () => setMobileNavigation(false));
+</script>
+
 <style>
   .site-header {
     position: sticky;
@@ -122,8 +208,8 @@ const nav: NavItem[] = [
     align-items: center;
     justify-content: space-between;
     flex-wrap: wrap;
-    min-height: 5rem;
-    padding-block: 0.65rem;
+    min-height: var(--site-header-height);
+    padding-block: 0.45rem;
   }
 
   .logo-link {
@@ -135,22 +221,15 @@ const nav: NavItem[] = [
   }
 
   .logo-link img {
-    width: 3rem;
+    width: 2.75rem;
     height: auto;
   }
 
   .site-title {
-    font-size: var(--text-lg);
+    font-size: var(--text-base);
     font-weight: 800;
     color: var(--color-primary-dark);
     letter-spacing: -0.02em;
-  }
-
-  /* 漢堡選單：純 CSS checkbox hack，零 JS */
-  .nav-toggle {
-    position: absolute;
-    opacity: 0;
-    pointer-events: none;
   }
 
   .nav-toggle-label {
@@ -162,6 +241,7 @@ const nav: NavItem[] = [
     padding: 0.5rem;
     cursor: pointer;
     justify-content: center;
+    border: 0;
     border-radius: 0.75rem;
     background: var(--color-brand-soft);
   }
@@ -183,7 +263,7 @@ const nav: NavItem[] = [
     background: var(--color-brand-soft);
   }
 
-  .nav-toggle:checked ~ .site-nav {
+  .site-nav.is-open {
     display: block;
   }
 
@@ -203,7 +283,7 @@ const nav: NavItem[] = [
     border-radius: 0.65rem;
     color: var(--color-primary-dark);
     text-decoration: none;
-    font-size: var(--text-sm);
+    font-size: var(--text-xs);
     font-weight: 700;
     transition: color 0.2s ease, background 0.2s ease;
   }
@@ -215,7 +295,7 @@ const nav: NavItem[] = [
 
   .has-children summary {
     padding: 0.75rem 0.25rem;
-    font-size: var(--text-sm);
+    font-size: var(--text-xs);
     color: var(--color-primary-dark);
     font-weight: 700;
     cursor: pointer;
@@ -228,9 +308,15 @@ const nav: NavItem[] = [
   }
 
   .has-children summary::after {
+    display: inline-block;
     content: '▾';
     margin-inline-start: 0.4rem;
     color: var(--color-ink-soft);
+    transition: transform 0.2s ease;
+  }
+
+  .has-children details[open] > summary::after {
+    transform: rotate(180deg);
   }
 
   .has-children details[open] > summary {
@@ -246,8 +332,8 @@ const nav: NavItem[] = [
     color: var(--color-ink-soft);
   }
 
-  /* 桌面版（lg：1024px 起）：橫向導覽列，永遠展開，下拉用 details 點擊收放 */
-  @media (min-width: 1024px) {
+  /* 寬桌面才顯示完整橫向選單，避免中型螢幕硬塞所有導覽項目。 */
+  @media (min-width: 1280px) {
     .nav-toggle-label {
       display: none;
     }
@@ -265,7 +351,7 @@ const nav: NavItem[] = [
     .site-nav > ul {
       display: flex;
       align-items: center;
-      gap: 0.25rem;
+      gap: 0.1rem;
       margin: 0;
     }
 
@@ -275,7 +361,7 @@ const nav: NavItem[] = [
     }
 
     .site-nav a {
-      padding: 0.5rem 0.75rem;
+      padding: 0.45rem 0.6rem;
       white-space: nowrap;
     }
 
@@ -286,7 +372,7 @@ const nav: NavItem[] = [
     }
 
     .has-children summary {
-      padding: 0.5rem 0.75rem;
+      padding: 0.45rem 0.6rem;
     }
 
     .has-children details[open] .submenu {
@@ -294,6 +380,7 @@ const nav: NavItem[] = [
       inset-inline-start: 0;
       top: 100%;
       min-width: 16rem;
+      max-width: min(22rem, calc(100vw - 2rem));
       background: var(--color-white);
       border: 1px solid var(--color-brand-tint);
       border-radius: 1rem;
@@ -309,6 +396,8 @@ const nav: NavItem[] = [
     .submenu a {
       padding: 0.5rem 0.75rem;
       border-radius: 0.65rem;
+      white-space: normal;
+      line-height: 1.4;
     }
 
     .submenu a:hover {
