@@ -15,7 +15,7 @@ registrationLink: "https://forms.gle/sKTmJHRs5s7Jf1hu7"
 contactName: "邱昶智"
 contactPhone: "0911-095-529"
 contactEmail: "ttpa2014@gmail.com"
-image: "img/event-yuanrung-seminar.jpg"
+image: "img/gallery-professional-exchange.jpg"
 featured: true
 sourceSlug: "22-event-yuanrung"
 ---
