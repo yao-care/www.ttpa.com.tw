@@ -23,8 +23,12 @@ highlights:
   - "五大醫療數位轉型實務主題"
   - "跨醫、藥、護與資訊專業交流"
   - "連結醫院場域與專業社群"
-image: "img/event-yuanrung-seminar.jpg"
-imageAlt: "員榮醫院醫療資訊與臨床應用研討會主視覺"
+image: "img/gallery-professional-exchange.jpg"
+imageAlt: "臺灣遠距藥事照護協會跨專業研討活動合影"
+gallery:
+  - src: "img/gallery-professional-exchange.jpg"
+    alt: "臺灣遠距藥事照護協會跨專業研討活動合影"
+    caption: "以面對面交流聚合臨床、藥事與資訊觀點，讓數位轉型回到真實工作需求。"
 sourceLink: "events/yuanrung-hospital-seminar/"
 featured: true
 ---

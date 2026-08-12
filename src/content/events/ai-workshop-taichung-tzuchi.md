@@ -15,7 +15,7 @@ category: "課程活動"
 summary: "專為醫療專業與行政人員設計的初階實作課程，從 Gemini、NotebookLM 到 ChatGPT 與 Notion，協助您運用 AI 提升臨床效率與知識管理。"
 registrationLink: "https://forms.gle/a1sP8scPVTe6fWmBA"
 contactEmail: "ttpa2014@gmail.com"
-image: "img/event-ai-workshop-tzuchi.jpg"
+image: "img/gallery-ai-course.jpg"
 featured: true
 sourceSlug: "21-event-ai-highschool"
 ---
