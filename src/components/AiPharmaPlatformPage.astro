@@ -29,6 +29,24 @@ const phaseOneTopics = [
   },
 ];
 
+const phaseOneGallery = [
+  {
+    image: 'img/results/ai-pharma-tech-matching/session-overview.webp',
+    alt: 'AI 醫藥科技媒合平台交流會全場活動紀錄',
+    caption: '專題分享凝聚醫藥現場與科技團隊的共同問題意識。',
+  },
+  {
+    image: 'img/results/ai-pharma-tech-matching/solution-showcase.webp',
+    alt: '科技團隊於交流會現場展示藥局系統解決方案',
+    caption: '開發團隊展示藥局系統，讓功能與場域需求直接對話。',
+  },
+  {
+    image: 'img/results/ai-pharma-tech-matching/system-discussion.webp',
+    alt: '與會者圍繞設備進行系統操作與交流',
+    caption: '參與者實際檢視操作流程，提出第一線使用回饋。',
+  },
+];
+
 const phaseTwoHighlights = [
   { icon: '⌘', title: '手把手教案與實作', text: '以可跟著完成的操作流程，帶你理解 AI 如何進入藥事服務與日常經營。' },
   { icon: '◎', title: '專家實務經驗分享', text: '從醫院、社區藥局到科技團隊，直接拆解導入過程與常見挑戰。' },
@@ -102,7 +120,7 @@ const phaseTwoSchedule = [
 
         <div class="hero-visual" data-reveal data-delay="1">
           <div class="hero-image-frame">
-            <img src={asset(image)} alt="醫藥專業人員運用 AI 與數位科技的情境" width="1600" height="900" />
+            <img src={asset(image)} alt="AI 醫藥科技媒合平台與會夥伴於活動現場合影" width="1600" height="900" />
             <span class="image-label">醫藥現場 × AI 解方 × 跨域媒合</span>
           </div>
           <a class="qr-card" href={registrationLink} target="_blank" rel="noopener noreferrer" aria-label="掃描或點擊 QR Code 前往 AI 醫藥科技媒合平台二部曲報名表">
@@ -165,6 +183,14 @@ const phaseTwoSchedule = [
             <span class="topic-number">{topic.number}</span>
             <div><h3>{topic.title}</h3><p>{topic.text}</p><ul>{topic.items.map((item) => <li>{item}</li>)}</ul></div>
           </article>
+        ))}
+      </div>
+      <div class="container recap-gallery" aria-label="6 月 6 日首部曲活動照片">
+        {phaseOneGallery.map((photo, index) => (
+          <figure data-reveal data-delay={String(index)}>
+            <img src={asset(photo.image)} alt={photo.alt} loading="lazy" width="1600" height="900" />
+            <figcaption>{photo.caption}</figcaption>
+          </figure>
         ))}
       </div>
     </section>
@@ -372,6 +398,11 @@ const phaseTwoSchedule = [
   .topic-card ul { margin: 1.1rem 0 0; padding: 0; list-style: none; }
   .topic-card li { position: relative; padding: .55rem 0 .55rem 1.5rem; border-top: 1px solid var(--color-line); color: var(--color-text); font-weight: 700; }
   .topic-card li::before { position: absolute; left: .2rem; color: var(--color-accent); content: '✓'; }
+  .recap-gallery { display: grid; gap: 1rem; margin-top: 1.5rem; }
+  .recap-gallery figure { overflow: hidden; margin: 0; border: 1px solid var(--color-workshop-tint); border-radius: 1.25rem; background: var(--color-white); box-shadow: var(--shadow-card); }
+  .recap-gallery img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; transition: transform .35s ease; }
+  .recap-gallery figure:hover img { transform: scale(1.025); }
+  .recap-gallery figcaption { padding: .9rem 1rem 1rem; color: var(--color-ink-soft); font-size: var(--text-xs); line-height: 1.6; }
   .phase-two { background: var(--color-white); }
   .highlight-grid { display: grid; gap: 1.2rem; }
   .highlight-card { padding: 1.7rem; border: 1px solid var(--color-workshop-tint); border-radius: 1.4rem; background: var(--color-white); box-shadow: var(--shadow-card); transition: transform .25s ease, border-color .25s ease, box-shadow .25s ease; }
@@ -431,6 +462,7 @@ const phaseTwoSchedule = [
     .highlight-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
     .schedule-intro { grid-template-columns: 1fr auto; align-items: end; }
     .organizers dl > div { grid-template-columns: 7rem 1fr; }
+    .recap-gallery { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   }
   @media (min-width: 768px) {
     .platform-links { display: flex; }

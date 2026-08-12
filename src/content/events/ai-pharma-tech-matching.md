@@ -9,7 +9,7 @@ status: "🔥 熱烈報名中"
 category: "專案計畫"
 summary: "縮短科技與醫療的距離！讓「一線藥局痛點」成為「科技開發起點」，誠摯邀請社區藥局與科技廠商參與意願調查，共同開拓智慧照護互利市場。"
 registrationLink: "https://docs.google.com/forms/d/e/1FAIpQLSebNvAixSpqjfn1wiaeKQ-HAtnmbUgSqwJQgAvi7hPvWr-BbQ/viewform"
-image: "img/gallery-highlights-1.png"
+image: "img/results/ai-pharma-tech-matching/hero-group-photo.jpg"
 featured: true
 sourceSlug: "23-event-ai-platform"
 ---
