@@ -1,319 +1,834 @@
 ---
-// 組織架構與夥伴招募。內容逐字取自 .source/05-org.md（組織架構圖／六大分組招募／報名流程與權益），
-// 未增刪潤飾。組織圖依原站文字方塊＋連接線之層級關係逐項列出（05-org.md:21 擷取者已註明
-// 原站以圖形呈現、非表格）。
 import BaseLayout from '../layouts/BaseLayout.astro';
 
-// 逐字取自 05-org.md:47-99，六大分組
+const applicationFormUrl = 'https://forms.gle/VEceR7m15DrVp4mz5';
+const applicationEmail = 'mailto:ttpa2014@gmail.com?subject=我想成為TTPA好夥伴!';
+
 const groups = [
   {
-    title: '1. 活動企劃組',
+    number: '01',
+    title: '活動企劃組',
     subtitle: '專案與活動設計執行',
-    traits: '特質：創意力強、專案執行力、能掌控時程、抗壓性高。',
-    bonus: '加分：有辦活動經驗，熟悉簡報設計或專案工具 (Trello, Notion)。',
-    tasks: '主要任務：年度課程規劃、流程設計、廠商講者協調、撰寫計畫書與報告。',
+    traits: '創意力強、專案執行力、能掌控時程、抗壓性高。',
+    bonus: '有辦活動經驗，熟悉簡報設計或專案工具（Trello、Notion）。',
+    tasks: '年度課程規劃、流程設計、廠商講者協調、撰寫計畫書與報告。',
   },
   {
-    title: '2. 行銷推廣組',
+    number: '02',
+    title: '行銷推廣組',
     subtitle: '宣傳與品牌形象',
-    traits: '特質：擅長文字視覺表達、熟悉社群操作、具行銷思維。',
-    bonus: '加分：能獨立製作宣傳素材 (Canva, AI繪圖, 影片剪輯)。',
-    tasks: '主要任務：行銷計畫設計、素材製作、經營社群平台、活動報名推廣。',
+    traits: '擅長文字視覺表達、熟悉社群操作、具行銷思維。',
+    bonus: '能獨立製作宣傳素材（Canva、AI 繪圖、影片剪輯）。',
+    tasks: '行銷計畫設計、素材製作、經營社群平台、活動報名推廣。',
   },
   {
-    title: '3. 後勤庶務組',
+    number: '03',
+    title: '後勤庶務組',
     subtitle: '行政與內部支持',
-    traits: '特質：細心、耐心、紀律性高、樂於支援團隊、溝通協調力佳。',
-    bonus: '加分：有行政庶務經驗，熟悉文書處理與檔案管理。',
-    tasks: '主要任務：會議安排紀錄、檔案管理、活動現場支援、會員資料維護。',
+    traits: '細心、耐心、紀律性高、樂於支援團隊、溝通協調力佳。',
+    bonus: '有行政庶務經驗，熟悉文書處理與檔案管理。',
+    tasks: '會議安排紀錄、檔案管理、活動現場支援、會員資料維護。',
   },
   {
-    title: '4. 財務組',
+    number: '04',
+    title: '財務組',
     subtitle: '經費管理與財務出入',
-    traits: '特質：嚴謹、誠信、數字敏感度高、具備財務規劃能力。',
-    bonus: '加分：具會計或財務背景，能熟練使用 Excel 或會計軟體。',
-    tasks: '主要任務：收支管理、編列年度預算與報表、收費退款流程、贊助財務追蹤。',
+    traits: '嚴謹、誠信、數字敏感度高、具備財務規劃能力。',
+    bonus: '具會計或財務背景，能熟練使用 Excel 或會計軟體。',
+    tasks: '收支管理、編列年度預算與報表、收費退款流程、贊助財務追蹤。',
   },
   {
-    title: '5. 客戶關係組',
+    number: '05',
+    title: '客戶關係組',
     subtitle: '會員與參與者經營',
-    traits: '特質：親和力強、耐心傾聽、解決問題能力佳、服務導向。',
-    bonus: '加分：有客服或會員管理經驗，能妥善處理抱怨與衝突。',
-    tasks: '主要任務：會員出入會服務、滿意度調查、建立關懷制度、社群互動聯繫。',
+    traits: '親和力強、耐心傾聽、解決問題能力佳、服務導向。',
+    bonus: '有客服或會員管理經驗，能妥善處理抱怨與衝突。',
+    tasks: '會員出入會服務、滿意度調查、建立關懷制度、社群互動聯繫。',
   },
   {
-    title: '6. 合作發展組',
+    number: '06',
+    title: '合作發展組',
     subtitle: '外部資源與合作拓展',
-    traits: '特質：擅長談判協調、具對外拓展能力、具戰略思維與國際觀。',
-    bonus: '加分：有產學合作、對外聯繫或國際交流經驗。',
-    tasks: '主要任務：對接產官學界與機構、開發跨領域合作、爭取贊助與戰略夥伴。',
+    traits: '擅長談判協調、具對外拓展能力、具戰略思維與國際觀。',
+    bonus: '有產學合作、對外聯繫或國際交流經驗。',
+    tasks: '對接產官學界與機構、開發跨領域合作、爭取贊助與戰略夥伴。',
   },
+];
+
+const benefits = [
+  '成為工作夥伴不強制入會，歡迎任何有熱忱的夥伴參與。',
+  '服務滿半年者，協會將提供免收首次入會費之福利。',
+  '服務滿一年者，可免收當年度之常年會費。',
 ];
 ---
 
 <BaseLayout
-  title="組織架構與招募 | 臺灣遠距藥事照護協會 Taiwan Telepharmacy Association"
-  description="TTPA 秘書處正在尋找充滿熱忱、有志於推動醫療數位轉型與遠距照護發展的夥伴。"
+  title="組織架構與夥伴招募 | 臺灣遠距藥事照護協會 Taiwan Telepharmacy Association"
+  description="認識 TTPA 組織架構與六大功能分組，加入推動醫療數位轉型與遠距照護發展的核心夥伴團隊。"
 >
-  <section class="page">
-    <div class="container">
-      <p class="eyebrow">Organization &amp; Recruitment</p>
-      <h1>組織架構與招募</h1>
-
-      <h2>協會組織架構</h2>
-      <ul class="org-chart">
-        <li>
-          會員大會
-          <ul>
-            <li>
-              理事會（理事長） → 秘書處（秘書長）
-              <ul>
-                <li>
-                  秘書處下轄六大分組：
-                  <ul>
-                    <li>活動企劃組</li>
-                    <li>行銷推廣組</li>
-                    <li>後勤庶務組</li>
-                    <li>財務組</li>
-                    <li>客戶關係組</li>
-                    <li>合作發展組</li>
-                  </ul>
-                </li>
-              </ul>
-            </li>
-            <li>監事會（常務監事）</li>
-          </ul>
-        </li>
-      </ul>
-
-      <div class="badge">Join Our Core Team</div>
-      <h2>邀請您加入核心幕僚團隊！</h2>
-      <p class="lede">
-        TTPA
-        秘書處正在尋找充滿熱忱、有志於推動醫療數位轉型與遠距照護發展的夥伴。我們規劃了以下六大功能小組，無論您的專長為何，都能在這裡找到發揮的舞台。
-      </p>
-
-      <div class="groups-grid">
-        {
-          groups.map((group) => (
-            <div class="group-card">
-              <h3>{group.title}</h3>
-              <p class="group-subtitle">{group.subtitle}</p>
-              <p>📌 {group.traits}</p>
-              <p>⭐ {group.bonus}</p>
-              <p class="group-tasks">{group.tasks}</p>
-            </div>
-          ))
-        }
-      </div>
-
-      <h2>報名流程與夥伴權益</h2>
-
-      <div class="flow-grid">
-        <div class="flow-col">
-          <h3>加入流程</h3>
-          <ol>
-            <li>
-              初步通知參與意願
-              <p>
-                請透過協會 Email（
-                <a href="mailto:ttpa2014@gmail.com?subject=我想成為TTPA好夥伴!">ttpa2014@gmail.com</a>
-                ）通知我們，信件主旨請務必標明：我想成為TTPA好夥伴!
-              </p>
-            </li>
-            <li>
-              填寫申請表單
-              <p>完成下方線上報名表單填寫，讓我們更了解您的專長與有興趣參與的組別。</p>
-            </li>
-          </ol>
+  <main class="join-page">
+    <header class="join-hero">
+      <div class="hero-pattern" aria-hidden="true"></div>
+      <div class="container hero-layout">
+        <div class="hero-copy">
+          <p class="eyebrow">ORGANIZATION &amp; RECRUITMENT</p>
+          <h1>組織架構與<br />夥伴招募</h1>
+          <p class="hero-lede">
+            集結醫藥、資訊與跨域專業，一起推動醫療數位轉型與遠距照護的下一步。
+          </p>
+          <div class="hero-actions">
+            <a class="button button-primary" href="#teams">探索六大分組</a>
+            <a class="button button-secondary" href="#apply">了解加入方式</a>
+          </div>
         </div>
 
-        <div class="flow-col">
-          <h3>夥伴專屬權益</h3>
-          <ul>
-            <li>成為工作夥伴不強制入會，歡迎任何有熱忱的夥伴參與。</li>
-            <li>服務滿半年者，協會將提供免收首次入會費之福利。</li>
-            <li>服務滿一年者，可免收當年度之常年會費。</li>
-          </ul>
+        <div class="hero-summary" aria-label="招募重點">
+          <div>
+            <strong>6</strong>
+            <span>大功能分組</span>
+          </div>
+          <div>
+            <strong>2</strong>
+            <span>步驟完成申請</span>
+          </div>
+          <p>無論您的專長為何，都能在團隊中找到發揮的舞台。</p>
         </div>
       </div>
+    </header>
 
-      <div class="cta-actions">
-        <a class="btn btn-primary" href="mailto:ttpa2014@gmail.com?subject=我想成為TTPA好夥伴!">
-          Step 1. 發送意願信件
-        </a>
-        <a class="btn btn-outline" href="https://forms.gle/VEceR7m15DrVp4mz5" target="_blank" rel="noopener noreferrer">
-          Step 2. 填寫報名表單
-        </a>
+    <section class="organization-section" aria-labelledby="organization-heading">
+      <div class="container">
+        <header class="section-heading section-heading-centered">
+          <p class="section-label">OUR STRUCTURE</p>
+          <h2 id="organization-heading">協會組織架構</h2>
+          <p>由會員大會、理監事會與秘書處共同運作，六大功能分組支援協會各項任務。</p>
+        </header>
+
+        <div class="organization-card">
+          <div class="org-root">
+            <span class="node-label">最高權力機構</span>
+            <strong>會員大會</strong>
+          </div>
+
+          <div class="org-connector" aria-hidden="true"></div>
+
+          <div class="governance-grid">
+            <article class="governance-card governance-primary">
+              <span class="node-label">決策與執行</span>
+              <h3>理事會</h3>
+              <p>理事長</p>
+              <div class="sub-node">
+                <span>行政核心</span>
+                <strong>秘書處</strong>
+                <small>秘書長</small>
+              </div>
+            </article>
+
+            <article class="governance-card">
+              <span class="node-label">監督</span>
+              <h3>監事會</h3>
+              <p>常務監事</p>
+            </article>
+          </div>
+
+          <div class="team-branch">
+            <p>秘書處下轄六大功能分組</p>
+            <ul>
+              {groups.map((group) => <li><span>{group.number}</span>{group.title}</li>)}
+            </ul>
+          </div>
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
+
+    <section class="teams-section" id="teams" aria-labelledby="teams-heading">
+      <div class="container">
+        <header class="section-heading teams-heading">
+          <div>
+            <p class="section-label">JOIN OUR CORE TEAM</p>
+            <h2 id="teams-heading">找到適合您的專業位置</h2>
+          </div>
+          <p>
+            TTPA 秘書處正在尋找充滿熱忱、有志於推動醫療數位轉型與遠距照護發展的夥伴。
+          </p>
+        </header>
+
+        <div class="groups-grid">
+          {groups.map((group) => (
+            <article class="group-card">
+              <header>
+                <span class="group-number">{group.number}</span>
+                <div>
+                  <h3>{group.title}</h3>
+                  <p>{group.subtitle}</p>
+                </div>
+              </header>
+
+              <dl>
+                <div>
+                  <dt>適合特質</dt>
+                  <dd>{group.traits}</dd>
+                </div>
+                <div>
+                  <dt>加分能力</dt>
+                  <dd>{group.bonus}</dd>
+                </div>
+              </dl>
+
+              <div class="task-block">
+                <span>主要任務</span>
+                <p>{group.tasks}</p>
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="application-section" id="apply" aria-labelledby="apply-heading">
+      <div class="container application-shell">
+        <header class="application-heading">
+          <p class="section-label">BECOME A PARTNER</p>
+          <h2 id="apply-heading">兩個步驟，加入核心團隊</h2>
+          <p>先讓我們知道您的參與意願，再填寫表單介紹專長與有興趣的組別。</p>
+        </header>
+
+        <div class="application-grid">
+          <div class="steps-panel">
+            <ol class="step-list">
+              <li>
+                <span class="step-number">1</span>
+                <div>
+                  <h3>發送意願信件</h3>
+                  <p>
+                    透過協會 Email 通知我們，信件主旨請標明「我想成為 TTPA 好夥伴！」。
+                  </p>
+                  <a href={applicationEmail}>ttpa2014@gmail.com <span aria-hidden="true">→</span></a>
+                </div>
+              </li>
+              <li>
+                <span class="step-number">2</span>
+                <div>
+                  <h3>填寫申請表單</h3>
+                  <p>完成線上表單，讓我們更了解您的專長與有興趣參與的組別。</p>
+                  <a href={applicationFormUrl} target="_blank" rel="noopener noreferrer">
+                    開啟線上表單 <span aria-hidden="true">↗</span>
+                  </a>
+                </div>
+              </li>
+            </ol>
+          </div>
+
+          <aside class="benefits-panel">
+            <p class="benefits-label">PARTNER BENEFITS</p>
+            <h3>夥伴專屬權益</h3>
+            <ul>
+              {benefits.map((benefit) => <li><span aria-hidden="true">✓</span>{benefit}</li>)}
+            </ul>
+          </aside>
+        </div>
+
+        <div class="application-actions">
+          <a class="button button-primary" href={applicationEmail}>Step 1．發送意願信件</a>
+          <a class="button button-light" href={applicationFormUrl} target="_blank" rel="noopener noreferrer">
+            Step 2．填寫報名表單
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
 </BaseLayout>
 
 <style>
-  .page {
-    padding-block: clamp(2.5rem, 6vw, 4.5rem);
+  .join-page {
+    background: var(--color-bg-light);
   }
 
-  .eyebrow {
-    color: var(--color-ink-soft);
-    font-size: var(--text-sm);
+  .join-hero {
+    position: relative;
+    overflow: hidden;
+    padding-block: clamp(3.5rem, 9vw, 7rem);
+    border-bottom: 1px solid var(--color-brand-tint);
+    background: linear-gradient(140deg, var(--color-brand-soft), var(--color-white));
+  }
+
+  .hero-pattern {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(var(--color-workshop-a10) 1px, transparent 1px),
+      linear-gradient(90deg, var(--color-workshop-a10) 1px, transparent 1px);
+    background-size: 3rem 3rem;
+    mask-image: linear-gradient(to right, var(--color-primary-dark), transparent 82%);
+    opacity: 0.4;
+    pointer-events: none;
+  }
+
+  .hero-layout {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    gap: 2rem;
+    align-items: end;
+  }
+
+  .eyebrow,
+  .section-label,
+  .benefits-label {
     margin: 0;
+    color: var(--color-accent);
+    font-size: var(--text-xs);
+    font-weight: 800;
+    letter-spacing: 0.08em;
   }
 
   h1 {
-    color: var(--color-primary);
-    margin-block: 0.25rem 2rem;
+    margin: 0.45rem 0 1rem;
+    color: var(--color-primary-dark);
+    font-size: var(--text-3xl);
+    line-height: 1.12;
   }
 
-  h2 {
-    color: var(--color-primary);
-    margin-block: 2.5rem 1rem;
-  }
-
-  .lede {
-    color: var(--color-ink-soft);
-    max-width: 48rem;
-    margin: 0 0 1.5rem;
-  }
-
-  .org-chart,
-  .org-chart ul {
+  .hero-lede {
+    max-width: 42rem;
     margin: 0;
-    padding-inline-start: 1.25rem;
-  }
-
-  .org-chart {
-    color: var(--color-text);
-  }
-
-  .org-chart li {
-    margin-block: 0.375rem;
-  }
-
-  .badge {
-    display: inline-block;
-    padding: 0.25rem 1rem;
-    border-radius: 999px;
-    background: var(--color-brand-soft);
-    color: var(--color-primary);
-    font-size: var(--text-xs);
-    font-weight: 600;
-    margin-top: 2.5rem;
-  }
-
-  .groups-grid {
-    display: grid;
-    gap: 1.25rem;
-    grid-template-columns: 1fr;
-  }
-
-  .group-card {
-    background: var(--color-white);
-    border: 1px solid var(--color-line);
-    border-radius: 0.75rem;
-    box-shadow: var(--shadow-card);
-    padding: 1.5rem;
-  }
-
-  .group-card h3 {
-    color: var(--color-primary);
-    margin-block: 0 0.25rem;
-  }
-
-  .group-subtitle {
     color: var(--color-ink-soft);
-    font-size: var(--text-sm);
-    margin: 0 0 0.75rem;
+    font-size: var(--text-base);
   }
 
-  .group-card p {
-    margin: 0 0 0.5rem;
-    font-size: var(--text-sm);
-  }
-
-  .group-tasks {
-    color: var(--color-ink-soft);
-  }
-
-  .flow-grid {
-    display: grid;
-    gap: 1.5rem;
-    grid-template-columns: 1fr;
-  }
-
-  .flow-col h3 {
-    color: var(--color-primary);
-    margin-block: 0 0.75rem;
-  }
-
-  .flow-col ol,
-  .flow-col ul {
-    margin: 0;
-    padding-inline-start: 1.25rem;
-  }
-
-  .flow-col li {
-    margin-bottom: 0.75rem;
-  }
-
-  .flow-col li p {
-    margin: 0.25rem 0 0;
-    color: var(--color-ink-soft);
-    font-size: var(--text-sm);
-  }
-
-  .cta-actions {
+  .hero-actions,
+  .application-actions {
     display: flex;
     flex-wrap: wrap;
-    gap: 1rem;
-    margin-top: 2rem;
+    gap: 0.75rem;
+    margin-top: 1.75rem;
   }
 
-  .btn {
-    display: inline-block;
-    padding: 0.75rem 1.75rem;
-    border-radius: 999px;
-    font-size: var(--text-sm);
-    font-weight: 600;
+  .button {
+    display: inline-flex;
+    min-height: 3.2rem;
+    align-items: center;
+    justify-content: center;
+    padding: 0.7rem 1.4rem;
+    border: 1px solid transparent;
+    border-radius: 999rem;
+    font-size: var(--text-xs);
+    font-weight: 800;
     text-decoration: none;
+    transition: transform 180ms ease, background-color 180ms ease, border-color 180ms ease;
   }
 
-  .btn-primary {
+  .button:hover,
+  .button:focus-visible {
+    transform: translateY(-0.15rem);
+  }
+
+  .button-primary {
     background: var(--color-accent);
     color: var(--color-white);
   }
 
-  .btn-primary:hover {
+  .button-primary:hover,
+  .button-primary:focus-visible {
     background: var(--color-accent-dark);
     color: var(--color-white);
   }
 
-  .btn-outline {
-    border: 1px solid var(--color-primary);
+  .button-secondary {
+    border-color: var(--color-brand-tint);
+    background: var(--color-white);
+    color: var(--color-primary-dark);
+  }
+
+  .button-secondary:hover,
+  .button-secondary:focus-visible {
+    border-color: var(--color-primary);
     color: var(--color-primary);
   }
 
-  .btn-outline:hover {
-    background: var(--color-brand-soft);
+  .hero-summary {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    overflow: hidden;
+    border: 1px solid var(--color-brand-tint);
+    border-radius: 1.5rem;
+    background: var(--color-white);
+    box-shadow: var(--shadow-card);
+  }
+
+  .hero-summary div {
+    display: grid;
+    justify-items: center;
+    padding: 1.5rem 1rem;
+  }
+
+  .hero-summary div + div {
+    border-inline-start: 1px solid var(--color-line);
+  }
+
+  .hero-summary strong {
     color: var(--color-primary);
+    font-size: var(--text-2xl);
+    line-height: 1;
+  }
+
+  .hero-summary span {
+    margin-top: 0.45rem;
+    color: var(--color-ink-soft);
+    font-size: var(--text-xs);
+  }
+
+  .hero-summary > p {
+    grid-column: 1 / -1;
+    margin: 0;
+    padding: 1rem 1.25rem;
+    border-top: 1px solid var(--color-line);
+    background: var(--color-brand-soft);
+    color: var(--color-primary-dark);
+    font-size: var(--text-xs);
+    text-align: center;
+  }
+
+  .organization-section,
+  .teams-section,
+  .application-section {
+    padding-block: clamp(3rem, 8vw, 6rem);
+  }
+
+  .section-heading {
+    margin-bottom: clamp(1.75rem, 5vw, 3rem);
+  }
+
+  .section-heading h2,
+  .application-heading h2 {
+    margin: 0.4rem 0 0.75rem;
+    color: var(--color-primary-dark);
+    font-size: var(--text-2xl);
+  }
+
+  .section-heading > p:last-child,
+  .application-heading > p:last-child {
+    max-width: 46rem;
+    margin: 0;
+    color: var(--color-ink-soft);
+  }
+
+  .section-heading-centered {
+    display: grid;
+    justify-items: center;
+    text-align: center;
+  }
+
+  .organization-card {
+    max-width: 66rem;
+    margin-inline: auto;
+    padding: clamp(1.5rem, 5vw, 3.5rem);
+    border: 1px solid var(--color-line);
+    border-radius: 1.75rem;
+    background: var(--color-white);
+    box-shadow: var(--shadow-card);
+  }
+
+  .org-root {
+    display: grid;
+    width: min(18rem, 100%);
+    justify-items: center;
+    margin-inline: auto;
+    padding: 1.1rem 1.5rem;
+    border-radius: 1rem;
+    background: var(--color-primary-dark);
+    color: var(--color-white);
+  }
+
+  .node-label {
+    color: var(--color-brand-tint);
+    font-size: var(--text-xs);
+  }
+
+  .org-root strong {
+    font-size: var(--text-lg);
+  }
+
+  .org-connector {
+    width: 0.15rem;
+    height: 2.5rem;
+    margin-inline: auto;
+    background: var(--color-brand-tint);
+  }
+
+  .governance-grid {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .governance-card {
+    position: relative;
+    padding: 1.5rem;
+    border: 1px solid var(--color-brand-tint);
+    border-radius: 1.25rem;
+    background: var(--color-brand-soft);
+    text-align: center;
+  }
+
+  .governance-card .node-label {
+    color: var(--color-primary);
+  }
+
+  .governance-card h3 {
+    margin: 0.3rem 0 0;
+    color: var(--color-primary-dark);
+    font-size: var(--text-xl);
+  }
+
+  .governance-card > p {
+    margin: 0.15rem 0 0;
+    color: var(--color-ink-soft);
+    font-size: var(--text-xs);
+  }
+
+  .governance-primary {
+    display: grid;
+    justify-items: center;
+  }
+
+  .sub-node {
+    display: grid;
+    min-width: min(16rem, 100%);
+    margin-top: 1.25rem;
+    padding: 0.9rem 1rem;
+    border-radius: 0.9rem;
+    background: var(--color-accent);
+    color: var(--color-white);
+  }
+
+  .sub-node span,
+  .sub-node small {
+    color: var(--color-brand-tint);
+    font-size: var(--text-xs);
+  }
+
+  .sub-node strong {
+    font-size: var(--text-base);
+  }
+
+  .team-branch {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--color-line);
+  }
+
+  .team-branch > p {
+    margin: 0 0 1rem;
+    color: var(--color-primary-dark);
+    font-weight: 800;
+    text-align: center;
+  }
+
+  .team-branch ul {
+    display: grid;
+    gap: 0.75rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .team-branch li {
+    display: flex;
+    gap: 0.7rem;
+    align-items: center;
+    padding: 0.8rem 1rem;
+    border: 1px solid var(--color-line);
+    border-radius: 0.8rem;
+    color: var(--color-primary-dark);
+    font-size: var(--text-xs);
+    font-weight: 800;
+  }
+
+  .team-branch li span {
+    color: var(--color-accent);
+  }
+
+  .teams-section {
+    scroll-margin-top: calc(var(--site-header-height) + 1rem);
+    background: var(--color-primary-dark);
+    color: var(--color-white);
+  }
+
+  .teams-heading {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .teams-heading .section-label {
+    color: var(--color-brand-tint);
+  }
+
+  .teams-heading h2 {
+    color: var(--color-white);
+  }
+
+  .section-heading.teams-heading > p:last-child {
+    color: var(--color-brand-tint);
+  }
+
+  .groups-grid {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .group-card {
+    display: grid;
+    gap: 1.25rem;
+    padding: 1.4rem;
+    border: 1px solid var(--color-white-a20);
+    border-radius: 1.3rem;
+    background: var(--color-white-a10);
+    transition: transform 180ms ease, background-color 180ms ease;
+  }
+
+  .group-card:hover {
+    background: var(--color-white-a20);
+    transform: translateY(-0.2rem);
+  }
+
+  .group-card header {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 0.9rem;
+    align-items: center;
+  }
+
+  .group-number {
+    display: grid;
+    width: 3.1rem;
+    height: 3.1rem;
+    place-items: center;
+    border-radius: 0.9rem;
+    background: var(--color-accent);
+    color: var(--color-white);
+    font-weight: 800;
+  }
+
+  .group-card h3 {
+    margin: 0;
+    color: var(--color-white);
+    font-size: var(--text-lg);
+  }
+
+  .group-card header p {
+    margin: 0.15rem 0 0;
+    color: var(--color-brand-tint);
+    font-size: var(--text-xs);
+  }
+
+  .group-card dl {
+    display: grid;
+    gap: 0.85rem;
+    margin: 0;
+  }
+
+  .group-card dl div {
+    display: grid;
+    gap: 0.15rem;
+  }
+
+  .group-card dt,
+  .task-block span {
+    color: var(--color-brand-tint);
+    font-size: var(--text-xs);
+    font-weight: 800;
+  }
+
+  .group-card dd,
+  .task-block p {
+    margin: 0;
+    color: var(--color-white);
+    font-size: var(--text-xs);
+    line-height: 1.65;
+  }
+
+  .task-block {
+    padding-top: 1rem;
+    border-top: 1px solid var(--color-white-a20);
+  }
+
+  .application-section {
+    scroll-margin-top: calc(var(--site-header-height) + 1rem);
+  }
+
+  .application-shell {
+    overflow: hidden;
+    padding: clamp(1.5rem, 5vw, 3rem);
+    border: 1px solid var(--color-line);
+    border-radius: 1.75rem;
+    background: var(--color-white);
+    box-shadow: var(--shadow-card);
+  }
+
+  .application-heading {
+    margin-bottom: 2rem;
+  }
+
+  .application-grid {
+    display: grid;
+    gap: 1.25rem;
+  }
+
+  .steps-panel,
+  .benefits-panel {
+    padding: clamp(1.25rem, 4vw, 2rem);
+    border-radius: 1.25rem;
+  }
+
+  .steps-panel {
+    border: 1px solid var(--color-brand-tint);
+    background: var(--color-brand-soft);
+  }
+
+  .step-list {
+    display: grid;
+    gap: 1.5rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .step-list li {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 1rem;
+  }
+
+  .step-number {
+    display: grid;
+    width: 2.5rem;
+    height: 2.5rem;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--color-primary);
+    color: var(--color-white);
+    font-weight: 800;
+  }
+
+  .step-list h3,
+  .benefits-panel h3 {
+    margin: 0;
+    color: var(--color-primary-dark);
+    font-size: var(--text-lg);
+  }
+
+  .step-list p {
+    margin: 0.35rem 0 0.65rem;
+    color: var(--color-ink-soft);
+    font-size: var(--text-xs);
+  }
+
+  .step-list a {
+    color: var(--color-primary);
+    font-size: var(--text-xs);
+    font-weight: 800;
+    text-underline-offset: 0.2rem;
+  }
+
+  .benefits-panel {
+    background: var(--color-primary-dark);
+    color: var(--color-white);
+  }
+
+  .benefits-label {
+    color: var(--color-brand-tint);
+  }
+
+  .benefits-panel h3 {
+    margin-top: 0.4rem;
+    color: var(--color-white);
+  }
+
+  .benefits-panel ul {
+    display: grid;
+    gap: 1rem;
+    margin: 1.25rem 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .benefits-panel li {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 0.7rem;
+    align-items: start;
+    color: var(--color-brand-tint);
+    font-size: var(--text-xs);
+  }
+
+  .benefits-panel li span {
+    display: grid;
+    width: 1.6rem;
+    height: 1.6rem;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--color-accent);
+    color: var(--color-white);
+    font-weight: 800;
+  }
+
+  .application-actions {
+    padding-top: 1.75rem;
+    border-top: 1px solid var(--color-line);
+  }
+
+  .button-light {
+    border-color: var(--color-primary);
+    background: var(--color-white);
+    color: var(--color-primary);
+  }
+
+  .button-light:hover,
+  .button-light:focus-visible {
+    background: var(--color-brand-soft);
+    color: var(--color-primary-dark);
   }
 
   @media (min-width: 640px) {
+    .team-branch ul,
     .groups-grid {
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: repeat(2, minmax(0, 1fr));
     }
   }
 
   @media (min-width: 768px) {
-    .flow-grid {
-      grid-template-columns: repeat(2, 1fr);
+    .hero-layout {
+      grid-template-columns: minmax(0, 1.3fr) minmax(20rem, 0.7fr);
+    }
+
+    .governance-grid {
+      grid-template-columns: minmax(0, 1.45fr) minmax(0, 0.8fr);
+    }
+
+    .team-branch ul {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .teams-heading {
+      grid-template-columns: minmax(0, 1fr) minmax(20rem, 0.75fr);
+      align-items: end;
+    }
+
+    .application-grid {
+      grid-template-columns: minmax(0, 1.2fr) minmax(18rem, 0.8fr);
     }
   }
 
   @media (min-width: 1024px) {
     .groups-grid {
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .button,
+    .group-card {
+      transition: none;
     }
   }
 </style>
