@@ -30,7 +30,7 @@
 
 服務帳號權限已由協會開通。**數字 property ID＝`548816103`**（顯示名 `ttpa.com.tw`，帳戶 `ttpa.com.tw`）。
 ⚠ 該串流的「網站網址」設為 `https://ttpa.com.tw`（apex），與正式網址 `https://www.ttpa.com.tw` 不一致——apex 會 301 到 www 所以不影響收數，但要對齊的話在 GA4 串流設定改。
-查法：`node /root/seo-ops/bin/site-preflight.mjs --domain www.ttpa.com.tw --repo /root/www.ttpa.com.tw --channel "遠距藥事照護-ttpa"`（第 3 段）。
+查法：`node /root/seo-ops/bin/site-preflight.mjs --domain www.ttpa.com.tw --repo /mnt/customer/www.ttpa.com.tw --channel "遠距藥事照護-ttpa"`（第 3 段）。
 
 ## ✅ 已結案：GSC（2026-08-06）
 
@@ -45,8 +45,8 @@ sitemap 已提交：`https://www.ttpa.com.tw/sitemap-index.xml`，讀回 `isPend
 
 ## 待辦 1：納入 seo-ops 三主層
 
-`node /root/seo-ops/bin/site-preflight.mjs --domain www.ttpa.com.tw --repo /root/www.ttpa.com.tw --channel "遠距藥事照護-ttpa"` **2026-08-06 實跑：5 項過 4 項**，唯一 ✗ 是下面那段的金鑰共用（MAINTENANCE.md 要求 exit 0 才納管）。
-納管時可直接沿用 preflight 末行帶出的 config：`ga4PropertyId=548816103`、`gscSiteUrl=sc-domain:ttpa.com.tw`、`saKeyFile=/root/.config/ttpa/ga4-sa.json`、`tokenFile=/root/.config/ttpa/slack-bot-token`、`repo=/root/www.ttpa.com.tw`。
+`node /root/seo-ops/bin/site-preflight.mjs --domain www.ttpa.com.tw --repo /mnt/customer/www.ttpa.com.tw --channel "遠距藥事照護-ttpa"` **2026-08-06 實跑：5 項過 4 項**，唯一 ✗ 是下面那段的金鑰共用（MAINTENANCE.md 要求 exit 0 才納管）。
+納管時可直接沿用 preflight 末行帶出的 config：`ga4PropertyId=548816103`、`gscSiteUrl=sc-domain:ttpa.com.tw`、`saKeyFile=/root/.config/ttpa/ga4-sa.json`、`tokenFile=/root/.config/ttpa/slack-bot-token`、`repo=/mnt/customer/www.ttpa.com.tw`。
 照 `/root/seo-ops/MAINTENANCE.md`（單一真實來源）做：`playbooks/ttpa.md`（reflect/brain scope 互斥、不得空 scope）、`sites/ttpa.json`（gates 必含 `pnpm build`，設完真的 `eval` 跑一次）、掛 `/etc/cron.d/seo-ops`、跑 `node /root/seo-ops/bin/scope-review.mjs` 覆核，並同步更新 seo-ops README／MAINTENANCE 交接清單（主機紅線）。
 
 ### 附帶：服務帳號金鑰共用（資安衛生，不緊急、不擋上線）
