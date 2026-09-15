@@ -4,14 +4,15 @@
 
 ## 0. 只需設定一次
 
-官網 repository 的本機位置：
+官網 repository 的本機位置由電腦決定。建議使用：
 
 ```text
-C:\Users\ray96\Documents\Codex\2026-08-10\https-github-com-yao-care-www\work\www.ttpa.com.tw
+macOS：~/Projects/TTPA官網專案
+Windows：C:\Users\ray96\OneDrive\文件\ChatGPT\TTPA官網專案
 ```
 
-在 Codex 建立或開啟任務時，請直接選擇上述 `www.ttpa.com.tw` 資料夾作為專案，
-不要選擇它上層的 `https-github-com-yao-care-www` 資料夾。
+在 Codex 建立或開啟任務時，請直接選擇 repository 根目錄作為專案，
+不要選擇其上層資料夾。MacBook 的首次設定請依 `MACOS_SETUP.md` 操作。
 
 首次開啟專案後，在 Codex 對話中輸入：
 
@@ -19,7 +20,13 @@ C:\Users\ray96\Documents\Codex\2026-08-10\https-github-com-yao-care-www\work\www
 請依 WEBSITE_UPDATE_SOP.md 檢查官網環境，完成 setup，但不要修改或發布網站。
 ```
 
-Codex 會執行：
+Codex 會執行（macOS／Linux）：
+
+```bash
+sh scripts/site.sh Setup
+```
+
+Windows 也可沿用：
 
 ```powershell
 powershell -NoProfile -ExecutionPolicy Bypass -File scripts/site.ps1 Setup
@@ -122,6 +129,30 @@ PR 合併後，在同一任務輸入：
 ## 7. 固定工具指令
 
 一般情況不需要手動輸入，Codex 會替你執行。
+
+macOS／Linux：
+
+```bash
+# 首次安裝或依賴更新
+sh scripts/site.sh Setup
+
+# 查看目前狀態
+sh scripts/site.sh Status
+
+# 工作樹乾淨時同步 main
+sh scripts/site.sh Sync
+
+# 完整檢查與正式建置
+sh scripts/site.sh Check
+
+# 啟動本機開發預覽
+sh scripts/site.sh Dev
+
+# 預覽正式建置結果
+sh scripts/site.sh Preview
+```
+
+Windows PowerShell：
 
 ```powershell
 # 首次安裝或依賴更新
