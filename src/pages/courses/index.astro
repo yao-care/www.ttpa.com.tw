@@ -1,11 +1,6 @@
 ---
 // /courses/（線上課程推廣）列表頁。
-// 頁面本身逐字取自 .source/30-courses-index.md；子頁清單改為自動列出 courses 內容集合
-// （31/32 兩篇），非另外新增文案。
-// 2026-07-28 圖片自託管改動：intro 區塊的圖片網址 curl/wget 回應 403（同 columns 頁，Google
-// 舊版協作平台圖片代理），改用 headless 瀏覽器開原站頁面攔截 image/* response 取得圖片本體，
-// 已改為站內自託管（public/img/），詳見 .source/_images-notes.md。下方 Google 雲端硬碟
-// 影片連結（預覽／開啟／下載）是連結目的地，非圖片，本輪不動。
+// 課程卡片由 courses 內容集合自動生成；專訪影音一併整合成一致的學習專區介面。
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import StatusBadge from '../../components/StatusBadge.astro';
@@ -14,157 +9,189 @@ const base = import.meta.env.BASE_URL.endsWith('/')
   ? import.meta.env.BASE_URL
   : `${import.meta.env.BASE_URL}/`;
 
-const courses = (await getCollection('courses')).sort((a, b) => {
-  const da = a.data.date ? a.data.date.getTime() : 0;
-  const db = b.data.date ? b.data.date.getTime() : 0;
-  return db - da;
-});
+const courses = await getCollection('courses');
+
+const getCourseStatusLabel = (status?: string) => {
+  if (!status) return '狀態待更新';
+  return /已結束|已圓滿結束/.test(status) ? '已結束' : '報名中';
+};
+
+const learningItems = [
+  ...courses.map((course) => ({
+    key: `course-${course.id}`,
+    kind: '線上課程',
+    title: course.data.title,
+    dateLabel: course.data.dateLabel,
+    sortDate: course.data.date?.getTime() ?? 0,
+    speakerLabel: '講師',
+    speaker: course.data.instructorName ?? '待公布',
+    status: getCourseStatusLabel(course.data.status),
+    summary: course.data.summary,
+    href: `${base}courses/${course.id}/`,
+    cta: '查看詳細資訊',
+    external: false,
+  })),
+  {
+    key: 'interview-2026-01-21-chairman',
+    kind: '專訪影音',
+    title: '劉孟基理事長專訪（上）',
+    dateLabel: '2026 年 1 月 21 日',
+    sortDate: new Date('2026-01-21').getTime(),
+    speakerLabel: '受訪者',
+    speaker: '劉孟基理事長',
+    status: '影音回顧',
+    summary: '創立臺灣遠距藥事照護協會的初衷。',
+    href: 'https://drive.google.com/file/d/1JW2L2AyFHqW62sjHQr0nELKmCNOk7_7-/preview',
+    cta: '觀看專訪',
+    external: true,
+  },
+].sort((a, b) => b.sortDate - a.sortDate);
 ---
 
 <BaseLayout
   title="線上課程推廣 | 臺灣遠距藥事照護協會"
-  description="臺灣遠距藥事照護協會線上課程推廣：善知識直播專訪與線上培訓課程資訊。"
+  description="臺灣遠距藥事照護協會線上課程與專訪影音：瀏覽課程主題、時間、講師、報名狀態及完整資訊。"
 >
   <section class="hero">
-    <div class="container">
+    <div class="container hero-inner">
+      <p class="eyebrow">TTPA LEARNING HUB</p>
       <h1>線上課程推廣</h1>
-    </div>
-  </section>
-
-  <section class="intro">
-    <div class="container intro-inner">
-      <img
-        src={`${base}img/course-intro-photo.jpg`}
-        alt="線上課程推廣"
-        loading="lazy"
-        width="640"
-        height="360"
-      />
-
-      <div class="intro-text">
-        <p class="eyebrow">歷史影音資料</p>
-        <p><strong>2019 年 9 月 6 日｜「善知識」專訪預告</strong></p>
-        <p>受訪者：劉孟基藥師</p>
-        <p>主題：如何擺脫止痛藥的束縛？</p>
-        <p>延伸提問：止痛藥可以常吃嗎？</p>
-      </div>
-
-      <div class="video-card">
-        <h2>2026 年 1 月 21 日｜劉孟基理事長專訪（上）</h2>
-        <p>創立臺灣遠距藥事照護協會的初衷</p>
-        <p class="video-filename">檔名：1-1孟基Q1完整.mp4</p>
-        <div class="video-actions">
-          <a class="btn btn-outline" href="https://drive.google.com/file/d/1JW2L2AyFHqW62sjHQr0nELKmCNOk7_7-/preview">預覽影片</a>
-          <a class="btn btn-outline" href="https://drive.google.com/open?id=1JW2L2AyFHqW62sjHQr0nELKmCNOk7_7-">開啟連結</a>
-          <a class="btn btn-outline" href="https://drive.google.com/uc?id=1JW2L2AyFHqW62sjHQr0nELKmCNOk7_7-&export=download">下載影片</a>
-        </div>
+      <p class="hero-lede">從實務課程到專業專訪，集中瀏覽時間、講師與最新狀態，找到適合自己的學習內容。</p>
+      <div class="hero-tags" aria-label="學習內容類型">
+        <span>醫療專業</span>
+        <span>AI 應用</span>
+        <span>專訪影音</span>
       </div>
     </div>
   </section>
 
   <section class="list">
     <div class="container">
-      <h2>課程清單</h2>
+      <div class="section-heading">
+        <p class="eyebrow">COURSES & INTERVIEWS</p>
+        <h2>課程與專訪</h2>
+        <p>依日期由新到舊排列；點選任一區塊即可查看課程詳情或觀看專訪。</p>
+      </div>
+
       <div class="list-grid">
         {
-          courses.map((course) => (
-            <a class="course-card" href={`${base}courses/${course.id}/`}>
-              <div class="course-card-head">
-                <h3>{course.data.title}</h3>
-                {course.data.status && <StatusBadge status={course.data.status} />}
+          learningItems.map((item) => (
+            <a
+              class="course-card"
+              href={item.href}
+              target={item.external ? '_blank' : undefined}
+              rel={item.external ? 'noopener noreferrer' : undefined}
+            >
+              <div class="card-topline">
+                <span class="content-type">{item.kind}</span>
+                <StatusBadge status={item.status} />
               </div>
-              <p class="course-date">{course.data.dateLabel}</p>
-              {course.data.summary && <p class="course-summary">{course.data.summary}</p>}
-              <span class="cta">查看課程 →</span>
+
+              <h3>{item.title}</h3>
+
+              <dl class="course-meta">
+                <div class="course-meta-row">
+                  <dt>時間</dt>
+                  <dd>{item.dateLabel}</dd>
+                </div>
+                <div class="course-meta-row">
+                  <dt>{item.speakerLabel}</dt>
+                  <dd>{item.speaker}</dd>
+                </div>
+              </dl>
+
+              {item.summary && <p class="course-summary">{item.summary}</p>}
+              <span class="cta">{item.cta} <span aria-hidden="true">→</span></span>
             </a>
           ))
         }
       </div>
     </div>
   </section>
+
 </BaseLayout>
 
 <style>
   .hero {
+    position: relative;
+    overflow: hidden;
     background: var(--color-brand-soft);
-    padding-block: clamp(2.5rem, 6vw, 4rem);
+    padding-block: clamp(3rem, 7vw, 5.5rem);
+  }
+
+  .hero::after {
+    content: '';
+    position: absolute;
+    width: 18rem;
+    height: 18rem;
+    right: -5rem;
+    bottom: -8rem;
+    border: 2.5rem solid var(--color-brand-tint);
+    border-radius: 50%;
+    opacity: 0.65;
+  }
+
+  .hero-inner {
+    position: relative;
+    z-index: 1;
     text-align: center;
+  }
+
+  .eyebrow {
+    margin: 0 0 0.5rem;
+    color: var(--color-accent);
+    font-size: var(--text-xs);
+    font-weight: 800;
+    letter-spacing: 0.08em;
   }
 
   .hero h1 {
-    color: var(--color-primary);
     margin: 0;
+    color: var(--color-primary-dark);
   }
 
-  section:not(.hero) {
-    padding-block: clamp(2rem, 5vw, 3.5rem);
-  }
-
-  .intro-inner {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-  }
-
-  .intro-inner img {
-    border-radius: 0.75rem;
-    width: 100%;
-    max-width: 40rem;
-    margin-inline: auto;
-  }
-
-  .intro-text p {
-    margin: 0 0 0.25rem;
+  .hero-lede {
+    max-width: 44rem;
+    margin: 1rem auto 0;
     color: var(--color-ink-soft);
   }
 
-  .video-card {
-    background: var(--color-brand-soft);
-    border-radius: 0.75rem;
-    padding: 1.5rem;
-  }
-
-  .video-card h2 {
-    margin: 0 0 0.5rem;
-    color: var(--color-primary);
-    font-size: var(--text-lg);
-  }
-
-  .video-card p {
-    margin: 0 0 0.5rem;
-    color: var(--color-ink-soft);
-  }
-
-  .video-filename {
-    font-size: var(--text-sm);
-  }
-
-  .video-actions {
+  .hero-tags {
     display: flex;
     flex-wrap: wrap;
+    justify-content: center;
     gap: 0.75rem;
-    margin-top: 1rem;
+    margin-top: 1.5rem;
   }
 
-  .btn-outline {
-    display: inline-block;
-    padding: 0.5rem 1.25rem;
-    border-radius: 999px;
-    border: 1px solid var(--color-primary);
-    color: var(--color-primary);
-    text-decoration: none;
-    font-size: var(--text-sm);
+  .hero-tags span {
+    padding: 0.35rem 1rem;
+    border: 1px solid var(--color-brand-tint);
+    border-radius: 999rem;
+    background: var(--color-white);
+    color: var(--color-primary-dark);
+    font-size: var(--text-xs);
+    font-weight: 700;
   }
 
-  .btn-outline:hover {
-    background: var(--color-primary);
-    color: var(--color-white);
+  .list {
+    padding-block: clamp(2.5rem, 6vw, 4.5rem);
   }
 
-  .list h2 {
-    color: var(--color-primary);
+  .section-heading {
+    max-width: 44rem;
+    margin: 0 auto 2rem;
     text-align: center;
-    margin-block: 0 1.5rem;
+  }
+
+  .section-heading h2 {
+    margin: 0;
+    color: var(--color-primary-dark);
+  }
+
+  .section-heading > p:last-child {
+    margin: 0.75rem 0 0;
+    color: var(--color-ink-soft);
   }
 
   .list-grid {
@@ -176,29 +203,34 @@ const courses = (await getCollection('courses')).sort((a, b) => {
   .course-card {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
-    padding: 1.5rem;
-    border-radius: 0.75rem;
-    background: var(--color-white);
+    gap: 1rem;
+    min-height: 100%;
+    padding: clamp(1.25rem, 3vw, 1.75rem);
     border: 1px solid var(--color-line);
+    border-radius: 1rem;
+    background: var(--color-white);
     box-shadow: var(--shadow-card);
-    text-decoration: none;
     color: var(--color-text);
-    transition: box-shadow 0.2s ease, transform 0.2s ease;
+    text-decoration: none;
   }
 
   .course-card:hover {
-    box-shadow: var(--shadow-card-hover);
-    transform: translateY(-0.125rem);
     color: var(--color-text);
   }
 
-  .course-card-head {
+  .card-topline {
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 0.75rem;
     flex-wrap: wrap;
+  }
+
+  .content-type {
+    color: var(--color-accent);
+    font-size: var(--text-xs);
+    font-weight: 800;
+    letter-spacing: 0.04em;
   }
 
   .course-card h3 {
@@ -207,29 +239,49 @@ const courses = (await getCollection('courses')).sort((a, b) => {
     font-size: var(--text-lg);
   }
 
-  .course-date {
+  .course-meta {
+    display: grid;
+    gap: 0.5rem;
     margin: 0;
-    color: var(--color-ink-soft);
+    padding-block: 0.85rem;
+    border-block: 1px solid var(--color-line);
+  }
+
+  .course-meta-row {
+    display: grid;
+    grid-template-columns: 5.5rem 1fr;
+    gap: 0.75rem;
+    align-items: baseline;
+  }
+
+  .course-meta dt {
+    color: var(--color-ink-muted);
+    font-size: var(--text-xs);
+    font-weight: 700;
+  }
+
+  .course-meta dd {
+    margin: 0;
+    color: var(--color-text);
     font-size: var(--text-sm);
   }
 
   .course-summary {
+    flex-grow: 1;
     margin: 0;
     color: var(--color-ink-soft);
     font-size: var(--text-sm);
-    flex-grow: 1;
   }
 
   .course-card .cta {
-    margin-top: 0.25rem;
     color: var(--color-accent);
     font-size: var(--text-sm);
-    font-weight: 600;
+    font-weight: 800;
   }
 
-  @media (min-width: 640px) {
+  @media (min-width: 768px) {
     .list-grid {
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: repeat(2, minmax(0, 1fr));
     }
   }
 </style>
