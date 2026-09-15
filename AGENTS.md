@@ -7,13 +7,19 @@
 
 1. 確認目前工作目錄是本 repository 根目錄。
 2. 先讀取 `WEBSITE_UPDATE_SOP.md`、`package.json` 與相關頁面或內容檔案。
-3. 執行：
+3. 執行狀態檢查。macOS／Linux 使用：
+
+   ```bash
+   sh scripts/site.sh Status
+   ```
+
+   Windows 使用：
 
    ```powershell
    powershell -NoProfile -ExecutionPolicy Bypass -File scripts/site.ps1 Status
    ```
 
-4. 若需要同步遠端最新版，必須先確認工作樹乾淨，再執行：
+4. 若需要同步遠端最新版，必須先確認工作樹乾淨，再執行 `sh scripts/site.sh Sync`。Windows 也可沿用：
 
    ```powershell
    powershell -NoProfile -ExecutionPolicy Bypass -File scripts/site.ps1 Sync
@@ -32,7 +38,13 @@
 
 ## 完成修改後
 
-必須執行完整檢查：
+必須執行完整檢查（macOS／Linux）：
+
+```bash
+sh scripts/site.sh Check
+```
+
+Windows 也可沿用：
 
 ```powershell
 powershell -NoProfile -ExecutionPolicy Bypass -File scripts/site.ps1 Check
