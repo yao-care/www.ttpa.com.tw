@@ -10,8 +10,8 @@
 // 原則：只忠實對應 .source 已出現過的欄位，缺的留 optional，不發明欄位；
 // 議程表／講師陣容／費用方案等重內容一律留在 body（Markdown 正文），不硬拆成 schema。
 //
-// /news/ 混合式（見交辦說明）：featured:true 的 events/courses 項目 + announcements
-// 集合，依 date 合併排序。`date` 為排序用的機器可讀日期（由建立項目檔的 agent
+// /news/ 依內容狀態自動彙整：報名中的 events/courses、最近一年的 results，
+// 以及最近半年的特殊 announcements，並依 date 合併排序。`date` 為排序用的機器可讀日期（由建立項目檔的 agent
 // 依 dateLabel 換算，如 21-event-ai-highschool.md 的「115年 07/25(六)」換算為
 // 2026-07-25），非原站新增文案；`dateLabel` 才是原樣保留的展示文字。
 import { defineCollection, z } from 'astro:content';
@@ -34,7 +34,7 @@ const events = defineCollection({
     contactPhone: z.string().optional(),
     contactEmail: z.string().optional(),
     image: z.string().optional(), // 首圖/海報
-    featured: z.boolean().default(false), // true 才會被 /news/ 混合列表撈出
+    featured: z.boolean().default(false), // 其他活動版位可使用；/news/ 改由 status 自動判斷
     sourceSlug: z.string(), // 對照 .source 檔名，供追溯，如 "21-event-ai-highschool"
   }),
 });
@@ -55,7 +55,7 @@ const courses = defineCollection({
     status: z.string().optional(), // 狀態徽章文字（沿用活動頁慣例，供已結束課程標記）
     summary: z.string().optional(), // 摘要文字，供列表卡片與 /news/ 混合列表用
     image: z.string().optional(),
-    featured: z.boolean().default(false), // true 才會被 /news/ 混合列表撈出
+    featured: z.boolean().default(false), // 其他課程版位可使用；/news/ 改由 status 自動判斷
     sourceSlug: z.string(), // 對照 .source 檔名，供追溯，如 "31-course-0418"
   }),
 });
