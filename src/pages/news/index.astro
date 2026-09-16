@@ -11,20 +11,24 @@ const imageSrc = (path?: string) =>
   path ? (/^https?:\/\//.test(path) ? path : `${base}${path}`) : undefined;
 
 const isEnded = (status?: string) => /已結束/.test(status ?? '');
+const hasRegistrationStatus = (status?: string) =>
+  /報名中|開放報名|熱烈報名|招生中|熱烈招生|招募中|熱烈招募/.test(status ?? '');
 
-const eventResultRoutes: Record<string, string> = {
-  'ai-pharma-tech-matching': 'ai-pharma-tech-matching',
-  'ai-workshop-taichung-tzuchi': 'nationwide-medical-ai-workshops',
-  'yuanrung-hospital-seminar': 'yuanrung-medical-informatics',
-};
+const today = new Date();
+today.setHours(0, 0, 0, 0);
 
-const announcementResultRoutes: Record<string, string> = {
-  'zuoying-hospital-workshop': 'nationwide-medical-ai-workshops',
-};
+const sixMonthsAgo = new Date(today);
+sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);
+
+const oneYearAgo = new Date(today);
+oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
+
+const isOnOrAfter = (date: Date | undefined, cutoff: Date) =>
+  Boolean(date && date.getTime() >= cutoff.getTime());
 
 type NewsItem = {
   key: string;
-  kind: '公告' | '活動' | '課程';
+  kind: '公告' | '活動' | '課程' | '成果';
   title: string;
   subtitle?: string;
   summary?: string;
@@ -39,9 +43,22 @@ type NewsItem = {
   leadsToResult: boolean;
 };
 
-const events = await getCollection('events', (entry) => entry.data.featured === true);
-const courses = await getCollection('courses', (entry) => entry.data.featured === true);
-const announcements = await getCollection('announcements');
+// 最新消息的來源與保留規則：
+// 1. 報名中的活動與課程：以 status 為準，自動顯示。
+// 2. 活動成果：顯示最近一年，近半年成果自然排在較前方。
+// 3. 特殊公告：顯示最近半年；已結束的一般活動存檔不重複列入。
+const events = await getCollection('events', (entry) =>
+  !isEnded(entry.data.status) && hasRegistrationStatus(entry.data.status)
+);
+const courses = await getCollection('courses', (entry) =>
+  !isEnded(entry.data.status) && hasRegistrationStatus(entry.data.status)
+);
+const results = await getCollection('results', (entry) =>
+  entry.data.stage !== 'upcoming' && isOnOrAfter(entry.data.date, oneYearAgo)
+);
+const announcements = await getCollection('announcements', (entry) =>
+  !isEnded(entry.data.status) && isOnOrAfter(entry.data.date, sixMonthsAgo)
+);
 
 const formatDisplayDate = (date?: Date) => {
   if (!date) return '日期待定';
@@ -54,12 +71,6 @@ const formatDisplayDate = (date?: Date) => {
 
 const items: NewsItem[] = [
   ...events.map((event) => {
-    const resultSlug = eventResultRoutes[event.id];
-    const leadsToResult = isEnded(event.data.status) && Boolean(resultSlug);
-    const href = leadsToResult
-      ? `${base}results/${resultSlug}/`
-      : `${base}events/${event.id}/`;
-
     return {
       key: `event-${event.id}`,
       kind: '活動' as const,
@@ -68,13 +79,13 @@ const items: NewsItem[] = [
       summary: event.data.summary,
       dateLabel: event.data.dateLabel,
       status: event.data.status,
-      href,
+      href: `${base}events/${event.id}/`,
       image: imageSrc(event.data.image),
       sortDate: event.data.date ? event.data.date.getTime() : 0,
       dateIso: event.data.date?.toISOString().slice(0, 10),
       displayDate: formatDisplayDate(event.data.date),
-      ctaLabel: leadsToResult ? '查看活動成果' : '查看活動資訊',
-      leadsToResult,
+      ctaLabel: '查看活動資訊',
+      leadsToResult: false,
     };
   }),
   ...courses.map((course) => ({
@@ -92,13 +103,23 @@ const items: NewsItem[] = [
     ctaLabel: '查看課程內容',
     leadsToResult: false,
   })),
+  ...results.map((result) => ({
+    key: `result-${result.id}`,
+    kind: '成果' as const,
+    title: result.data.title,
+    subtitle: result.data.eyebrow,
+    summary: result.data.summary,
+    dateLabel: result.data.dateLabel,
+    status: result.data.stageLabel,
+    href: `${base}results/${result.id}/`,
+    image: imageSrc(result.data.image),
+    sortDate: result.data.date ? result.data.date.getTime() : 0,
+    dateIso: result.data.date?.toISOString().slice(0, 10),
+    displayDate: formatDisplayDate(result.data.date),
+    ctaLabel: '查看活動成果',
+    leadsToResult: true,
+  })),
   ...announcements.map((announcement) => {
-    const resultSlug = announcementResultRoutes[announcement.id];
-    const leadsToResult = isEnded(announcement.data.status) && Boolean(resultSlug);
-    const href = leadsToResult
-      ? `${base}results/${resultSlug}/`
-      : announcement.data.link;
-
     return {
       key: `announcement-${announcement.id}`,
       kind: '公告' as const,
@@ -108,12 +129,12 @@ const items: NewsItem[] = [
         ? formatDisplayDate(announcement.data.date)
         : undefined,
       status: announcement.data.status,
-      href,
+      href: announcement.data.link,
       sortDate: announcement.data.date ? announcement.data.date.getTime() : 0,
       dateIso: announcement.data.date?.toISOString().slice(0, 10),
       displayDate: formatDisplayDate(announcement.data.date),
-      ctaLabel: leadsToResult ? '查看活動成果' : href ? '查看公告' : undefined,
-      leadsToResult,
+      ctaLabel: announcement.data.link ? '查看公告' : undefined,
+      leadsToResult: false,
     };
   }),
 ];
@@ -129,7 +150,7 @@ items.sort((a, b) => b.sortDate - a.sortDate);
     <div class="container hero-inner">
       <p class="eyebrow">LATEST NEWS &amp; EVENTS</p>
       <h1>最新消息</h1>
-      <p class="lede">掌握協會近期活動、專業課程與合作動態；最新資訊置頂，依序向下瀏覽。</p>
+      <p class="lede">掌握正在報名的活動與課程、近期活動成果，以及重要異動公告。</p>
     </div>
   </section>
 
@@ -140,7 +161,7 @@ items.sort((a, b) => b.sortDate - a.sortDate);
           <p class="section-kicker">協會動態</p>
           <h2 id="news-list-title">由新到舊，一次掌握</h2>
         </div>
-        <p>活動結束且已有成果紀錄時，可直接前往成果專區查看內容與照片。</p>
+        <p>報名資訊隨活動狀態同步；成果保留一年，特殊公告保留半年。</p>
       </header>
 
       {
@@ -170,7 +191,7 @@ items.sort((a, b) => b.sortDate - a.sortDate);
                       <div class="news-card-top">
                         <span class:list={['kind', `kind-${item.kind}`]}>{item.kind}</span>
                         <StatusBadge status={item.status} />
-                        {item.leadsToResult && <span class="result-label">成果已上線</span>}
+                        {item.leadsToResult && <span class="result-label">成果回顧</span>}
                       </div>
                       <h3>{item.title}</h3>
                       {item.subtitle && <p class="news-subtitle">{item.subtitle}</p>}
@@ -360,6 +381,11 @@ items.sort((a, b) => b.sortDate - a.sortDate);
 
   .kind-課程 {
     color: var(--color-accent);
+  }
+
+  .kind-成果 {
+    color: var(--color-white);
+    background: var(--color-primary);
   }
 
   .result-label {
