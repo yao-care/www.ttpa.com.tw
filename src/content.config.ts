@@ -99,4 +99,34 @@ const results = defineCollection({
   }),
 });
 
-export const collections = { events, courses, announcements, results };
+const partners = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/partners' }),
+  schema: z.object({
+    name: z.string(),
+    website: z.string().url(),
+    logo: z.string(),
+    logoAlt: z.string(),
+    order: z.number().default(0),
+  }),
+});
+
+const instructors = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/instructors' }),
+  schema: z.object({
+    name: z.string(),
+    role: z.string(),
+    photo: z.string(),
+    photoAlt: z.string(),
+    specialties: z.array(z.string()).min(1),
+    summary: z.string(),
+    credentials: z.array(z.string()).default([]),
+    taughtCourses: z.array(z.object({
+      title: z.string(),
+      context: z.string(),
+      href: z.string().optional(),
+    })).default([]),
+    order: z.number().default(0),
+  }),
+});
+
+export const collections = { events, courses, announcements, results, partners, instructors };
