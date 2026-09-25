@@ -8,11 +8,14 @@
 
 ```text
 macOS：~/Projects/TTPA官網專案
-Windows：C:\Users\ray96\OneDrive\文件\ChatGPT\TTPA官網專案
+Windows：C:\Projects\TTPA官網專案
 ```
 
 在 Codex 建立或開啟任務時，請直接選擇 repository 根目錄作為專案，
-不要選擇其上層資料夾。MacBook 的首次設定請依 `MACOS_SETUP.md` 操作。
+不要選擇其上層資料夾。MacBook 的首次設定請依 `MACOS_SETUP.md` 操作；
+不同 Windows 電腦或不同帳號的交接請依 `WINDOWS_HANDOVER.md` 操作。
+
+網站維護者的可操作範圍、發布核准及禁止事項，以 `WEBSITE_ACCESS_SCOPE.md` 為準。
 
 首次開啟專案後，在 Codex 對話中輸入：
 

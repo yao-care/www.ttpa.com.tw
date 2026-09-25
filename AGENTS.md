@@ -6,7 +6,7 @@
 ## 開始工作前
 
 1. 確認目前工作目錄是本 repository 根目錄。
-2. 先讀取 `WEBSITE_UPDATE_SOP.md`、`package.json` 與相關頁面或內容檔案。
+2. 先讀取 `WEBSITE_ACCESS_SCOPE.md`、`WEBSITE_UPDATE_SOP.md`、`package.json` 與相關頁面或內容檔案。
 3. 執行狀態檢查。macOS／Linux 使用：
 
    ```bash
@@ -35,6 +35,7 @@
 - 保留既有正式網址、slug、GA4、GSC、CNAME 與部署設定，除非使用者明確要求變更。
 - 遵守既有設計 token；不要加入 `!important` 或任意散落的 CSS 規則。
 - 不要將密碼、token、Google service account 或其他秘密提交到 Git。
+- 所有外部帳號、發布、權限與高風險操作都必須遵守 `WEBSITE_ACCESS_SCOPE.md`，不得自行擴大交接範圍。
 
 ## 完成修改後
 

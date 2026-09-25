@@ -47,11 +47,28 @@ function Ensure-Dependencies {
 }
 
 $codexDependencies = Join-Path $env:USERPROFILE '.cache\codex-runtimes\codex-primary-runtime\dependencies'
-Add-ToolPath (Join-Path $codexDependencies 'native\git\cmd')
-Add-ToolPath (Join-Path $codexDependencies 'native\git\mingw64\bin')
-Add-ToolPath (Join-Path $codexDependencies 'node\bin')
-Add-ToolPath (Join-Path $codexDependencies 'bin\override')
-Add-ToolPath (Join-Path $codexDependencies 'bin\fallback')
+
+# Prefer tools installed by the Windows user. Codex runtime paths are a fallback
+# only, so a bundled Node or pnpm version cannot silently override the project's
+# documented toolchain on another computer.
+if (-not (Get-Command 'git' -ErrorAction SilentlyContinue)) {
+    $bundledGitBin = Join-Path $codexDependencies 'native\git\mingw64\bin'
+    Add-ToolPath $bundledGitBin
+    Add-ToolPath (Join-Path $codexDependencies 'native\git\cmd')
+
+    if (Test-Path -LiteralPath (Join-Path $bundledGitBin 'git-remote-https.exe')) {
+        $env:GIT_EXEC_PATH = $bundledGitBin
+    }
+}
+
+if (-not (Get-Command 'node' -ErrorAction SilentlyContinue)) {
+    Add-ToolPath (Join-Path $codexDependencies 'node\bin')
+}
+
+if (-not (Get-Command 'pnpm' -ErrorAction SilentlyContinue)) {
+    Add-ToolPath (Join-Path $codexDependencies 'bin\fallback')
+    Add-ToolPath (Join-Path $codexDependencies 'bin\override')
+}
 
 Assert-Command 'git'
 Assert-Command 'node'
