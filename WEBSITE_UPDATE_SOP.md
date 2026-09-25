@@ -132,6 +132,7 @@ PR 合併後，在同一任務輸入：
 | 最新消息／公告 | `src/content/announcements/`、`src/pages/news/` |
 | 活動 | `src/content/events/` |
 | 課程 | `src/content/courses/` |
+| 合作單位／講師群 | `src/content/partners/`、`src/content/instructors/` |
 | 一般頁面 | `src/pages/` |
 | 導覽列與頁尾 | `src/components/Header.astro`、`src/components/Footer.astro` |
 | 圖片 | `public/img/` |
