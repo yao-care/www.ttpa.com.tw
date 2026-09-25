@@ -2,7 +2,7 @@
 
 本文件適用於把官網維護工作交接到另一台 Windows 電腦，以及另一個 ChatGPT／GitHub 帳號。接手者使用自己的帳號與本機資料夾；不要複製原管理者的 Codex 設定、登入狀態或權杖。
 
-開始前先閱讀 `WEBSITE_ACCESS_SCOPE.md`。本指南只移交其中列出的例行官網維護權限。
+開始前先閱讀 `WEBSITE_ACCESS_SCOPE.md` 與 `COLLABORATION_POLICY.md`。本指南只移交其中列出的例行官網維護權限；Mac 與 Windows 預設可同時作業，不會因其中一方開啟 Codex 或修改其他分支而鎖住另一方。
 
 ## 1. 原管理者先完成的事項
 
@@ -97,6 +97,8 @@ Codex 會從 repository 讀取固定工作規範，不需要匯入原管理者�
 先不要發布，等我確認。
 ```
 
+多人同時作業時，每位維護者使用自己的 `codex/日期-操作者-主題` 分支與 PR，不共用同一分支。開始前查看開啟中的 PR 與有效 `[LOCK]` 紀錄；只有依 `COLLABORATION_POLICY.md` 登記的特定範圍鎖定會暫停對應工作，其他工作仍可繼續。
+
 固定流程：
 
 ```text
@@ -135,6 +137,7 @@ gh auth status
 - Codex 能自動讀取 `AGENTS.md`、`WEBSITE_ACCESS_SCOPE.md` 與 `WEBSITE_UPDATE_SOP.md`。
 - 接手者只看到經分享的 Google Drive 資料夾，無法存取原管理者的其他檔案。
 - 接手者理解哪些變更可自行維護、哪些必須另行取得協會授權。
+- 接手者理解預設不鎖定、獨立分支與 PR，以及如何查看或解除有效 `[LOCK]` 紀錄。
 - 在完成第一次實際更新、Pull Request 與部署驗收前，原管理者先保留存取權作為回復窗口。
 
 ## 8. 人員異動或停止授權

@@ -15,7 +15,7 @@ Windows：C:\Projects\TTPA官網專案
 不要選擇其上層資料夾。MacBook 的首次設定請依 `MACOS_SETUP.md` 操作；
 不同 Windows 電腦或不同帳號的交接請依 `WINDOWS_HANDOVER.md` 操作。
 
-網站維護者的可操作範圍、發布核准及禁止事項，以 `WEBSITE_ACCESS_SCOPE.md` 為準。
+網站維護者的可操作範圍、發布核准及禁止事項，以 `WEBSITE_ACCESS_SCOPE.md` 為準；不同電腦或不同帳號同時作業時，另依 `COLLABORATION_POLICY.md` 隔離分支、協調 PR 與處理特定範圍鎖定。
 
 首次開啟專案後，在 Codex 對話中輸入：
 
@@ -60,11 +60,19 @@ powershell -NoProfile -ExecutionPolicy Bypass -File scripts/site.ps1 Setup
 完成檢查後先不要發布，等我確認。
 ```
 
+### 多人同時作業
+
+- Mac 與 Windows 可以同時修改網站，不需要互相等待；每項工作使用不同的本機 clone、Codex 任務、`codex/` 分支及 PR。
+- 建議分支加入操作者識別，例如 `codex/2026-09-25-mac-news-update` 或 `codex/2026-09-25-win-membership-copy`。
+- 開始前先查看開啟中的 PR 與有效的 `[LOCK]` 紀錄，避免修改同一內容區塊。
+- 若同時修改同一檔案，後合併者必須同步最新 `main`、解決衝突並重新執行完整 `Check`。
+- 預設沒有鎖定；鎖定特定權限或內容時，必須依 `COLLABORATION_POLICY.md` 留下雙方可見、具解除條件或截止時間的紀錄。
+
 ## 2. Codex 應執行的更新流程
 
 1. 確認 Git 狀態與目前分支。
 2. 在工作樹乾淨時同步 `origin/main`。
-3. 建立 `codex/日期-主題` 分支。
+3. 建立自己專用的 `codex/日期-操作者-主題` 分支，不與其他人共用工作分支。
 4. 找到正確的內容或頁面檔案並修改。
 5. 需要圖片時放入 `public/img/`，並使用網站內部路徑。
 6. 執行完整檢查與 Astro 正式建置。

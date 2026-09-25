@@ -1,6 +1,6 @@
 # TTPA 官網：MacBook 交接與首次設定
 
-本文件用於把官網的修改、檢查與發布流程移轉到 macOS。Mac 使用「終端機（Terminal）」與 `site.sh`，不需要 PowerShell。網站原始碼以 GitHub 為準；每台電腦各自保留一份本機 repository，不要讓兩台電腦共用同一個 OneDrive／iCloud `.git` 資料夾。
+本文件用於把官網的修改、檢查與發布流程移轉到 macOS。Mac 使用「終端機（Terminal）」與 `site.sh`，不需要 PowerShell。網站原始碼以 GitHub 為準；每台電腦各自保留一份本機 repository，不要讓兩台電腦共用同一個 OneDrive／iCloud `.git` 資料夾。Mac 與 Windows 的平行作業及特定範圍鎖定依 `COLLABORATION_POLICY.md` 辦理。
 
 ## 1. 安裝必要工具
 
@@ -77,6 +77,8 @@ sh scripts/site.sh Preview
 
 停止 `Dev` 或 `Preview` 時，在終端機按 `Control + C`。
 
+Mac 與 Windows 可以同時處理不同工作。每位維護者必須使用自己的 `codex/日期-操作者-主題` 分支與 PR；開始前查看開啟中的 PR 與有效 `[LOCK]` 紀錄，不得共同修改同一工作分支。未依 `COLLABORATION_POLICY.md` 登記的情況不構成鎖定。
+
 ## 5. 發布權限與安全原則
 
 - 修改與本機預覽不會自動發布。
@@ -105,5 +107,6 @@ git config --local --get user.email
 - Git 身分為 `TTPA` 與 `ttpa2014@gmail.com`。
 - `Check` 完整成功。
 - `git status` 沒有不明變更。
+- 知道如何檢查開啟中的 PR、有效 `[LOCK]` 紀錄，以及使用自己專用的分支。
 
 完成以上項目後，Windows 與 Mac 都可以依相同 SOP 維護官網；每次換電腦工作前，先同步 `main`，避免版本衝突。

@@ -6,7 +6,7 @@
 ## 開始工作前
 
 1. 確認目前工作目錄是本 repository 根目錄。
-2. 先讀取 `WEBSITE_ACCESS_SCOPE.md`、`WEBSITE_UPDATE_SOP.md`、`package.json` 與相關頁面或內容檔案。
+2. 先讀取 `WEBSITE_ACCESS_SCOPE.md`、`COLLABORATION_POLICY.md`、`WEBSITE_UPDATE_SOP.md`、`package.json` 與相關頁面或內容檔案。
 3. 執行狀態檢查。macOS／Linux 使用：
 
    ```bash
@@ -25,7 +25,8 @@
    powershell -NoProfile -ExecutionPolicy Bypass -File scripts/site.ps1 Sync
    ```
 
-5. 除非使用者明確要求，禁止直接修改或推送 `main`；使用 `codex/` 前綴建立更新分支。
+5. 檢查開啟中的 PR 與有效 `[LOCK]` 紀錄；未被有效鎖定的範圍預設可與其他維護者同時作業。
+6. 除非使用者明確要求，禁止直接修改或推送 `main`；使用 `codex/日期-操作者-主題` 格式建立自己專用的更新分支，不與其他人或電腦共用工作分支。
 
 ## 修改規則
 
@@ -36,6 +37,7 @@
 - 遵守既有設計 token；不要加入 `!important` 或任意散落的 CSS 規則。
 - 不要將密碼、token、Google service account 或其他秘密提交到 Git。
 - 所有外部帳號、發布、權限與高風險操作都必須遵守 `WEBSITE_ACCESS_SCOPE.md`，不得自行擴大交接範圍。
+- 多人同時作業、衝突處理及特定範圍鎖定必須遵守 `COLLABORATION_POLICY.md`；不得把單一 Codex 任務或本機狀態視為全站鎖定。
 
 ## 完成修改後
 
