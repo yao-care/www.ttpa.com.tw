@@ -170,7 +170,7 @@ items.sort((a, b) => b.sortDate - a.sortDate);
         ) : (
           <ol class="news-feed" aria-label="最新消息，依日期由新到舊排列">
             {items.map((item) => (
-              <li class:list={['news-entry', { 'is-result': item.leadsToResult }]}>
+              <li class:list={['news-entry', { 'is-result': item.leadsToResult, 'is-poster': item.key === 'event-ai-workshop-hung-en-hospital' }]}>
                 <time class="date-marker" datetime={item.dateIso}>
                   {item.displayDate}
                 </time>
@@ -346,6 +346,11 @@ items.sort((a, b) => b.sortDate - a.sortDate);
     height: 100%;
     aspect-ratio: 16 / 9;
     object-fit: cover;
+  }
+
+  .is-poster .news-visual img {
+    object-fit: contain;
+    background: var(--color-workshop-soft);
   }
 
   .news-card-body {
