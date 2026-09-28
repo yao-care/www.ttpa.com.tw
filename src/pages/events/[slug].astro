@@ -6,6 +6,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import StatusBadge from '../../components/StatusBadge.astro';
 import AiPharmaPlatformPage from '../../components/AiPharmaPlatformPage.astro';
 import TzuchiWorkshopPage from '../../components/TzuchiWorkshopPage.astro';
+import HungEnWorkshopPage from '../../components/HungEnWorkshopPage.astro';
 
 export async function getStaticPaths() {
   const events = await getCollection('events');
@@ -39,6 +40,7 @@ const base = import.meta.env.BASE_URL.endsWith('/')
 const imageSrc = image ? (/^https?:\/\//.test(image) ? image : `${base}${image}`) : undefined;
 const isAiPlatform = event.id === 'ai-pharma-tech-matching';
 const isTzuchiWorkshop = event.id === 'ai-workshop-taichung-tzuchi';
+const isHungEnWorkshop = event.id === 'ai-workshop-hung-en-hospital';
 const eventBody = event.body ?? '';
 const bodyHasContactDetails = [contactPhone, contactEmail].some(
   (value) => Boolean(value && eventBody.includes(value))
@@ -50,6 +52,8 @@ const bodyHasContactDetails = [contactPhone, contactEmail].some(
     <AiPharmaPlatformPage event={event} />
   ) : isTzuchiWorkshop ? (
     <TzuchiWorkshopPage event={event} />
+  ) : isHungEnWorkshop ? (
+    <HungEnWorkshopPage event={event} />
   ) : (
 <BaseLayout title={`${title}｜活動報名專區｜臺灣遠距藥事照護協會`} description={summary}>
   <header class="event-hero">

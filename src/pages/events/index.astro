@@ -23,6 +23,7 @@ const imageSrc = (path?: string) =>
 const allEvents = await getCollection('events');
 // 依原站導覽列順序排列（.source/20-events-index.md 導覽列列出順序）
 const order = [
+  'ai-workshop-hung-en-hospital',
   'ai-pharma-tech-matching',
   'ai-workshop-taichung-tzuchi',
   'yuanrung-hospital-seminar',
@@ -52,7 +53,7 @@ const events = order
       <div class="events-grid">
         {
           events.map((event) => (
-            <a class="event-card" href={`${base}events/${event.id}/`}>
+            <a class:list={['event-card', { 'event-card-poster': event.id === 'ai-workshop-hung-en-hospital' }]} href={`${base}events/${event.id}/`}>
               {event.data.image && (
                 <img src={imageSrc(event.data.image)} alt={event.data.title} loading="lazy" width="320" height="200" />
               )}
@@ -324,6 +325,11 @@ const events = order
     width: 100%;
     aspect-ratio: 16 / 9;
     object-fit: cover;
+  }
+
+  .event-card-poster img {
+    object-fit: contain;
+    background: var(--color-workshop-soft);
   }
 
   .event-card-body {
