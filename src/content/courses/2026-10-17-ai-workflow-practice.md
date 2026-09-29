@@ -10,11 +10,14 @@ instructorIds:
 registrationLink: https://script.google.com/macros/s/AKfycbyg3TIA5-fADLfxO7s1WZbtbeFWi5LULCTovMJkHb5DIIXBoe5BAhay2pHGL-SqxYkRaw/exec
 status: "🚀 開放報名"
 summary: 從醫療專業知識整理、內容製作到 AI Agent 與工作流設計，掌握可重複執行、持續累積的實務應用方法。
+image: img/course-ai-workflow-practice-2026-10-17.jpg
 featured: false
 sourceSlug: "2026-10-17-ai-workflow-practice"
 ---
 
 TTPA 線上 AI 實戰系列課程
+
+![醫療人員的 AI 工作流實務心法教學宣傳圖](/img/course-ai-workflow-practice-2026-10-17.jpg)
 
 ## 課程簡介
 
