@@ -50,6 +50,7 @@ const courses = defineCollection({
     instructorName: z.string().optional(),
     instructorTitle: z.string().optional(),
     instructorPhoto: z.string().optional(),
+    instructorIds: z.array(z.string()).default([]), // 對應 instructors collection，支援多講師照片與簡介
     registrationLink: z.string().url().optional(),
     capacityLimit: z.string().optional(), // 如 31:49「限額 40 人」
     status: z.string().optional(), // 狀態徽章文字（沿用活動頁慣例，供已結束課程標記）
