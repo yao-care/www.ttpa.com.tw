@@ -16,6 +16,14 @@ const { course } = Astro.props;
 const { data } = course;
 const { Content } = await render(course);
 
+const instructorIds = data.instructorIds ?? [];
+const allInstructors = instructorIds.length
+  ? await getCollection('instructors')
+  : [];
+const courseInstructors = instructorIds
+  .map((id) => allInstructors.find((instructor) => instructor.id === id))
+  .filter((instructor) => instructor !== undefined);
+
 const base = import.meta.env.BASE_URL.endsWith('/')
   ? import.meta.env.BASE_URL
   : `${import.meta.env.BASE_URL}/`;
@@ -24,6 +32,9 @@ const base = import.meta.env.BASE_URL.endsWith('/')
 const instructorPhotoSrc = data.instructorPhoto
   ? (/^https?:\/\//.test(data.instructorPhoto) ? data.instructorPhoto : `${base}${data.instructorPhoto}`)
   : undefined;
+
+const instructorImageSrc = (path: string) =>
+  /^https?:\/\//.test(path) ? path : `${base}${path}`;
 ---
 
 <BaseLayout title={`${data.title} | 線上課程推廣 | 臺灣遠距藥事照護協會`} description={data.summary}>
@@ -40,6 +51,45 @@ const instructorPhotoSrc = data.instructorPhoto
     <div class="container detail-inner">
       <div class="detail-main">
         <Content />
+
+        {courseInstructors.length > 0 && (
+          <section class="instructor-section" aria-labelledby="course-instructors-title">
+            <header class="instructor-heading">
+              <p>COURSE INSTRUCTORS</p>
+              <h2 id="course-instructors-title">講師介紹</h2>
+              <span>簡要認識本次授課講師；課程內容與實作安排仍是本頁主體。</span>
+            </header>
+
+            <div class="instructor-grid">
+              {courseInstructors.map((instructor) => (
+                <article class="instructor-card">
+                  <img
+                    src={instructorImageSrc(instructor.data.photo)}
+                    alt={instructor.data.photoAlt}
+                    loading="lazy"
+                    width="176"
+                    height="176"
+                  />
+                  <div class="instructor-copy">
+                    <h3>{instructor.data.name}</h3>
+                    <p class="instructor-role">{instructor.data.role}</p>
+                    <p class="instructor-summary">{instructor.data.summary}</p>
+                    {instructor.data.credentials.length > 0 && (
+                      <ul>
+                        {instructor.data.credentials.slice(0, 3).map((credential) => (
+                          <li>{credential}</li>
+                        ))}
+                      </ul>
+                    )}
+                    <a href={`${base}links/instructors/${instructor.id}/`}>
+                      查看完整講師資料 <span aria-hidden="true">→</span>
+                    </a>
+                  </div>
+                </article>
+              ))}
+            </div>
+          </section>
+        )}
       </div>
 
       <aside class="detail-side">
@@ -144,6 +194,118 @@ const instructorPhotoSrc = data.instructorPhoto
     margin-block: 1rem;
   }
 
+  .instructor-section {
+    margin-top: clamp(2.5rem, 6vw, 4rem);
+    padding-top: 2rem;
+    border-top: 1px solid var(--color-line);
+  }
+
+  .instructor-heading {
+    margin-bottom: 1.25rem;
+  }
+
+  .instructor-heading p {
+    margin: 0 0 0.35rem;
+    color: var(--color-accent);
+    font-size: var(--text-xs);
+    font-weight: 800;
+    letter-spacing: 0.08em;
+  }
+
+  .instructor-heading h2 {
+    margin: 0;
+    color: var(--color-primary);
+  }
+
+  .instructor-heading span {
+    display: block;
+    margin-top: 0.4rem;
+    color: var(--color-ink-soft);
+    font-size: var(--text-sm);
+  }
+
+  .instructor-grid {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .instructor-card {
+    display: grid;
+    grid-template-columns: 6rem minmax(0, 1fr);
+    gap: 1rem;
+    align-items: start;
+    padding: 1rem;
+    border: 1px solid var(--color-line);
+    border-radius: 0.75rem;
+    background: var(--color-white);
+  }
+
+  .instructor-card > img {
+    box-sizing: border-box;
+    width: 6rem;
+    height: 7.25rem;
+    margin: 0;
+    padding: 0.4rem;
+    border: 1px solid var(--color-line);
+    border-radius: 0.65rem;
+    background: var(--color-brand-soft);
+    object-fit: contain;
+    object-position: center;
+  }
+
+  .instructor-copy h3 {
+    margin: 0;
+    color: var(--color-primary-dark);
+    font-size: var(--text-md);
+  }
+
+  .instructor-role,
+  .instructor-summary,
+  .instructor-copy ul,
+  .instructor-copy a {
+    font-size: var(--text-xs);
+  }
+
+  .instructor-role {
+    margin: 0.2rem 0 0;
+    color: var(--color-accent-dark);
+    font-weight: 700;
+  }
+
+  .instructor-summary {
+    margin: 0.6rem 0 0;
+    color: var(--color-ink-soft);
+  }
+
+  .instructor-copy ul {
+    grid-column: 1 / -1;
+    margin: 0.65rem 0 0;
+    padding-left: 1.1rem;
+    color: var(--color-ink-soft);
+  }
+
+  .instructor-copy li + li {
+    margin-top: 0.2rem;
+  }
+
+  .instructor-copy a {
+    display: inline-block;
+    margin-top: 0.75rem;
+    color: var(--color-accent-dark);
+    font-weight: 700;
+  }
+
+  @media (max-width: 639px) {
+    .instructor-card {
+      grid-template-columns: 1fr;
+    }
+
+    .instructor-card > img {
+      width: 7.25rem;
+      height: 8.5rem;
+    }
+  }
+
   .detail-side {
     background: var(--color-white);
     border: 1px solid var(--color-line);
@@ -216,6 +378,10 @@ const instructorPhotoSrc = data.instructorPhoto
 
     .detail-side {
       flex: 0 0 20rem;
+    }
+
+    .instructor-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
     }
   }
 </style>

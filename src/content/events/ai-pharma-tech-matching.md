@@ -2,14 +2,13 @@
 # 內容源自 .source/23-event-ai-platform.md，新版依資訊層級將公告、場次與報名資訊提至活動頁共用版型呈現。
 title: "AI 醫藥科技媒合平台"
 subtitle: "全日活動 09:00 - 17:00"
-dateLabel: "[已結束] 06 月 06 日 (六) ／ [二部曲] 08 月 22 日 (六)"
+dateLabel: "[已結束] 06 月 06 日 (六) ／ [已結束] 08 月 22 日 (六)"
 date: 2026-08-22
 location: "員榮醫院員生院區（06/06）／中山醫學大學附設醫院（08/22）"
-status: "🔥 熱烈報名中"
+status: "✅ 活動已結束"
 category: "專案計畫"
-summary: "縮短科技與醫療的距離！讓「一線藥局痛點」成為「科技開發起點」，誠摯邀請社區藥局與科技廠商參與意願調查，共同開拓智慧照護互利市場。"
-registrationLink: "https://docs.google.com/forms/d/e/1FAIpQLSebNvAixSpqjfn1wiaeKQ-HAtnmbUgSqwJQgAvi7hPvWr-BbQ/viewform"
-image: "img/results/ai-pharma-tech-matching/hero-group-photo.jpg"
+summary: "以「一線藥局痛點」為起點，串連社區藥局、醫療院所與科技團隊，完成兩階段需求媒合、實務操作與智慧藥事場域參訪。"
+image: "img/results/ai-pharma-tech-matching/phase-two-group-photo.jpg"
 featured: true
 sourceSlug: "23-event-ai-platform"
 ---
@@ -34,9 +33,9 @@ sourceSlug: "23-event-ai-platform"
 - **情境模擬演練**：結合長照諮詢、庫存管理與衛教情境，進行系統功能的實測與應用。
 - **即時解惑與反饋**：上機操作中與開發商直接交流，解決使用疑難並提出優化建議。
 
-## 08/22 活動核心亮點（二部曲重點說明）
+## 08/22 活動核心亮點（二部曲已完成）
 
-延續 6/6 的交流成果，8/22 這場我們直接著重在「上手操作」。帶大家現場操作 AI 工具與科技輔具，學完回藥局就能直接派上用場！
+延續 6/6 的交流成果，8/22 二部曲以「上手操作」為核心，帶領參與者現場接觸 AI 工具與科技輔具，並走進醫院藥劑科了解智慧藥事的實際運作。
 
 1. **手把手教案與現場實作**：現場發放協會編撰的「AI 場域實作教材」，搭配軟硬體設備直接演練，帶您做一次，回家就能順照著做！
 2. **專家經驗分享，少走冤枉路**：邀請第一線專家現場傳授設備導入技巧，大方分享成功與失敗經驗，幫您省下摸索時間，避開常見的坑！
@@ -66,7 +65,7 @@ sourceSlug: "23-event-ai-platform"
 | 14:50 - 16:30 | 社區藥局AI經營管理系統操作實務教學 | 星詠數位科技 |
 | 16:30 - 17:00 | 群體交流與討論 | - |
 
-## 08/22 全日活動議程表
+## 08/22 全日活動議程表（已結束）
 
 【 二部曲 】08/22 社區藥局智慧營運與科技輔具應用實作培訓
 
@@ -86,11 +85,11 @@ sourceSlug: "23-event-ai-platform"
 
 ※ 主辦單位保留議程變動之權利，實際議程以當日公告為準。
 
-## 立即報名 8/22 二部曲
+## 08/22 二部曲成果回顧
 
-08/22 二部曲席次有限，立即報名。報名即將於 08/17 (一) 截止，請把握最後機會！
+本系列兩階段活動均已圓滿完成，成果頁已收錄課堂交流與中山醫學大學附設醫院藥劑科參訪紀錄。
 
-按鈕：[前往報名 8/22 二部曲](https://docs.google.com/forms/d/e/1FAIpQLSebNvAixSpqjfn1wiaeKQ-HAtnmbUgSqwJQgAvi7hPvWr-BbQ/viewform)
+按鈕：[查看完整活動成果](/results/ai-pharma-tech-matching/)
 
 ## 頁尾
 
