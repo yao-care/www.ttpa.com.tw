@@ -6,9 +6,8 @@ format: 線上遠距直播（報名成功後，上課前發送連結）
 fee: 全程免費
 instructorName: 蔡秀敏
 instructorTitle: 專科護理師
-registrationLink: https://script.google.com/macros/s/AKfycbyfIzUGQzfqY7O56O9tt0yjqFV8BmQnHof5bpIr3f5AhJu3x8z0LWp_R7FB7m62Ag/exec
-capacityLimit: 正取名額已滿，開放限額候補
-status: "開放限額候補，歡迎手刀報名"
+capacityLimit: 活動已結束
+status: "✅ 活動已結束"
 summary: 從臨床實際痛點出發，掌握 Gemini 核心技巧，從向 AI 提問進一步打造專屬工作流，提升衛教與教學效率。
 image: img/course-gemini-medical-workflow.jpg
 featured: false
@@ -17,7 +16,7 @@ sourceSlug: "2026-10-03-gemini-medical-workflow"
 
 TTPA 線上培訓系列
 
-> **開放限額候補，歡迎手刀報名！**
+> **本活動已結束，感謝各位參與。**
 
 ## 課程簡介
 

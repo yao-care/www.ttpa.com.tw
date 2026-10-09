@@ -19,9 +19,33 @@ import StatusBadge from '../../components/StatusBadge.astro';
 
   <section class="list">
     <div class="container">
-      <article class="item">
+      <header class="section-heading">
+        <p class="eyebrow">PARTNER UPDATES</p>
+        <h2>合作推廣資訊</h2>
+        <p>收錄友會、合作單位與公共議題的課程、活動及資源；狀態與外部連結以各主辦單位公告為準。</p>
+      </header>
+
+      <div class="promotion-grid">
+        <article class="item">
         <div class="item-head">
-          <h2>1. 課程資訊｜藥師長期照顧 Level II 培訓課程</h2>
+          <h2>1. 數位科技委員會年度鉅作｜「AI藥不藥」AI 系列課程</h2>
+          <StatusBadge status="第 1 場報名已額滿（300 人）" />
+        </div>
+        <p class="meta">數位科技委員會 ｜ AI 系列共 6 場</p>
+        <p>
+          數位科技委員會年度鉅作「AI藥不藥」系列課程，歡迎協助宣傳並鼓勵藥師持續關注 AI 應用與專業發展。
+          第 1 場名額已滿，後續場次或候補安排請以報名表單公告為準。
+        </p>
+        <p class="meta">第 1 場：2026/12/17（四）</p>
+        <div class="links">
+          <a href="https://forms.gle/x4EHQ9oRNUd9Ckto7" target="_blank" rel="noopener noreferrer">查看報名資訊與後續公告</a>
+          <a href="https://drive.google.com/file/d/1OfS3lDNRhWczQfLa7Nv9F_TIdqH1_pyj/view?usp=sharing" target="_blank" rel="noopener noreferrer">觀看「AI藥不藥」6 場系列介紹影片</a>
+        </div>
+        </article>
+
+        <article class="item">
+        <div class="item-head">
+          <h2>2. 課程資訊｜藥師長期照顧 Level II 培訓課程</h2>
           <StatusBadge status="報名期間已截止，課程已結束" />
         </div>
         <p class="meta">新北市藥師公會主辦 ｜ 協辦：中華民國藥師公會全國聯合會</p>
@@ -38,11 +62,11 @@ import StatusBadge from '../../components/StatusBadge.astro';
           <a href="https://pse.is/8vfjut">外縣市藥師報名（開放名額 30 名）</a>
           <a href="http://tcpa.taiwan-pharma.org.tw/node/43996">公會官方公告</a>
         </div>
-      </article>
+        </article>
 
-      <article class="item">
+        <article class="item">
         <div class="item-head">
-          <h2>2. 第十一屆 國際醫療典範獎</h2>
+          <h2>3. 第十一屆 國際醫療典範獎</h2>
           <StatusBadge status="報名已截止（2026 年 5 月 31 日止）" />
         </div>
         <p class="meta">主辦：國際醫療衛生促進協會 Taiwan Global Healthcare Association</p>
@@ -55,10 +79,10 @@ import StatusBadge from '../../components/StatusBadge.astro';
           <a href="https://reurl.cc/O65OzX">下載報名簡章與附件</a>
           <a href="https://www.facebook.com/tgha2015">主辦單位 Facebook 粉絲專頁</a>
         </div>
-      </article>
+        </article>
 
-      <article class="item">
-        <h2>3. 社區藥師抗生素調配認證訓練</h2>
+        <article class="item">
+        <h2>4. 社區藥師抗生素調配認證訓練</h2>
         <p class="meta">社團法人臺灣社區藥學會 TSCP 認證訓練 ｜ 首梯實體工作坊</p>
         <p>
           隨著台灣高齡化社會的加速，醫療服務正從醫院走向社區與家庭。「在宅急⋯」（原站為連結卡片預覽文字，完整內容請見下方連結）
@@ -66,11 +90,11 @@ import StatusBadge from '../../components/StatusBadge.astro';
         <div class="links">
           <a href="https://tscp.neticrm.tw/civicrm/event/info?reset=1&id=15">活動介紹／課程議程／報名資訊</a>
         </div>
-      </article>
+        </article>
 
-      <article class="item">
+        <article class="item">
         <div class="item-head">
-          <h2>4. 【友會轉知】藥師前進居家的必修課！ACAH/OPAT 抗生素調配實作認證訓練</h2>
+          <h2>5. 【友會轉知】藥師前進居家的必修課！ACAH/OPAT 抗生素調配實作認證訓練</h2>
           <StatusBadge status="活動已結束（115年03月15日）" />
         </div>
         <p class="meta">
@@ -85,10 +109,10 @@ import StatusBadge from '../../components/StatusBadge.astro';
           <a href="https://neti.cc/ePJ1gDA">課程詳情</a>
           <a href="https://neti.cc/gp770B5">線上報名</a>
         </div>
-      </article>
+        </article>
 
-      <article class="item">
-        <h2>5. 社團法人台灣食品安全促進協會執行114年度「食品非預期反應評估研析」</h2>
+        <article class="item">
+        <h2>6. 社團法人台灣食品安全促進協會執行114年度「食品非預期反應評估研析」</h2>
         <p>
           社團法人台灣食品安全促進協會接受衛生福利部食品藥物管理署委託，執行114年度「食品非預期反應評估研析」，該計畫主要為使消費大眾能對食品之非預期反應達到正確認知，藉由自發性的通報制度，蒐集「健康食品、特殊營養食品及膠囊錠狀食品」非預期反應通報案件，建立本土資料庫，以累積本土的經驗，同時藉由知識傳遞活動宣導食品安全相關議題，提升國人對食品造成非預期反應的風險警覺度。
         </p>
@@ -98,10 +122,10 @@ import StatusBadge from '../../components/StatusBadge.astro';
         <div class="links">
           <a href="https://qms.fda.gov.tw/tcbw/index.jsp">食品非預期反應通報系統</a>
         </div>
-      </article>
+        </article>
 
-      <article class="item">
-        <h2>6. 長照 3.0 計畫：「智慧科技輔具」</h2>
+        <article class="item">
+        <h2>7. 長照 3.0 計畫：「智慧科技輔具」</h2>
         <p>
           💡什麼是「智慧科技輔具」？你知道嗎？輔具不只是輪椅、助聽器而已～隨著科技進步，現在的輔具也變得更聰明了！🤖「智慧科技輔具」就是把
           AI人工智慧、感測器、IoT物聯網 等技術運用在輔助設備上，讓它們能主動偵測、分析、甚至即時通報，從被動的工具，變成真正懂得「照顧人」的幫手 💕
@@ -116,10 +140,10 @@ import StatusBadge from '../../components/StatusBadge.astro';
         <div class="links">
           <a href="https://newrepat.sfaa.gov.tw/home/doctor">衛福部智慧輔具資訊平台</a>
         </div>
-      </article>
+        </article>
 
-      <article class="item">
-        <h2>7. 好物推薦 —《社區藥事照護相關業務-台灣經驗》好書推薦</h2>
+        <article class="item">
+        <h2>8. 好物推薦 —《社區藥事照護相關業務-台灣經驗》好書推薦</h2>
         <p>
           您是否關心台灣社區藥事照護的發展？您是否希望深入了解實務經驗、制度演變與未來趨勢？現在，臺灣遠距藥事照護協會推薦由譚延輝
           博士 編著的《社區藥事照護相關業務-台灣經驗》正式開放訂購！
@@ -137,7 +161,8 @@ import StatusBadge from '../../components/StatusBadge.astro';
         <div class="links">
           <a href="https://forms.gle/QsCsrgmnYUHuDgSn6">填寫購書資料表</a>
         </div>
-      </article>
+        </article>
+      </div>
     </div>
   </section>
 </BaseLayout>
@@ -155,18 +180,53 @@ import StatusBadge from '../../components/StatusBadge.astro';
   }
 
   .list {
-    padding-block: clamp(2rem, 5vw, 3.5rem);
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
+    padding-block: clamp(2.5rem, 6vw, 4.5rem);
+    background: var(--color-bg-light);
+  }
+
+  .section-heading {
+    max-width: 48rem;
+    margin: 0 auto 2rem;
+    text-align: center;
+  }
+
+  .eyebrow {
+    margin: 0 0 0.5rem;
+    color: var(--color-accent);
+    font-size: var(--text-xs);
+    font-weight: 800;
+    letter-spacing: 0.08em;
+  }
+
+  .section-heading h2 {
+    margin: 0;
+    color: var(--color-primary-dark);
+  }
+
+  .section-heading > p:last-child {
+    margin: 0.75rem 0 0;
+    color: var(--color-ink-soft);
+  }
+
+  .promotion-grid {
+    display: grid;
+    gap: 1.25rem;
+    grid-template-columns: 1fr;
   }
 
   .item {
+    display: flex;
+    flex-direction: column;
     background: var(--color-white);
     border: 1px solid var(--color-line);
-    border-radius: 0.75rem;
-    padding: 1.5rem;
+    border-top: 0.35rem solid var(--color-brand-tint);
+    border-radius: 1rem;
+    padding: clamp(1.25rem, 3vw, 1.75rem);
     box-shadow: var(--shadow-card);
+  }
+
+  .item:first-child {
+    border-top-color: var(--color-accent);
   }
 
   .item-head {
@@ -178,7 +238,7 @@ import StatusBadge from '../../components/StatusBadge.astro';
   }
 
   .item h2 {
-    margin: 0 0 0.75rem;
+    margin: 0 0 0.85rem;
     color: var(--color-primary);
     font-size: var(--text-lg);
   }
@@ -188,7 +248,8 @@ import StatusBadge from '../../components/StatusBadge.astro';
   }
 
   .item p {
-    margin: 0 0 0.75rem;
+    margin: 0 0 0.9rem;
+    line-height: 1.7;
   }
 
   .item .meta {
@@ -200,11 +261,35 @@ import StatusBadge from '../../components/StatusBadge.astro';
     display: flex;
     flex-wrap: wrap;
     gap: 0.5rem 1rem;
-    margin-top: 0.5rem;
+    margin-top: auto;
+    padding-top: 0.35rem;
   }
 
   .links a {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid var(--color-brand-tint);
+    border-radius: 0.65rem;
+    background: var(--color-brand-soft);
+    color: var(--color-primary-dark);
     font-size: var(--text-sm);
-    font-weight: 600;
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .links a:hover {
+    background: var(--color-brand-tint);
+    color: var(--color-primary-dark);
+  }
+
+  @media (min-width: 768px) {
+    .promotion-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .item:first-child {
+      grid-column: 1 / -1;
+    }
   }
 </style>

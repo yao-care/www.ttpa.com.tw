@@ -2,7 +2,7 @@
 // 全站共用頂部導覽。
 // 決定（用戶已拍板，見交辦說明與 .source/_ia-plan.md § 3、決定項 9）：
 //   主要項目放進 header，活動成果整合至活動報名專區，降低頂層導覽密度；
-//   活動報名專區／線上課程推廣／首頁 用下拉（<details>）收納子頁；少量原生 JS
+//   活動報名專區／線上教學資料庫／首頁 用下拉（<details>）收納子頁；少量原生 JS
 //   負責互斥開啟、離開收合與鍵盤操作，避免下拉選單彼此重疊。
 // 路由對照：逐條取自 .source/_ia-plan.md § 1 路由對照表，一頁不漏、不擅自加頁。
 // ⚠ 有 base 子路徑：每一條連結都經 base 組合，不硬編 /xxx。
@@ -45,12 +45,11 @@ const nav: NavItem[] = [
     ],
   },
   {
-    label: '線上課程推廣',
+    label: '線上教學資料庫',
     href: `${base}courses/`,
     children: [
-      { label: '115.04.18 醫療人員AI實務應用', href: `${base}courses/2026-04-18-ai-practice/` },
-      { label: '115.06.20 醫療人員的AI第二大腦', href: `${base}courses/2026-06-20-second-brain/` },
-      { label: '115.10.03 Gemini × 醫療現場', href: `${base}courses/2026-10-03-gemini-medical-workflow/` },
+      { label: '線上課程區', href: `${base}courses/#online-courses` },
+      { label: '線上教材區', href: `${base}courses/#teaching-materials` },
     ],
   },
   { label: '協同推廣', href: `${base}co-promotion/` },
