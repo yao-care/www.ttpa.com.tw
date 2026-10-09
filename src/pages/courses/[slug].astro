@@ -35,6 +35,10 @@ const instructorPhotoSrc = data.instructorPhoto
 
 const instructorImageSrc = (path: string) =>
   /^https?:\/\//.test(path) ? path : `${base}${path}`;
+const recordingEmbedSrc = data.recordingVideoLink?.replace(
+  /\/view(?:\?.*)?$/,
+  '/preview',
+);
 ---
 
 <BaseLayout title={`${data.title} | 線上教學資料庫 | 臺灣遠距藥事照護協會`} description={data.summary}>
@@ -132,10 +136,79 @@ const instructorImageSrc = (path: string) =>
             立即報名
           </a>
         )}
+
+        {recordingEmbedSrc && (
+          <section class="recording-gate" aria-labelledby="recording-title">
+            <div data-recording-locked>
+              <p class="recording-kicker">COURSE RECORDING</p>
+              <h2 id="recording-title">課程紀錄影片</h2>
+              <p>請輸入協會提供的存取碼後觀看。</p>
+              <form class="recording-form" data-recording-form>
+                <label for="recording-passcode">影片存取碼</label>
+                <input
+                  id="recording-passcode"
+                  name="recording-passcode"
+                  type="password"
+                  autocomplete="off"
+                  required
+                  data-recording-passcode
+                />
+                <button type="submit">驗證並播放</button>
+                <p class="recording-error" data-recording-error hidden aria-live="polite">
+                  存取碼不正確，請再次確認後輸入。
+                </p>
+              </form>
+            </div>
+            <div data-recording-player hidden tabindex="-1">
+              <p class="recording-kicker">ACCESS CONFIRMED</p>
+              <h2>課程紀錄影片</h2>
+              <div class="recording-frame">
+                <iframe
+                  data-recording-frame
+                  data-recording-src={recordingEmbedSrc}
+                  title={`${data.title} 課程紀錄影片`}
+                  allow="autoplay; fullscreen"
+                  allowfullscreen
+                  loading="lazy"
+                ></iframe>
+              </div>
+            </div>
+          </section>
+        )}
       </aside>
     </div>
   </section>
 </BaseLayout>
+
+<script>
+  const recordingForm = document.querySelector<HTMLFormElement>('[data-recording-form]');
+  const recordingPasscode = document.querySelector<HTMLInputElement>('[data-recording-passcode]');
+  const recordingLocked = document.querySelector<HTMLElement>('[data-recording-locked]');
+  const recordingPlayer = document.querySelector<HTMLElement>('[data-recording-player]');
+  const recordingFrame = document.querySelector<HTMLIFrameElement>('[data-recording-frame]');
+  const recordingError = document.querySelector<HTMLElement>('[data-recording-error]');
+
+  recordingForm?.addEventListener('submit', (event) => {
+    event.preventDefault();
+
+    if (recordingPasscode?.value.trim() !== 'ttpa2014') {
+      if (recordingError) recordingError.hidden = false;
+      recordingPasscode?.focus();
+      return;
+    }
+
+    if (recordingError) recordingError.hidden = true;
+    if (recordingLocked) recordingLocked.hidden = true;
+    if (recordingPlayer) recordingPlayer.hidden = false;
+
+    const videoSource = recordingFrame?.dataset.recordingSrc;
+    if (recordingFrame && videoSource && !recordingFrame.getAttribute('src')) {
+      recordingFrame.src = videoSource;
+    }
+
+    recordingPlayer?.focus();
+  });
+</script>
 
 <style>
   .hero {
@@ -364,6 +437,91 @@ const instructorImageSrc = (path: string) =>
   .btn-primary:hover {
     background: var(--color-accent-dark);
     color: var(--color-white);
+  }
+
+  .recording-gate {
+    margin-top: var(--space-6);
+    padding-top: var(--space-5);
+    border-top: 1px solid var(--color-line);
+  }
+
+  .recording-kicker {
+    margin: 0 0 var(--space-2);
+    color: var(--color-primary);
+    font-size: var(--text-xs);
+    font-weight: 700;
+    letter-spacing: 0.08em;
+  }
+
+  .recording-gate h2 {
+    margin: 0;
+    color: var(--color-text);
+    font-size: var(--text-lg);
+  }
+
+  .recording-gate > div > p:not(.recording-kicker),
+  .recording-form {
+    margin-top: var(--space-3);
+  }
+
+  .recording-form {
+    display: grid;
+    gap: var(--space-2);
+  }
+
+  .recording-form label {
+    color: var(--color-text);
+    font-size: var(--text-sm);
+    font-weight: 600;
+  }
+
+  .recording-form input {
+    min-height: 2.75rem;
+    border: 1px solid var(--color-line);
+    border-radius: 0.375rem;
+    padding: 0 var(--space-3);
+    color: var(--color-text);
+    font: inherit;
+  }
+
+  .recording-form input:focus-visible {
+    outline: 3px solid color-mix(in srgb, var(--color-primary) 28%, transparent);
+    outline-offset: 2px;
+  }
+
+  .recording-form button {
+    min-height: 2.75rem;
+    border: 0;
+    border-radius: 0.375rem;
+    background: var(--color-primary);
+    color: var(--color-white);
+    cursor: pointer;
+    font: inherit;
+    font-weight: 600;
+  }
+
+  .recording-form button:hover {
+    background: var(--color-primary-dark);
+  }
+
+  .recording-error {
+    margin: 0;
+    color: var(--color-accent-dark);
+    font-size: var(--text-sm);
+  }
+
+  .recording-frame {
+    aspect-ratio: 16 / 9;
+    margin-top: var(--space-3);
+    overflow: hidden;
+    border-radius: 0.375rem;
+    background: var(--color-brand-soft);
+  }
+
+  .recording-frame iframe {
+    width: 100%;
+    height: 100%;
+    border: 0;
   }
 
   @media (min-width: 1024px) {

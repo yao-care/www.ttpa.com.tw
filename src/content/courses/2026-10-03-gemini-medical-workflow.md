@@ -6,6 +6,7 @@ format: 線上遠距直播（報名成功後，上課前發送連結）
 fee: 全程免費
 instructorName: 蔡秀敏
 instructorTitle: 專科護理師
+recordingVideoLink: https://drive.google.com/file/d/1XLNgkAQzXCIvTyWym_cYz1b7WbmZRMqS/preview
 capacityLimit: 活動已結束
 status: "✅ 活動已結束"
 summary: 從臨床實際痛點出發，掌握 Gemini 核心技巧，從向 AI 提問進一步打造專屬工作流，提升衛教與教學效率。
