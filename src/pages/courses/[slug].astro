@@ -37,10 +37,10 @@ const instructorImageSrc = (path: string) =>
   /^https?:\/\//.test(path) ? path : `${base}${path}`;
 ---
 
-<BaseLayout title={`${data.title} | 線上課程推廣 | 臺灣遠距藥事照護協會`} description={data.summary}>
+<BaseLayout title={`${data.title} | 線上教學資料庫 | 臺灣遠距藥事照護協會`} description={data.summary}>
   <section class="hero">
     <div class="container">
-      <a class="back-link" href={`${base}courses/`}>← 返回線上課程推廣</a>
+      <a class="back-link" href={`${base}courses/`}>← 返回線上教學資料庫</a>
       {data.status && <StatusBadge status={data.status} />}
       <h1>{data.title}</h1>
       <p class="date">{data.dateLabel}</p>
