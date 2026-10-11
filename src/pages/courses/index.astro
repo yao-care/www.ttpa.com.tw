@@ -152,8 +152,20 @@ const learningItems = [
 
         <div class="materials-unlocked" data-materials-unlocked hidden tabindex="-1">
           <p class="eyebrow">ACCESS CONFIRMED</p>
-          <h3>線上教材區正在整理中</h3>
-          <p>教材內容待協會確認後開放；完成確認的教材會直接在此提供瀏覽或下載連結。</p>
+          <h3>已開放教材</h3>
+          <p>以下資源已由協會開放使用；點選後將另開新分頁進入教材工具。</p>
+          <a
+            class="material-resource"
+            href="https://ai-web-coach-tw.ray960156.chatgpt.site/"
+            target="_blank"
+            rel="noreferrer"
+          >
+            <span class="material-resource-icon" aria-hidden="true">↗</span>
+            <span>
+              <strong>AI 網頁教練</strong>
+              <small>開啟線上教材工具</small>
+            </span>
+          </a>
         </div>
       </div>
     </div>
@@ -498,6 +510,61 @@ const learningItems = [
 
   .materials-unlocked .eyebrow {
     margin-top: 0;
+  }
+
+  .material-resource {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    max-width: 34rem;
+    margin: 1.25rem auto 0;
+    padding: 1rem 1.1rem;
+    border: 1px solid var(--color-brand-tint);
+    border-radius: 0.75rem;
+    background: var(--color-brand-soft);
+    color: var(--color-primary-dark);
+    text-align: left;
+    text-decoration: none;
+    transition: background-color 160ms ease, border-color 160ms ease, transform 160ms ease;
+  }
+
+  .material-resource:hover {
+    border-color: var(--color-primary);
+    background: var(--color-white);
+    transform: translateY(-0.125rem);
+  }
+
+  .material-resource:focus-visible {
+    outline: 3px solid var(--color-brand-tint);
+    outline-offset: 3px;
+  }
+
+  .material-resource-icon {
+    display: grid;
+    flex: 0 0 2.5rem;
+    width: 2.5rem;
+    height: 2.5rem;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--color-primary);
+    color: var(--color-white);
+    font-size: var(--text-lg);
+    font-weight: 800;
+  }
+
+  .material-resource strong,
+  .material-resource small {
+    display: block;
+  }
+
+  .material-resource strong {
+    font-size: var(--text-base);
+  }
+
+  .material-resource small {
+    margin-top: 0.2rem;
+    color: var(--color-ink-soft);
+    font-size: var(--text-sm);
   }
 
   @media (min-width: 768px) {
