@@ -39,6 +39,12 @@ const recordingEmbedSrc = data.recordingVideoLink?.replace(
   /\/view(?:\?.*)?$/,
   '/preview',
 );
+const registrationUnavailable = data.status
+  ? /已結束|已圓滿結束|額滿|已截止/.test(data.status)
+  : false;
+const registrationUnavailableMessage = /額滿/.test(data.status ?? '')
+  ? '本課程報名額滿，感謝關注。'
+  : '本課程報名已截止。';
 ---
 
 <BaseLayout title={`${data.title} | 線上教學資料庫 | 臺灣遠距藥事照護協會`} description={data.summary}>
@@ -131,10 +137,14 @@ const recordingEmbedSrc = data.recordingVideoLink?.replace(
           <img src={instructorPhotoSrc} alt={data.instructorName ?? '講師照片'} loading="lazy" width="240" height="320" />
         )}
 
-        {data.registrationLink && (
+        {data.registrationLink && !registrationUnavailable && (
           <a class="btn btn-primary" href={data.registrationLink}>
             立即報名
           </a>
+        )}
+
+        {data.registrationLink && registrationUnavailable && (
+          <p class="registration-unavailable">{registrationUnavailableMessage}</p>
         )}
 
         {recordingEmbedSrc && (
@@ -437,6 +447,17 @@ const recordingEmbedSrc = data.recordingVideoLink?.replace(
   .btn-primary:hover {
     background: var(--color-accent-dark);
     color: var(--color-white);
+  }
+
+  .registration-unavailable {
+    margin: 1rem 0 0;
+    padding: 0.75rem 1rem;
+    border-radius: 0.5rem;
+    background: var(--color-brand-soft);
+    color: var(--color-ink-soft);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    text-align: center;
   }
 
   .recording-gate {

@@ -14,6 +14,7 @@ const courses = await getCollection('courses');
 const getCourseStatusLabel = (status?: string) => {
   if (!status) return '狀態待更新';
   if (/候補/.test(status)) return '限額候補';
+  if (/額滿/.test(status)) return '報名額滿';
   return /已結束|已圓滿結束/.test(status) ? '已結束' : '報名中';
 };
 
