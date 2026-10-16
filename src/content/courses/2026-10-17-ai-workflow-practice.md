@@ -8,7 +8,7 @@ instructorIds:
   - huang-ziyan
   - luo-yang
 registrationLink: https://script.google.com/macros/s/AKfycbyg3TIA5-fADLfxO7s1WZbtbeFWi5LULCTovMJkHb5DIIXBoe5BAhay2pHGL-SqxYkRaw/exec
-status: "🚀 開放報名"
+status: "報名額滿"
 summary: 從醫療專業知識整理、內容製作到 AI Agent 與工作流設計，掌握可重複執行、持續累積的實務應用方法。
 image: img/course-ai-workflow-practice-2026-10-17.jpg
 featured: false
