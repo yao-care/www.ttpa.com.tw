@@ -7,8 +7,8 @@ instructorName: 黃子彥醫師、羅揚執行長
 instructorIds:
   - huang-ziyan
   - luo-yang
-registrationLink: https://script.google.com/macros/s/AKfycbyg3TIA5-fADLfxO7s1WZbtbeFWi5LULCTovMJkHb5DIIXBoe5BAhay2pHGL-SqxYkRaw/exec
-status: "報名額滿"
+recordingVideoLink: https://drive.google.com/file/d/1s8VrRaHbDoeoLQF62IHOHl0peZ7jFmJ0/preview
+status: "✅ 活動已結束"
 summary: 從醫療專業知識整理、內容製作到 AI Agent 與工作流設計，掌握可重複執行、持續累積的實務應用方法。
 image: img/course-ai-workflow-practice-2026-10-17.jpg
 featured: false
@@ -16,6 +16,8 @@ sourceSlug: "2026-10-17-ai-workflow-practice"
 ---
 
 TTPA 線上 AI 實戰系列課程
+
+> **本課程已結束，感謝各位參與。** 請於課程紀錄影片區輸入協會提供的存取碼，觀看課程回播。
 
 ![醫療人員的 AI 工作流實務心法教學宣傳圖](/img/course-ai-workflow-practice-2026-10-17.jpg)
 
@@ -51,4 +53,4 @@ TTPA 線上 AI 實戰系列課程
 - 形式：線上即時互動
 - 講師：黃子彥醫師、羅揚執行長（各 30 分鐘）
 
-完成線上報名後，系統將寄送信箱驗證信；點擊信中的確認連結後，才算完成報名保留。
+本課程已結束，不再受理報名；課程紀錄影片可於驗證後觀看。
