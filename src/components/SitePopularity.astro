@@ -1,0 +1,92 @@
+---
+import { popularityEndpoint } from '../config/site-popularity';
+---
+<div id="site-popularity" class="site-popularity" data-site-popularity data-endpoint={popularityEndpoint}>
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+    <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z" />
+    <circle cx="12" cy="12" r="3" />
+  </svg>
+  <span>網站人氣</span>
+  <span class="popularity-value" data-score aria-live="polite">讀取中</span>
+</div>
+<script>
+  const counter = document.querySelector<HTMLElement>('[data-site-popularity]');
+  const output = counter?.querySelector<HTMLElement>('[data-score]');
+  const endpoint = counter?.dataset.endpoint;
+  const isOfficial = location.origin === 'https://www.ttpa.com.tw';
+  const windowMs = 30 * 60 * 1000;
+  const key = 'ttpa-popularity-visit-v1';
+
+  async function loadPopularity() {
+    if (!output) return;
+    if (!endpoint) {
+      // Never present a placeholder as a measured production value.
+      output.textContent = isOfficial ? '暫時無法讀取' : '2,014（版型預覽）';
+      return;
+    }
+    let visit: { id: string; expires: number; counted?: boolean } | null = null;
+    if (isOfficial) {
+      try {
+        const saved = JSON.parse(localStorage.getItem(key) || 'null');
+        if (saved && typeof saved.id === 'string' && /^[a-f0-9-]{36}$/.test(saved.id)
+            && saved.expires > Date.now() && saved.expires <= Date.now() + windowMs) {
+          visit = saved;
+        } else {
+          visit = { id: crypto.randomUUID(), expires: Date.now() + windowMs };
+          localStorage.setItem(key, JSON.stringify(visit));
+        }
+      } catch {
+        // With storage blocked, read only instead of counting every page load.
+        visit = null;
+      }
+    }
+    const shouldCount = visit && !visit.counted;
+    try {
+      const response = await fetch(endpoint, {
+        method: shouldCount ? 'POST' : 'GET',
+        ...(shouldCount ? {
+          headers: { 'Content-Type': 'text/plain;charset=UTF-8' },
+          body: JSON.stringify({ origin: location.origin, visitId: visit!.id }),
+        } : {}),
+        credentials: 'omit',
+        redirect: 'follow',
+        cache: 'no-store',
+        signal: AbortSignal.timeout(15000),
+      });
+      if (!response.ok) throw new Error('Counter unavailable');
+      const result = await response.json();
+      if (!result.ok || !Number.isSafeInteger(result.score) || result.score < 2014) throw new Error('Invalid score');
+      output.textContent = new Intl.NumberFormat('zh-TW').format(result.score);
+      if (shouldCount && visit) {
+        try { localStorage.setItem(key, JSON.stringify({ ...visit, counted: true })); } catch { /* Read remains valid. */ }
+      }
+    } catch {
+      output.textContent = '暫時無法讀取';
+    }
+  }
+  // Coordinate simultaneous tabs where Web Locks is supported.
+  if (navigator.locks && isOfficial) {
+    void navigator.locks.request(key, loadPopularity);
+  } else {
+    void loadPopularity();
+  }
+</script>
+<style>
+  .site-popularity {
+    display: inline-flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.55rem;
+    padding: 0.55rem 0.85rem;
+    border: 1px solid var(--color-white-a20);
+    border-radius: 0.75rem;
+    color: var(--color-brand-tint);
+    background: var(--color-white-a10);
+    font-size: var(--text-xs);
+  }
+  .popularity-value {
+    color: var(--color-white);
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+  }
+</style>
