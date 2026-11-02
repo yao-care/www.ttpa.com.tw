@@ -136,9 +136,10 @@ const learningItems = [
               <input
                 id="materials-passcode"
                 name="materials-passcode"
-                type="password"
+                type="text"
                 inputmode="text"
                 autocomplete="off"
+                autocapitalize="off"
                 spellcheck="false"
                 required
                 aria-describedby="materials-help materials-error"
@@ -146,7 +147,7 @@ const learningItems = [
               />
               <button type="submit">驗證並進入</button>
             </div>
-            <p id="materials-help" class="materials-help">教材尚未開放時，驗證後會顯示最新整理狀態。</p>
+            <p id="materials-help" class="materials-help">存取碼區分大小寫，輸入內容會直接顯示，請確認後送出。</p>
             <p id="materials-error" class="materials-error" data-materials-error hidden aria-live="polite">存取碼不正確，請確認後再試。</p>
           </form>
         </div>
@@ -187,6 +188,8 @@ const learningItems = [
 </BaseLayout>
 
 <script>
+  import { validateMaterialsCode } from '../../utils/materials-access.mjs';
+
   const materialsForm = document.querySelector<HTMLFormElement>('[data-materials-form]');
   const materialsPasscode = document.querySelector<HTMLInputElement>('[data-materials-passcode]');
   const materialsError = document.querySelector<HTMLElement>('[data-materials-error]');
@@ -194,10 +197,37 @@ const learningItems = [
   const materialsUnlocked = document.querySelector<HTMLElement>('[data-materials-unlocked]');
 
   if (materialsForm && materialsPasscode && materialsError && materialsLocked && materialsUnlocked) {
+    let expiresAt: number | null = null;
+    let expiryTimer: ReturnType<typeof setInterval> | undefined;
+    const expiredMessage = '此教材存取碼已於 115 年 11 月 8 日 00:00（臺灣時間）失效，請向協會洽詢有效存取碼。';
+
+    function checkExpiry() {
+      if (expiresAt === null || Date.now() < expiresAt) return false;
+      materialsLocked!.hidden = false;
+      materialsUnlocked!.hidden = true;
+      materialsError!.textContent = expiredMessage;
+      materialsError!.hidden = false;
+      clearInterval(expiryTimer);
+      expiresAt = null;
+      return true;
+    }
+
+    // Also recheck after a sleeping/background tab resumes, or before opening a resource.
+    window.addEventListener('focus', checkExpiry);
+    window.addEventListener('pageshow', checkExpiry);
+    document.addEventListener('visibilitychange', checkExpiry);
+    materialsUnlocked.addEventListener('click', (event) => {
+      if (checkExpiry()) event.preventDefault();
+    }, true);
+
     materialsForm.addEventListener('submit', (event) => {
       event.preventDefault();
+      const access = validateMaterialsCode(materialsPasscode.value);
 
-      if (materialsPasscode.value.trim() === 'ttpa2014') {
+      if (access.status === 'valid') {
+        clearInterval(expiryTimer);
+        expiresAt = access.expiresAt;
+        if (expiresAt !== null) expiryTimer = setInterval(checkExpiry, 1000);
         materialsLocked.hidden = true;
         materialsError.hidden = true;
         materialsUnlocked.hidden = false;
@@ -205,6 +235,7 @@ const learningItems = [
         return;
       }
 
+      materialsError.textContent = access.status === 'expired' ? expiredMessage : '存取碼不正確，請確認大小寫後再試。';
       materialsError.hidden = false;
       materialsPasscode.focus();
     });
