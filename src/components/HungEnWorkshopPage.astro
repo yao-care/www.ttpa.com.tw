@@ -2,7 +2,9 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 
 const { event } = Astro.props;
-const { title, dateLabel, location, summary, image, registrationLink, contactEmail } = event.data;
+const { title, dateLabel, location, status, summary, image, registrationLink, contactEmail } = event.data;
+const isEnded = /已結束/.test(status ?? '');
+const canRegister = !isEnded && Boolean(registrationLink);
 const base = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL : `${import.meta.env.BASE_URL}/`;
 const asset = (path: string) => `${base}${path}`;
 
@@ -127,7 +129,11 @@ const posters = [
         <a href="#faculty">講師群</a>
         <a href="#pricing">費用與退費</a>
       </div>
-      <a class="workshop-state" href={registrationLink} target="_blank" rel="noopener noreferrer">開放報名</a>
+      {canRegister ? (
+        <a class="workshop-state" href={registrationLink} target="_blank" rel="noopener noreferrer">{status}</a>
+      ) : (
+        <span class="workshop-state">{status}</span>
+      )}
     </div>
   </nav>
 
@@ -137,7 +143,7 @@ const posters = [
       <div class="hero-orb hero-orb-two" aria-hidden="true"></div>
       <div class="container hero-grid">
         <div class="hero-copy" data-reveal>
-          <p class="eyebrow"><span aria-hidden="true"></span> 台北場 · 現正報名中</p>
+          <p class="eyebrow"><span aria-hidden="true"></span> 台北場 · {isEnded ? '圓滿完成' : status}</p>
           <h1>AI 高效工作坊<br /><em>醫藥護專業人員的實務應用</em></h1>
           <p class="hero-summary">{summary}</p>
           <dl class="hero-facts" aria-label="活動資訊">
@@ -145,10 +151,10 @@ const posters = [
             <div><dt>活動地點</dt><dd>{location}</dd></div>
           </dl>
           <div class="hero-actions">
-            <a class="button button-primary" href={registrationLink} target="_blank" rel="noopener noreferrer">立即線上報名 <span aria-hidden="true">→</span></a>
+            {canRegister && <a class="button button-primary" href={registrationLink} target="_blank" rel="noopener noreferrer">立即線上報名 <span aria-hidden="true">→</span></a>}
             <a class="button button-ghost" href="#schedule">查看課程內容</a>
           </div>
-          <p class="hero-note">雙日實體課程｜實作導向｜完成課程可依規定取得學分與研習證書</p>
+          <p class="hero-note">{isEnded ? '活動已結束，報名已截止。以下保留原課程資訊供查閱。' : '雙日實體課程｜實作導向｜完成課程可依規定取得學分與研習證書'}</p>
         </div>
 
         <a class="hero-visual" href={asset(image)} target="_blank" rel="noopener noreferrer" aria-label="開啟完整活動海報">
@@ -243,8 +249,8 @@ const posters = [
       <div class="container">
         <header class="section-heading" data-reveal>
           <p class="eyebrow">REGISTRATION</p>
-          <h2>報名費用與優惠方案</h2>
-          <p>請依身分選擇方案；資格與繳費資訊以報名表單審核結果為準。</p>
+          <h2>{isEnded ? '原報名費用與優惠方案（存檔）' : '報名費用與優惠方案'}</h2>
+          <p>{isEnded ? '本活動已結束，以下費用與優惠僅供歷史資料查閱，不再受理報名。' : '請依身分選擇方案；資格與繳費資訊以報名表單審核結果為準。'}</p>
         </header>
         <div class="pricing-grid">
           {plans.map(([label, price, note], index) => (
@@ -291,7 +297,7 @@ const posters = [
         <header class="section-heading" data-reveal>
           <p class="eyebrow">EVENT GUIDE</p>
           <h2>完整活動資訊海報</h2>
-          <p>點擊任一張圖片，可開啟原尺寸查看細節。</p>
+          <p>{isEnded ? '以下為原活動海報存檔；海報中的報名資訊已截止。點擊圖片可查看細節。' : '點擊任一張圖片，可開啟原尺寸查看細節。'}</p>
         </header>
         <div class="poster-grid">
           {posters.map(([src, label, alt], index) => (
@@ -306,8 +312,17 @@ const posters = [
 
     <section class="closing">
       <div class="container closing-inner" data-reveal>
-        <div><p class="eyebrow">REGISTER NOW</p><h2>準備把 AI 放進你的日常工作？</h2><p>完成線上報名、資格審核與繳費後，即完成本次課程報名。</p></div>
-        <a class="button button-light" href={registrationLink} target="_blank" rel="noopener noreferrer">前往 Google 表單 <span aria-hidden="true">→</span></a>
+        {isEnded ? (
+          <>
+            <div><p class="eyebrow">WORKSHOP COMPLETED</p><h2>台北場工作坊圓滿完成</h2><p>感謝講師與學員的參與，期待在未來的課程再次相見！</p></div>
+            <a class="button button-light" href={`${base}events/`}>查看其他活動 <span aria-hidden="true">→</span></a>
+          </>
+        ) : (
+          <>
+            <div><p class="eyebrow">REGISTER NOW</p><h2>準備把 AI 放進你的日常工作？</h2><p>完成線上報名、資格審核與繳費後，即完成本次課程報名。</p></div>
+            {canRegister && <a class="button button-light" href={registrationLink} target="_blank" rel="noopener noreferrer">前往 Google 表單 <span aria-hidden="true">→</span></a>}
+          </>
+        )}
       </div>
     </section>
 

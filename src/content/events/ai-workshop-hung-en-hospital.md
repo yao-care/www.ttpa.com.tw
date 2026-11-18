@@ -4,10 +4,10 @@ subtitle: "雙日實作課程｜宏恩綜合醫院場"
 dateLabel: "2026 年 11 月 14 日（六）–11 月 15 日（日）｜09:30–17:00"
 date: 2026-11-14
 location: "宏恩醫療財團法人宏恩綜合醫院（臺北市大安區仁愛路四段 61 號）"
-status: "開放報名"
+status: "活動已結束"
 category: "實體課程"
-summary: "專為醫藥護專業人員設計的雙日實作工作坊，從 NotebookLM、ChatGPT 與 Codex、Gemini 到 Notion × AI，建立可直接運用於醫療工作的數位流程。"
-registrationLink: "https://forms.gle/jPEt8kjBjrYNeYWG6"
+summary: "台北場雙日實作工作坊已於 2026 年 11 月 14–15 日圓滿完成，感謝講師與學員參與！課程涵蓋 NotebookLM、ChatGPT 與 Codex、Gemini 到 Notion × AI，探索醫療工作的數位流程。"
+registrationNote: "活動已結束，報名已截止。"
 contactEmail: "ttpa2014@gmail.com"
 image: "img/ai-workshop-hung-en-2026-overview.jpg"
 featured: true
