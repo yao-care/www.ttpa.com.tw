@@ -1,0 +1,65 @@
+---
+const { gallery, base } = Astro.props;
+---
+<div class="workshop-replay" aria-labelledby="replay-title">
+  <h3 id="replay-title">工作坊照片回顧</h3>
+  <figure>
+    <img id="replay-photo" src={base + gallery[0].src} alt={gallery[0].alt} width="1200" height="900" loading="lazy">
+    <figcaption id="replay-caption">{gallery[0].caption}</figcaption>
+  </figure>
+  <div class="replay-controls">
+    <button type="button" id="replay-prev">上一張</button>
+    <button type="button" id="replay-play">播放</button>
+    <button type="button" id="replay-next">下一張</button>
+    <span id="replay-count" aria-live="polite">1 / {gallery.length}</span>
+  </div>
+<template id="replay-photos">{gallery.map(item => (<figure><img src={base + item.src} alt={item.alt} /><figcaption>{item.caption}</figcaption></figure>))}</template>
+</div>
+<script is:inline>
+const photos = Array.from(document.querySelector('#replay-photos').content.querySelectorAll('img'));
+const photo = document.querySelector('#replay-photo');
+const caption = document.querySelector('#replay-caption');
+const count = document.querySelector('#replay-count');
+const play = document.querySelector('#replay-play');
+let index = 0;
+let timer;
+
+function showPhoto(offset) {
+  index = (index + offset + photos.length) % photos.length;
+  const next = photos[index];
+  photo.src = next.getAttribute('src');
+  photo.alt = next.alt;
+  caption.textContent = next.closest('figure')?.querySelector('figcaption')?.textContent.trim() || next.alt;
+  count.textContent = `${index + 1} / ${photos.length}`;
+}
+
+document.querySelector('#replay-prev').addEventListener('click', () => showPhoto(-1));
+document.querySelector('#replay-next').addEventListener('click', () => showPhoto(1));
+play.addEventListener('click', () => {
+  if (timer) {
+    clearInterval(timer);
+    timer = undefined;
+    play.textContent = '播放';
+    count.setAttribute('aria-live', 'polite');
+    return;
+  }
+  count.setAttribute('aria-live', 'off');
+  play.textContent = '暫停';
+  timer = setInterval(() => showPhoto(1), 3500);
+});
+showPhoto(0);
+
+
+</script>
+<style>
+.workshop-replay { background:var(--color-primary-dark); color:white; padding:clamp(2rem,5vw,4rem) 1rem; text-align:center; border-radius:.75rem; }
+.workshop-replay h3 { color:inherit; margin:0 0 1.25rem; }
+.workshop-replay figure { max-width:66rem; margin:0 auto; }
+.workshop-replay img { width:100%; aspect-ratio:16 / 9; object-fit:contain; background:var(--color-text); border-radius:.6rem; }
+.workshop-replay figcaption { margin:.8rem 0; }
+.replay-controls { display:flex; justify-content:center; align-items:center; flex-wrap:wrap; gap:.65rem; }
+.replay-controls button { font:inherit; font-weight:700; color:var(--color-primary-dark); background:white; border:0; border-radius:.4rem; padding:.55rem .85rem; cursor:pointer; }
+
+
+</style>
+

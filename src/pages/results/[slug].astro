@@ -1,5 +1,6 @@
 ---
 import { getCollection, render } from 'astro:content';
+import WorkshopReplay from '../../components/WorkshopReplay.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 
 export async function getStaticPaths() {
@@ -11,6 +12,7 @@ export async function getStaticPaths() {
 }
 
 const { result } = Astro.props;
+const isTaipeiWorkshop = result.id === 'sixth-ai-workshop-taipei';
 const { Content } = await render(result);
 const {
   title,
@@ -52,6 +54,12 @@ const base = import.meta.env.BASE_URL.endsWith('/')
         <p class="eyebrow">{eyebrow}</p>
         <h1>{title}</h1>
         <p class="hero-summary">{summary}</p>
+        {isTaipeiWorkshop && (
+          <nav class="workshop-jumps" aria-label="工作坊頁面導覽">
+            <a href="#instructors">看講師與課程</a>
+            <a href="#visual-title">看活動照片</a>
+          </nav>
+        )}
       </div>
     </header>
 
@@ -75,6 +83,14 @@ const base = import.meta.env.BASE_URL.endsWith('/')
         </div>
       </div>
     </section>
+
+    {isTaipeiWorkshop && (<section class="workshop-speakers" aria-labelledby="instructors"><div class="container"><h2 id="instructors">講師與課程</h2>
+<dl class="workshop-instructors">
+  <div><dt>黃品叡醫師</dt><dd>玩轉 NotebookLM</dd></div>
+  <div><dt>翁紹恩藥師</dt><dd>Gemini 臨床簡報實務應用</dd></div>
+  <div><dt>陳晏緹專科護理師</dt><dd>Notion × AI 第二大腦</dd></div>
+  <div><dt>蔡秀敏專科護理師</dt><dd>從 ChatGPT 到 Codex 智慧工作流程</dd></div>
+</dl></div></section>)}
 
     <section class="story-section" aria-labelledby="story-title">
       <div class="container story-layout">
@@ -134,11 +150,17 @@ const base = import.meta.env.BASE_URL.endsWith('/')
         <div class="section-heading">
           <p class="eyebrow">MOMENTS</p>
           <h2 id="visual-title">活動紀錄</h2>
-          <p>用影像保存專業交流、共同學習與合作推進的過程。</p>
+          <p>
+            {isTaipeiWorkshop
+              ? '從台北場兩日學習與合影，到課程講解、工具操作、實作輔導與同儕討論，回顧講師如何帶領學員練習新的工作方法，並在現場一起釐清操作問題。'
+              : '用影像保存專業交流、共同學習與合作推進的過程。'}
+          </p>
         </div>
 
         {
-          gallery.length > 0 ? (
+          isTaipeiWorkshop && gallery.length > 0 ? (
+            <WorkshopReplay {gallery} {base} />
+          ) : gallery.length > 0 ? (
             <div class="visual-grid">
               {gallery.map((item) => (
                 <figure>
@@ -527,4 +549,14 @@ const base = import.meta.env.BASE_URL.endsWith('/')
       align-items: center;
     }
   }
-</style>
+.workshop-instructors { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%, 16rem),1fr)); gap:1rem; margin:1.5rem 0; }
+.workshop-instructors div { background:var(--color-brand-soft); border-left:3px solid var(--color-primary); border-radius:.35rem; padding:1rem; }
+.workshop-instructors dt { font-weight:750; color:var(--color-primary-dark); }
+.workshop-instructors dd { margin:0; }
+
+
+.workshop-speakers { padding:clamp(2rem,5vw,4rem) 0; }
+.workshop-speakers h2 { margin:0; }
+.workshop-jumps { display:flex; gap:.65rem; flex-wrap:wrap; margin-top:1rem; }
+.workshop-jumps a { color:var(--color-primary-dark); background:var(--color-white); border-radius:.4rem; padding:.55rem .85rem; font-weight:700; }
+#instructors, #visual-title { scroll-margin-top:6rem; }</style>
