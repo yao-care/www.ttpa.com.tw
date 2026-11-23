@@ -151,6 +151,7 @@ const posters = [
             <div><dt>活動地點</dt><dd>{location}</dd></div>
           </dl>
           <div class="hero-actions">
+            {isEnded && <a class="button button-primary" href={`${base}results/sixth-ai-workshop-taipei/`}>查看活動成果與照片 <span aria-hidden="true">→</span></a>}
             {canRegister && <a class="button button-primary" href={registrationLink} target="_blank" rel="noopener noreferrer">立即線上報名 <span aria-hidden="true">→</span></a>}
             <a class="button button-ghost" href="#schedule">查看課程內容</a>
           </div>
