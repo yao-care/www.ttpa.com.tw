@@ -95,6 +95,7 @@ const results = defineCollection({
       src: z.string(),
       alt: z.string(),
       caption: z.string(),
+      fit: z.enum(['cover', 'contain']).default('cover'),
     })).default([]),
     sourceLink: z.string().optional(),
     featured: z.boolean().default(false),

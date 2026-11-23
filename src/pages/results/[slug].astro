@@ -142,7 +142,7 @@ const base = import.meta.env.BASE_URL.endsWith('/')
             <div class="visual-grid">
               {gallery.map((item) => (
                 <figure>
-                  <img src={`${base}${item.src}`} alt={item.alt} loading="lazy" width="1200" height="800" />
+                  <img class:list={{ 'image-contain': item.fit === 'contain' }} src={`${base}${item.src}`} alt={item.alt} loading="lazy" width="1200" height="800" />
                   <figcaption>{item.caption}</figcaption>
                 </figure>
               ))}
@@ -447,6 +447,11 @@ const base = import.meta.env.BASE_URL.endsWith('/')
     width: 100%;
     aspect-ratio: 16 / 10;
     object-fit: cover;
+  }
+
+  .visual-grid img.image-contain {
+    object-fit: contain;
+    background: var(--color-bg-light);
   }
 
   .visual-grid figcaption,
