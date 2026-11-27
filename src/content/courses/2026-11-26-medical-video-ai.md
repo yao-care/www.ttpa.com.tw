@@ -5,7 +5,6 @@ date: 2026-11-26
 format: "線上課程（Google Meet）"
 instructorName: "詹金和"
 instructorTitle: "藥師"
-recordingPublic: true
 recordingVideoLink: https://drive.google.com/file/d/1l3qaWB1IN6nH_6bo9t6XjUy0Rh6m-_Z1/view
 status: "✅ 活動已結束"
 summary: "詹金和藥師分享醫事影音的內容定位、拍攝實務與 AI 製作流程，從腳本與鏡位規劃一路練習到剪輯與後製。"
