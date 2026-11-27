@@ -147,7 +147,24 @@ const registrationUnavailableMessage = /額滿/.test(data.status ?? '')
           <p class="registration-unavailable">{registrationUnavailableMessage}</p>
         )}
 
-        {recordingEmbedSrc && (
+        {recordingEmbedSrc && data.recordingPublic && (
+          <section class="recording-gate" aria-labelledby="recording-title">
+            <p class="recording-kicker">COURSE RECORDING</p>
+            <h2 id="recording-title">課程紀錄影片</h2>
+            <div class="recording-frame">
+              <iframe
+                src={recordingEmbedSrc}
+                title={`${data.title} 課程紀錄影片`}
+                allow="autoplay; fullscreen"
+                allowfullscreen
+                loading="lazy"
+              ></iframe>
+            </div>
+            <p><a href={data.recordingVideoLink}>在 Google Drive 開啟課程紀錄</a></p>
+          </section>
+        )}
+
+        {recordingEmbedSrc && !data.recordingPublic && (
           <section class="recording-gate" aria-labelledby="recording-title">
             <div data-recording-locked>
               <p class="recording-kicker">COURSE RECORDING</p>
