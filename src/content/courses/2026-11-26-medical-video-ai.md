@@ -19,6 +19,26 @@ TTPA 組員培訓課程
 
 詹金和藥師帶領學員把醫療專業轉化成影音內容。課程從受眾與腳本規劃開始，進入拍攝、剪輯與 AI 後製，並透過醫事影音案例討論如何把工具整合到製作流程。
 
+<section class="course-speaker-profile" aria-labelledby="chan-profile">
+<h2 id="chan-profile">講師介紹</h2>
+<div class="course-speaker-grid">
+<img src="/img/course-chan-chin-ho.jpg" alt="詹金和藥師人物照" width="720" height="1021" loading="lazy">
+<div>
+<h3>詹金和藥師</h3>
+<dl>
+<dt>學歷</dt>
+<dd>大仁科技大學藥學系學士，於 2016 年畢業</dd>
+<dt>現職與經歷</dt>
+<dd>金和堂藥局店長，年資 7 年</dd>
+<dd>臺灣遠距藥事照護協會秘書處行銷宣傳組組長，年資 1 年</dd><dd>HowAI 影音創作平台講師</dd>
+<dt>專長</dt>
+<dd>短影音拍攝與剪輯、自媒體經營心法、AI 影片製作</dd><dd>提供臺語衛教服務</dd>
+<dd>NLP 高階執行師</dd>
+</dl>
+</div>
+</div>
+</section>
+
 ## 課前短片
 
 <iframe src="https://drive.google.com/file/d/1UhQSSUFYysZh_RWzOuwWxCUWa0z09siK/preview" title="醫事影音 × AI 課前短片" width="640" height="360" style="width:100%; aspect-ratio:16/9; height:auto; border:0" allow="autoplay; fullscreen" allowfullscreen></iframe>
