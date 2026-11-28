@@ -580,4 +580,27 @@ const registrationUnavailableMessage = /額滿/.test(data.status ?? '')
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
   }
+  .detail-main :global(.course-speaker-profile) {
+    padding: clamp(1rem, 3vw, 1.5rem);
+    margin-block: 2rem;
+    background: var(--color-brand-soft);
+    border-radius: .75rem;
+  }
+
+  .detail-main :global(.course-speaker-profile h2) { margin-top: 0; }
+  .detail-main :global(.course-speaker-profile h3) { margin-top: 0; }
+  .detail-main :global(.course-speaker-grid) {
+    display: grid;
+    grid-template-columns: minmax(8rem, 12rem) minmax(0, 1fr);
+    align-items: start;
+    gap: 1.25rem;
+  }
+  .detail-main :global(.course-speaker-grid img) { width: 100%; height: auto; border-radius: .5rem; }
+  .detail-main :global(.course-speaker-grid dt) { font-weight: 700; margin-top: .55rem; }
+  .detail-main :global(.course-speaker-grid dd) { margin-inline-start: 0; }
+
+  @media (max-width: 580px) {
+    .detail-main :global(.course-speaker-grid) { grid-template-columns: minmax(0, 1fr); }
+    .detail-main :global(.course-speaker-grid img) { max-width: 12rem; }
+  }
 </style>
